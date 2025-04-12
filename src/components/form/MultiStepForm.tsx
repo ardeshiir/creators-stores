@@ -37,7 +37,7 @@ export default function MultiStepForm() {
       {
         autoAlpha: 1,
         y: 0,
-        duration: 0.5,
+        duration: 0.8,
         ease: 'power2.out',
       },
     )
@@ -45,7 +45,7 @@ export default function MultiStepForm() {
 
   if (submitted) {
     return (
-      <div className="flex flex-col items-center justify-between h-full space-y-6 py-6">
+      <div className="flex flex-col items-center justify-between h-full py-6">
         <div className="flex flex-col items-center gap-6 translate-y-full">
           <CheckCircle />
           <h2 className="text-[20px] font-bold">اطلاعات با موفقیت ثبت گردید.</h2>

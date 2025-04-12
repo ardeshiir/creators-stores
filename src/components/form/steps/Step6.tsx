@@ -22,7 +22,7 @@ export const schema6 = z.object({
         height: z.number(),
       }),
       attachments: z.array(z.string()).optional(),
-    })),
+    })).optional(),
     attachments: z.array(z.string()).optional(),
   })),
 })

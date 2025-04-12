@@ -16,10 +16,10 @@ export const schema7 = z.object({
   'has-stand': z.string(),
   displayStand: z.array(
     z.object({
-      brand: z.string().min(1),
+      brand: z.string(),
       attachments: z.array(z.string()).optional(),
     }),
-  ),
+  ).optional(),
 })
 
 export type Step7Values = z.infer<typeof schema7>
