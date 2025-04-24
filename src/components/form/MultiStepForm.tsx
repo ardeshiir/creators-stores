@@ -1,11 +1,14 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { StepManager } from './StepManager'
+
+import gsap from 'gsap'
+
+import CheckCircle from '@/components/icons/CheckCircle'
 import { Button } from '@/components/ui/button'
 import { useFormStore } from '@/stores/useFormStore'
-import gsap from 'gsap'
-import CheckCircle from '@/components/icons/CheckCircle'
+
+import { StepManager } from './StepManager'
 
 export default function MultiStepForm() {
   const { updateData, data } = useFormStore()
@@ -45,26 +48,29 @@ export default function MultiStepForm() {
 
   if (submitted) {
     return (
-      <div className="flex flex-col items-center justify-between h-full py-6">
-        <div className="flex flex-col items-center gap-6 translate-y-full">
+      <div className="flex h-full flex-col items-center justify-between py-6">
+        <div className="flex translate-y-full flex-col items-center gap-6">
           <CheckCircle />
           <h2 className="text-[20px] font-bold">اطلاعات با موفقیت ثبت گردید.</h2>
         </div>
-        <div className="flex flex-col w-full items-center gap-6">
-          <Button className="w-full h-[67px]" onClick={() => {
-            setSubmitted(false)
-            setStep(0)
-          }}>
+        <div className="flex w-full flex-col items-center gap-6">
+          <Button
+            className="h-[67px] w-full"
+            onClick={() => {
+              setSubmitted(false)
+              setStep(0)
+            }}
+          >
             ثبت فروشنده جدید
           </Button>
-          <Button className="w-full h-[67px] bg-black text-white">فروشندگان ثبت شده</Button>
+          <Button className="h-[67px] w-full bg-black text-white">فروشندگان ثبت شده</Button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="flex-grow flex flex-col h-full justify-between relative">
+    <div className="relative flex h-full grow flex-col justify-between">
       {/* 👇 Animation wrapper */}
       <div key={step} ref={contentRef} className="space-y-6 pb-12">
         <StepManager
@@ -74,27 +80,27 @@ export default function MultiStepForm() {
       </div>
 
       {/* Buttons + Progress Bar */}
-      <div className="flex flex-col gap-[34px] w-full pb-4">
+      <div className="flex w-full flex-col gap-[34px] pb-4">
         <div className="flex justify-between gap-4">
-          <Button
-            form={`step-form-${step}`}
-            type="submit"
-            className="basis-2/3 h-[67px]"
-          >
-            {step === stepsCount - 2 ? 'مرحله نهایی' : step === stepsCount - 1 ? 'ثبت نهایی' : 'مرحله بعد'}
+          <Button form={`step-form-${step}`} type="submit" className="h-[67px] basis-2/3">
+            {step === stepsCount - 2
+              ? 'مرحله نهایی'
+              : step === stepsCount - 1
+                ? 'ثبت نهایی'
+                : 'مرحله بعد'}
           </Button>
           <Button
             type="button"
             variant="secondary"
             onClick={handleBack}
             disabled={step === 0}
-            className="basis-1/3 h-[67px] text-black"
+            className="h-[67px] basis-1/3 text-black"
           >
             بازگشت
           </Button>
         </div>
 
-        <div dir="ltr" className="h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div dir="ltr" className="h-2 overflow-hidden rounded-full bg-gray-200">
           <div
             className="h-full bg-blue-600 transition-all duration-300"
             style={{ width: `${progress}%` }}

@@ -3,7 +3,8 @@ import MultiStepForm from '@/components/form/MultiStepForm'
 
 export default function FormPage() {
   return (
-    <div className={'px-9 h-full'}><MultiStepForm /></div>
-
+    <div className="h-full px-9">
+      <MultiStepForm />
+    </div>
   )
 }

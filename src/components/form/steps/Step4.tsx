@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { z } from 'zod'
-import { UseFormReturn } from 'react-hook-form'
 
+import { Plus, X } from 'lucide-react'
+import { UseFormReturn } from 'react-hook-form'
+import { z } from 'zod'
+
+import { Button } from '@/components/ui/button'
 import { FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Plus, X } from 'lucide-react'
 import { safeArray } from '@/lib/form'
 
 export const schema4 = z.object({
@@ -46,26 +47,28 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
 
   const current = safeArray(form.watch('otherBrands'))
 
-  const filteredSuggestions = suggestions
-    .filter((s) =>
-      s.toLowerCase().startsWith(brandInput.toLowerCase()) &&
-      !current.includes(s),
-    )
-
+  const filteredSuggestions = suggestions.filter(
+    (s) => s.toLowerCase().startsWith(brandInput.toLowerCase()) && !current.includes(s),
+  )
 
   const addBrand = (brand?: string) => {
     const value = brand ?? brandInput.trim()
+
     if (!value) return
+
     if (!current.includes(value)) {
       const updated = [...current, value]
+
       form.setValue('otherBrands', updated)
     }
+
     setBrandInput('')
     setShowSuggestions(false)
   }
 
   const removeBrand = (index: number) => {
     const updated = current.filter((_, i) => i !== index)
+
     form.setValue('otherBrands', updated)
   }
 
@@ -77,7 +80,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
         </FormLabel>
 
         <div className="relative">
-          <div className="flex gap-2 mt-2">
+          <div className="mt-2 flex gap-2">
             <Input
               value={brandInput}
               placeholder="نام برند"
@@ -99,7 +102,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
             <Button
               type="button"
               onClick={() => addBrand()}
-              className="h-full group min-h-[64px] rounded-[20px] aspect-square text-black bg-transparent border-black border flex items-center justify-center"
+              className="group flex aspect-square h-full min-h-[64px] items-center justify-center rounded-[20px] border border-black bg-transparent text-black"
             >
               <Plus className="group-hover:text-white" />
             </Button>
@@ -107,12 +110,11 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
 
           {/* Autocomplete dropdown */}
           {showSuggestions && filteredSuggestions.length > 0 && (
-            <ul
-              className="absolute z-10 bg-white w-full mt-1 border rounded-lg shadow-sm max-h-48 overflow-auto text-sm">
+            <ul className="absolute z-10 mt-1 max-h-48 w-full overflow-auto rounded-lg border bg-white text-sm shadow-sm">
               {filteredSuggestions.map((s, i) => (
                 <li
                   key={i}
-                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer suggestion"
+                  className="suggestion cursor-pointer px-3 py-2 hover:bg-gray-100"
                   onClick={() => addBrand(s)}
                 >
                   {s}
@@ -125,18 +127,13 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
         <FormMessage />
       </FormItem>
 
-      <ul className="grid grid-cols-2 gap-2 mt-4">
+      <ul className="mt-4 grid grid-cols-2 gap-2">
         {current.map((brand, i) => (
           <li
             key={i}
-            className="flex items-center justify-between h-[51px] font-medium text-lg bg-[#F5F5F5] rounded-[20px] border border-[#e4e4e4] px-3 py-1"
+            className="flex h-[51px] items-center justify-between rounded-[20px] border border-[#e4e4e4] bg-[#F5F5F5] px-3 py-1 text-lg font-medium"
           >
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              onClick={() => removeBrand(i)}
-            >
+            <Button type="button" size="icon" variant="ghost" onClick={() => removeBrand(i)}>
               <X size={16} />
             </Button>
             <span>{brand}</span>

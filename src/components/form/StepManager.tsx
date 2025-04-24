@@ -1,9 +1,11 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Form } from '@/components/ui/form'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
+import Step1, { schema1 } from '@/components/form/steps/Step1'
+import { Step10 } from '@/components/form/steps/Step10'
 import { schema2, Step2 } from '@/components/form/steps/Step2'
 import Step3, { schema3 } from '@/components/form/steps/Step3'
 import Step4, { schema4 } from '@/components/form/steps/Step4'
@@ -12,9 +14,7 @@ import { schema6, Step6 } from '@/components/form/steps/Step6'
 import { schema7, Step7 } from '@/components/form/steps/Step7'
 import { schema8, Step8 } from '@/components/form/steps/Step8'
 import { schema9, Step9 } from '@/components/form/steps/step9'
-import { Step10 } from '@/components/form/steps/Step10'
-import { z } from 'zod'
-import Step1, { schema1 } from '@/components/form/steps/Step1'
+import { Form } from '@/components/ui/form'
 
 const schema10 = z.object({})
 const steps = [
@@ -30,13 +30,7 @@ const steps = [
   { Component: Step10, schema: schema10 },
 ]
 
-export function StepManager({
-                              step,
-                              onNext,
-                            }: {
-  step: number
-  onNext: (values: any) => void
-}) {
+export function StepManager({ step, onNext }: { step: number; onNext: (values: any) => void }) {
   const { Component, schema } = steps[step]
 
   const form = useForm({
@@ -51,24 +45,29 @@ export function StepManager({
         description: '',
         postalcode: '',
       },
-      enviornment: [{
-        mainStreet: 'true',
-        stock: 'true',
-        signBoard: [{
-          type: 'none',
-        }],
-      }],
+      enviornment: [
+        {
+          mainStreet: 'true',
+          stock: 'true',
+          signBoard: [
+            {
+              type: 'none',
+            },
+          ],
+        },
+      ],
       banner: {
         type: 'banner',
         dimensions: { width: undefined, height: undefined },
         attachments: [],
       },
       displayStand: [{ brand: '', attachments: [] }],
-      showCase: [{ dimensions: { width: undefined, height: undefined }, sticker: false, attachments: [] }],
+      showCase: [
+        { dimensions: { width: undefined, height: undefined }, sticker: false, attachments: [] },
+      ],
       externalImages: [['', '']],
       internalImages: [['', '']],
-    }
-    ,
+    },
     mode: 'onTouched',
   })
 
