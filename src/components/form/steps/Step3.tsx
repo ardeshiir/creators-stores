@@ -11,8 +11,8 @@ import { RadioGroup, RadioGroupItemSecondary } from '@/components/ui/radio-group
 const foaOptions = ['لوازم تحریر', 'خرازی', 'کتاب‌فروشی', 'دفتر فنی', 'سایر'] as const
 
 export const schema3 = z.object({
-  foa: z.any(),
-  purchaseMethod: z.any(),
+  foa: z.any().optional(),
+  purchaseMethod: z.any().optional(),
 })
 
 export type Step3Values = z.infer<typeof schema3>
@@ -32,21 +32,24 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
   }
 
   return (
-    <>
+    <div className="mx-auto grid max-w-[733px] grid-cols-6 gap-4 md:min-h-[300px]">
       <FormField
         control={form.control}
         name="foa"
         render={() => (
-          <FormItem>
+          <FormItem className="col-span-6">
             <FormLabel className="text-lg font-bold">زمینه فعالیت</FormLabel>
-            <div className="mt-2 grid grid-cols-2 gap-2">
+            <div className="mt-2 grid grid-cols-2 gap-2 md:flex md:flex-wrap">
               {foaOptions.map((option) => (
                 <FormField
                   key={option}
                   control={form.control}
                   name="foa"
                   render={() => (
-                    <FormItem key={option} className="col-span-1 flex items-center space-x-2">
+                    <FormItem
+                      key={option}
+                      className="min-w-auto col-span-1 flex items-center space-x-2 md:min-w-[182px]"
+                    >
                       <FormControl>
                         <CheckboxSecondary
                           label={option}
@@ -72,21 +75,21 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
         control={form.control}
         name="purchaseMethod"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="col-span-6 ">
             <FormLabel className="text-lg font-bold">نحوه خرید</FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                className="mt-2 flex"
+                className="mt-2 flex md:justify-end"
               >
-                <FormItem className="flex basis-1/2 items-center">
+                <FormItem className="flex basis-1/2 items-center md:max-w-[258px]">
                   <FormControl>
                     <RadioGroupItemSecondary className="w-full" label="مستقیم" value="direct" />
                   </FormControl>
                   {/*<FormLabel>مستقیم</FormLabel>*/}
                 </FormItem>
-                <FormItem className="flex basis-1/2 items-center space-x-2">
+                <FormItem className="flex basis-1/2 items-center space-x-2 md:max-w-[258px]">
                   <FormControl>
                     <RadioGroupItemSecondary
                       className="w-full"
@@ -102,6 +105,6 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
           </FormItem>
         )}
       />
-    </>
+    </div>
   )
 }

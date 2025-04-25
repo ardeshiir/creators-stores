@@ -37,9 +37,9 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
   }
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-[733px] md:min-h-[300px]">
       <FormLabel className="text-lg font-bold text-black">آدرس فروشگاه</FormLabel>
-      <div className="grid grid-cols-2 gap-x-[32px] gap-y-[12px]">
+      <div className="mt-4 grid grid-cols-2 gap-4">
         <FormField
           control={form.control}
           name="address.state"
@@ -70,7 +70,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
           control={form.control}
           name="address.description"
           render={({ field }) => (
-            <FormItem className="col-span-2">
+            <FormItem className="col-span-2 md:col-span-1">
               <FormControl>
                 <Input placeholder="آدرس پستی" {...field} />
               </FormControl>
@@ -83,18 +83,23 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
           control={form.control}
           name="address.postalcode"
           render={({ field }) => (
-            <FormItem className="col-span-2">
+            <FormItem className="col-span-2 md:col-span-1">
               <FormControl>
-                <Input placeholder="کد پستی" {...field} />
+                <Input
+                  placeholder="کد پستی"
+                  {...field}
+                  startIconClassName="text-placeholder font-medium"
+                  startIcon={field.value ? undefined : '۱۲۳۴۵۶۷۸۹'}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormItem className="col-span-2">
+        <FormItem className="col-span-2 flex flex-col items-start md:col-span-1">
           {/*<FormLabel>Phone Numbers</FormLabel>*/}
-          <div className="space-y-2">
+          <div className="w-full space-y-2">
             {safeArray(form.watch('address.phoneNumber')).map((_, index) => (
               <FormField
                 key={index}
@@ -106,34 +111,34 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                       <Input
                         {...field}
                         placeholder="شماره تلفن"
+                        startIconClassName="text-placeholder font-medium"
                         startIcon={
-                          field.value ? undefined : (
-                            <span className="text-lg text-[#babcbe]">0912345678</span>
+                          field.value ? undefined : index > 0 ? (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => removePhone(index)}
+                            >
+                              <X size={16} />
+                            </Button>
+                          ) : (
+                            '۰۹۱۲۳۴۵۶۷۸۹'
                           )
                         }
                       />
                     </FormControl>
-                    {index > 0 && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => removePhone(index)}
-                      >
-                        <X size={16} />
-                      </Button>
-                    )}
                     <FormMessage />
                   </FormItem>
                 )}
               />
             ))}
           </div>
-          <Button type="button" variant="text" className="mt-2" onClick={addPhone}>
+          <Button type="button" variant="text" className="text-brand-primary" onClick={addPhone}>
             + اضافه کردن شماره جدید
           </Button>
         </FormItem>
       </div>
-    </>
+    </div>
   )
 }

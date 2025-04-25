@@ -12,8 +12,8 @@ import { InputSecondary } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
 export const schema9 = z.object({
-  externalImages: z.array(z.array(z.string()).length(2)).optional(),
-  internalImages: z.array(z.array(z.string()).length(2)).optional(),
+  externalImages: z.array(z.array(z.string().optional()).length(2)).optional(),
+  internalImages: z.array(z.array(z.string().optional()).length(2)).optional(),
   description: z.string().optional(),
 })
 
@@ -82,7 +82,7 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
               type="button"
               size="icon"
               variant="ghost"
-              className="absolute right-2 top-2"
+              className="absolute right-[-14px] top-1/2 translate-y-[-30%]"
               onClick={() => array.remove(index)}
             >
               <X size={16} />
@@ -91,12 +91,12 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
 
           <div className="flex items-center gap-4">
             {[0, 1].map((pos) => (
-              <div key={pos} className="flex-1 space-y-2">
+              <div key={pos} className="flex-1 space-y-2 md:w-[170px] md:min-w-[170px] md:grow-0">
                 <FormLabel
                   htmlFor="display-attachment"
-                  className="flex basis-1/2 items-center justify-center gap-[18px] rounded-[20px] bg-[#EEEEEE] py-[14px]"
+                  className="flex w-full cursor-pointer items-center justify-center gap-[18px] rounded-[14px] bg-[#EEEEEE] py-[14px] font-medium md:w-[170px] md:justify-between md:px-4"
                 >
-                  <Camera />
+                  <Camera fill="black" stroke="white" />
                   تصویر ضمیمه {pos + 1}
                   <InputSecondary
                     id="display-attachment"
@@ -136,7 +136,7 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
   )
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-[733px] md:min-h-[300px]">
       {renderImagePairs('externalImages', externalImages, extPreview, 'تصاویر بیرونی فروشگاه')}
       {renderImagePairs('internalImages', internalImages, intPreview, 'تصاویر داخلی فروشگاه')}
 
@@ -153,6 +153,6 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
           </FormItem>
         )}
       />
-    </>
+    </div>
   )
 }

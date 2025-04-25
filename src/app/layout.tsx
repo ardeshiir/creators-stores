@@ -30,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} h-screen w-screen overflow-x-hidden antialiased`}
       >
-        <div className="bg-background mx-auto flex h-full min-h-screen max-w-md flex-col gap-10  overflow-x-hidden pt-9">
+        <div className="bg-background mx-auto flex h-full min-h-screen flex-col gap-10  overflow-x-hidden pt-9">
           <div className="px-9">
             <Header />
           </div>

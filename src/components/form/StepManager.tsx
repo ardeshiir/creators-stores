@@ -37,7 +37,7 @@ export function StepManager({ step, onNext }: { step: number; onNext: (values: a
     resolver: schema ? zodResolver(schema) : undefined,
     defaultValues: {
       mobile: [''],
-      otherBrands: ['فابر کاستل', 'استدلر', 'اسمیگل'],
+      otherBrands: [],
       address: {
         phoneNumber: [''],
         state: '',
@@ -73,11 +73,7 @@ export function StepManager({ step, onNext }: { step: number; onNext: (values: a
 
   return (
     <Form {...form}>
-      <form
-        id={`step-form-${step}`}
-        onSubmit={form.handleSubmit(onNext)}
-        className="space-y-6 pb-6"
-      >
+      <form id={`step-form-${step}`} onSubmit={form.handleSubmit(onNext)} className="pb-6">
         <Component form={form} />
       </form>
     </Form>

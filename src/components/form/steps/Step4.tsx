@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import Input from '@/components/ui/input'
+import { InputSecondary } from '@/components/ui/input'
 import { safeArray } from '@/lib/form'
 
 export const schema4 = z.object({
@@ -73,16 +73,17 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
   }
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-[733px] md:min-h-[300px]">
       <FormItem>
         <FormLabel className="text-lg font-bold text-black">
           سایر برند های موجود در فروشگاه
         </FormLabel>
 
         <div className="relative">
-          <div className="mt-2 flex gap-2">
-            <Input
+          <div className="mt-4 flex gap-4">
+            <InputSecondary
               value={brandInput}
+              className="max-w-[358px]"
               placeholder="نام برند"
               onChange={(e) => {
                 setBrandInput(e.target.value)
@@ -102,7 +103,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
             <Button
               type="button"
               onClick={() => addBrand()}
-              className="group flex aspect-square h-full min-h-[64px] items-center justify-center rounded-[20px] border border-black bg-transparent text-black"
+              className="group flex aspect-square h-full min-h-[64px] items-center justify-center rounded-[20px] border border-black bg-transparent text-black hover:bg-brand-primary"
             >
               <Plus className="group-hover:text-white" />
             </Button>
@@ -127,11 +128,11 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
         <FormMessage />
       </FormItem>
 
-      <ul className="mt-4 grid grid-cols-2 gap-2">
+      <ul className="mt-4 grid grid-cols-2 gap-4 md:flex">
         {current.map((brand, i) => (
           <li
             key={i}
-            className="flex h-[51px] items-center justify-between rounded-[20px] border border-[#e4e4e4] bg-[#F5F5F5] px-3 py-1 text-lg font-medium"
+            className="flex h-[51px] items-center justify-between rounded-[14px] border border-border bg-[#F5F5F5] px-3 py-1 text-lg font-medium text-black md:min-w-[176px]"
           >
             <Button type="button" size="icon" variant="ghost" onClick={() => removeBrand(i)}>
               <X size={16} />
@@ -140,6 +141,6 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   )
 }

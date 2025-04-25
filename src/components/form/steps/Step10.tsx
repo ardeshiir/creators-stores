@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import { Camera } from 'lucide-react'
 import Image from 'next/image'
@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { FormLabel } from '@/components/ui/form'
-import Input from '@/components/ui/input'
+import { InputSecondary } from '@/components/ui/input'
 import { useFormStore } from '@/stores/useFormStore'
 
 export function Step10() {
@@ -27,9 +27,9 @@ export function Step10() {
         <DrawerTrigger asChild>
           <button
             onClick={() => setPreviewImg(url)}
-            className="text-primary border-primary flex w-full items-center justify-between gap-2 rounded-[20px] border bg-white px-3 py-2 shadow-sm"
+            className="border-brand flex w-[138px] items-center justify-between rounded-[8px] border border-brand-primary bg-white px-2 py-1 text-lg leading-[24px] text-brand-primary"
           >
-            <Camera className="text-primary" size={16} />
+            <Camera fill="var(--brand-primary)" stroke="white" className="text-primary" size={16} />
             IMG_{i + 1}
           </button>
         </DrawerTrigger>
@@ -50,7 +50,7 @@ export function Step10() {
     </div>
   )
 
-  const Row = ({ label, value }: { label?: string; value?: string }) => (
+  const Row = ({ label, value }: { label?: string; value?: ReactNode }) => (
     <div className="flex min-h-[51px] items-center justify-between border-b-[0.5px] border-[#B6B6B6] py-1 font-medium">
       <span className="font-medium">{label}</span>
       <span className="font-medium">{value}</span>
@@ -125,7 +125,7 @@ export function Step10() {
             <Row label="نوع تابلو سر‌در:" value={sb.type} />
             <Row
               label="ابعاد تابلو سر‌در:"
-              value={`${sb.dimensions.width} متر × ${sb.dimensions.height} متر`}
+              value={`${sb.dimensions?.width} متر × ${sb.dimensions?.height} متر`}
             />
             <div className="mt-3">{renderImages(sb.attachments)}</div>
           </div>
@@ -153,31 +153,39 @@ export function Step10() {
       </Section>
 
       <Section title="تصاویر فروشگاه">
-        <Row label="تصاویر بیرونی فروشگاه:" />
-        <div className="mt-3">
-          {' '}
-          {data.externalImages?.map((pair, i) => (
-            <div key={i} className="flex gap-2">
-              {renderImages(pair)}
-            </div>
-          ))}
-        </div>
-        <Row label="تصاویر داخلی فروشگاه:" />
-        <div className="mt-3">
-          {data.internalImages?.map((pair, i) => (
-            <div key={i} className="flex gap-2">
-              {renderImages(pair)}
-            </div>
-          ))}
-        </div>
+        <Row
+          label="تصاویر بیرونی فروشگاه:"
+          value={
+            <>
+              {data.externalImages?.map((pair, i) => (
+                <div key={i} className="flex gap-2">
+                  {renderImages(pair)}
+                </div>
+              ))}
+            </>
+          }
+        />
+        <Row
+          label="تصاویر داخلی فروشگاه:"
+          value={
+            <>
+              {' '}
+              {data.internalImages?.map((pair, i) => (
+                <div key={i} className="flex gap-2">
+                  {renderImages(pair)}
+                </div>
+              ))}
+            </>
+          }
+        />
       </Section>
 
       <Section title="توضیحات تکمیلی">
-        <p className="text-muted-foreground text-sm">{data.description}</p>
+        <p className="text-sm text-muted-foreground">{data.description}</p>
       </Section>
 
       {/* 📸 Expert Verification Block */}
-      <div className="mt-6 space-y-3 rounded-xl border border-[#E4E4E4] p-4">
+      <div className="mt-6 rounded-xl border border-[#E4E4E4] p-4 md:mx-auto md:max-w-[455px] md:px-12 md:py-8">
         <div className="flex h-[51px] items-center justify-between border-b border-[#E4E4E4]">
           <p className="text-[20px] font-bold">احراز هویت کارشناس</p>
           <svg
@@ -193,14 +201,20 @@ export function Step10() {
             />
           </svg>
         </div>
-        <Input placeholder="نام و نام خانوادگی" />
-        <Input placeholder="شماره شناسه" />
+        <InputSecondary
+          className="mt-6 border-[#E4E4E4] placeholder:text-[#9D9D9D]"
+          placeholder="نام و نام خانوادگی"
+        />
+        <InputSecondary
+          className="mt-4 border-[#E4E4E4] placeholder:text-[#9D9D9D]"
+          placeholder="شماره شناسه"
+        />
         <Button
           variant="outline"
-          className="text-primary border-primary flex w-full items-center justify-between border text-lg font-medium"
+          className="mt-4 flex h-[56px] w-full items-center justify-between rounded-[14px] border border-brand-primary !bg-white text-lg font-medium text-brand-primary"
         >
           احراز هویت با دوربین
-          <Camera size={16} />
+          <Camera fill="var(--brand-primary)" stroke="white" size={16} />
         </Button>
       </div>
     </div>
