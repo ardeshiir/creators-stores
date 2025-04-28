@@ -12,7 +12,7 @@ export default function Home() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   return (
-    <div className="flex h-full flex-col items-center justify-between pt-6">
+    <div className="flex h-full flex-col items-center justify-between py-6">
       {isLoggedIn ? (
         <StoreManagementMenu />
       ) : (
@@ -27,7 +27,7 @@ export default function Home() {
           <DesktopFooter />
         </div>
       ) : (
-        <footer className="flex h-[140px] w-full items-start justify-center bg-black pt-7">
+        <footer className="flex h-[140px] w-full items-start justify-center bg-black pt-7 md:hidden">
           <BonyanIcon />
         </footer>
       )}

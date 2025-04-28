@@ -52,7 +52,7 @@ export function Step10() {
 
   const Row = ({ label, value }: { label?: string; value?: ReactNode }) => (
     <div className="flex min-h-[51px] items-center justify-between border-b-[0.5px] border-[#B6B6B6] py-1 font-medium">
-      <span className="font-medium">{label}</span>
+      <span className="text-nowrap font-medium">{label}</span>
       <span className="font-medium">{value}</span>
     </div>
   )
@@ -180,8 +180,14 @@ export function Step10() {
         />
       </Section>
 
-      <Section title="توضیحات تکمیلی">
-        <p className="text-sm text-muted-foreground">{data.description}</p>
+      <Section title="">
+        <Row
+          label="توضیحات تکمیلی:"
+          value="
+          این فروشگاه با داشتن ویژگی های منحصر به فرد خود، پتانسیل بالایی در دست‌یابی به اهداف
+          سازمانی خواهد داشت.
+        "
+        />
       </Section>
 
       {/* 📸 Expert Verification Block */}

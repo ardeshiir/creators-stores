@@ -1,14 +1,17 @@
 // components/form/steps/Step3.tsx
 'use client'
 
+import { useState } from 'react'
+
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
 import { CheckboxSecondary } from '@/components/ui/checkbox'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { InputSecondary } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItemSecondary } from '@/components/ui/radio-group'
 
-const foaOptions = ['لوازم تحریر', 'خرازی', 'کتاب‌فروشی', 'دفتر فنی', 'سایر'] as const
+const foaOptions = ['لوازم تحریر', 'خرازی', 'کتاب‌فروشی', 'دفتر فنی'] as const
 
 export const schema3 = z.object({
   foa: z.any().optional(),
@@ -18,6 +21,7 @@ export const schema3 = z.object({
 export type Step3Values = z.infer<typeof schema3>
 
 export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
+  const [otherInput, setOtherInput] = useState<string>(null)
   const toggleFoa = (value: (typeof foaOptions)[number]) => {
     const current = form.getValues('foa')
 
@@ -52,6 +56,7 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
                     >
                       <FormControl>
                         <CheckboxSecondary
+                          disabled={!!otherInput || !!otherInput?.length}
                           label={option}
                           className="w-full"
                           checked={form.watch('foa')?.includes(option)}
@@ -65,6 +70,27 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
                   )}
                 />
               ))}
+              <FormField
+                control={form.control}
+                name="foa"
+                render={() => (
+                  <FormItem
+                    key="option"
+                    className="min-w-auto col-span-2 flex items-center space-x-2 md:min-w-[182px]"
+                  >
+                    <FormControl>
+                      <InputSecondary
+                        placeholder="سایر"
+                        className="w-full"
+                        onChange={(e) => setOtherInput(e.target.value)}
+                      />
+                    </FormControl>
+                    {/*<FormLabel className="font-normal">
+                                                {option}
+                                            </FormLabel>*/}
+                  </FormItem>
+                )}
+              />
             </div>
             <FormMessage />
           </FormItem>

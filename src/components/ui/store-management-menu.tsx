@@ -6,7 +6,7 @@ import LoginTitle from '@/components/ui/login-title'
 const StoreManagementMenu = () => {
   return (
     <div className="flex flex-col gap-10">
-      <div className="desktop-card flex flex-col gap-[35px]">
+      <div className="desktop-card flex w-[315px] flex-col gap-[35px] md:w-auto">
         <LoginTitle title="باشگاه فروشندگان" />
         <div className="flex flex-col items-center  gap-6 md:gap-4">
           <Button className="flex h-[67px] w-full items-center justify-center md:w-[363px]">

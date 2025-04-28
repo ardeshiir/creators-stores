@@ -43,11 +43,11 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[526px] md:min-h-[300px]">
+    <div className="mx-auto w-full max-w-[562px] md:min-h-[300px]">
       <FormLabel className="text-lg font-bold text-black">استند نمایش محصول</FormLabel>
 
       {fields.map((field, index) => (
-        <div key={field.id} className={cn('grid-cols-2 md:grid md:gap-4', index === 0 && 'mt-4')}>
+        <div key={field.id} className={cn('grid-cols-2 grid gap-4', index === 0 && 'mt-4')}>
           {index === 0 && (
             <FormField
               control={form.control}
@@ -91,7 +91,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
               control={form.control}
               name={`displayStand.${index}.brand`}
               render={({ field }) => (
-                <FormItem className="relative md:size-fit">
+                <FormItem className="relative col-span-2 md:col-span-1 md:size-fit">
                   {fields.length > 1 && (
                     <Button
                       type="button"
