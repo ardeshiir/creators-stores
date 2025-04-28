@@ -83,17 +83,14 @@ export default function MultiStepForm() {
       {/* Buttons + Progress Bar */}
       <div className="mx-auto flex w-full max-w-[562px] flex-col gap-[34px] pb-4 md:gap-[64px]">
         <div
-          className={cn(
-            'flex justify-between gap-4',
-            step === stepsCount - 1 && 'flex-row-reverse',
-          )}
+          className={cn('grid grid-cols-12 gap-4', step === stepsCount - 1 && 'flex-row-reverse')}
         >
           <Button
             form={`step-form-${step}`}
             variant="brand"
             type="submit"
             className={cn(
-              'order-1 h-[67px] font-bold shadow basis-2/3 md:order-2 md:basis-1/2',
+              'order-1 h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
               step === stepsCount - 1 && 'bg-[#00BD52]',
             )}
           >
@@ -108,7 +105,7 @@ export default function MultiStepForm() {
             variant="secondary"
             onClick={handleBack}
             disabled={step === 0}
-            className="order-2 h-[67px] basis-1/3 bg-[#E4E4E4] font-bold text-black shadow-none md:order-1 md:basis-1/2"
+            className="order-2 col-span-4 h-[67px] bg-[#E4E4E4] font-bold text-black shadow-none md:order-1 md:col-span-6"
           >
             بازگشت
           </Button>
