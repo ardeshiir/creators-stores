@@ -61,7 +61,8 @@ export function StepManager({ step, onNext }: { step: number; onNext: (values: a
         dimensions: { width: undefined, height: undefined },
         attachments: [],
       },
-      displayStand: [{ brand: '', attachments: [] }],
+      displayStandType: 'none',
+      displayStand: { brand: '', attachments: [] },
       showCase: [
         { dimensions: { width: undefined, height: undefined }, sticker: false, attachments: [] },
       ],
@@ -70,10 +71,13 @@ export function StepManager({ step, onNext }: { step: number; onNext: (values: a
     },
     mode: 'onTouched',
   })
+  const onerror = (error) => {
+    console.log({ error })
+  }
 
   return (
     <Form {...form}>
-      <form id={`step-form-${step}`} onSubmit={form.handleSubmit(onNext)} className="pb-6">
+      <form id={`step-form-${step}`} onSubmit={form.handleSubmit(onNext, onerror)} className="pb-6">
         <Component form={form} />
       </form>
     </Form>

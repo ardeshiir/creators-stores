@@ -16,6 +16,8 @@ export function Step10() {
   const [submitted, setSubmitted] = useState(false)
   const [previewImg, setPreviewImg] = useState<string | null>(null)
 
+  console.log({ data })
+
   const handleFinalSubmit = () => {
     console.log('📝 Submitted:', data)
     setSubmitted(true)
@@ -115,9 +117,9 @@ export function Step10() {
         <Row label="شماره تلفن ثابت:" value={data.address?.phoneNumber?.join(', ')} />
       </Section>
 
-      <Section title="شرایط محیطی فروشگاه">
+      <Section title="موقعیت مکانی فروشگاه">
         <Row
-          label="شرایط محیطی فروشگاه:"
+          label="موقعیت مکانی فروشگاه:"
           value={`${data.enviornment?.[0]?.stock === 'true' ? 'بورس' : 'غیربورس'}, ${data.enviornment?.[0]?.mainStreet === 'true' ? 'خیابان اصلی' : 'خیابان فرعی'}`}
         />
         {data.enviornment?.[0]?.signBoard?.map((sb, i) => (
@@ -132,13 +134,14 @@ export function Step10() {
         ))}
       </Section>
 
-      <Section title="استند نمایش محصول">
-        {data.displayStand?.map((stand, i) => (
-          <div key={i} className="space-y-1">
-            <Row label="برند:" value={stand.brand} />
-            <div className="mt-3">{renderImages(stand.attachments)}</div>
-          </div>
-        ))}
+      <Section title="">
+        <div className="space-y-1">
+          <Row
+            label="استند نمایش محصول:"
+            value={data.displayStandType === 'none' ? 'فاقد استند' : data.displayStandType}
+          />
+          <div className="mt-3">{renderImages(data.displayStand?.attachments)}</div>
+        </div>
       </Section>
 
       <Section title="ویترین نمایش محصول">

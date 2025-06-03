@@ -22,6 +22,7 @@ export default function MultiStepForm() {
 
   const handleBack = () => setStep((s) => Math.max(s - 1, 0))
   const handleNext = async (values: any) => {
+    console.log({ values })
     updateData(values)
     setStep((s) => Math.min(s + 1, stepsCount - 1))
   }

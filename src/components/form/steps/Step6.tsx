@@ -62,7 +62,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
   return (
     <div className="flex w-full items-center justify-center md:min-h-[300px]">
       <div className="w-full">
-        <FormLabel className="text-lg font-bold text-black">شرایط محیطی فروشگاه</FormLabel>
+        <FormLabel className="text-lg font-bold text-black">موقعیت مکانی فروشگاه</FormLabel>
         <div className="mt-4 grid grid-cols-2 gap-4 md:flex md:flex-col">
           <div className="col-span-2 grid grid-cols-2 gap-4 md:flex ">
             <FormField
@@ -156,7 +156,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                   <X size={16} />
                 </Button>
               )}
-
+              <FormLabel className="text-lg font-bold text-black">تابلو سردرب</FormLabel>
               <FormField
                 control={form.control}
                 name={`enviornment.0.signBoard.${index}.type`}

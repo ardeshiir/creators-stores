@@ -38,10 +38,11 @@ interface FormState {
       }[]
       attachments?: string[]
     }[]
+    displayStandType?: string
     displayStand?: {
       brand: string
       attachments: string[]
-    }[]
+    }
     showCase?: {
       dimensions: {
         width: number

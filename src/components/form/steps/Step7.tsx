@@ -3,165 +3,137 @@
 
 import { useState } from 'react'
 
-import { Camera, X } from 'lucide-react'
-import { useFieldArray, UseFormReturn } from 'react-hook-form'
+import { Camera } from 'lucide-react'
+import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { InputSecondary } from '@/components/ui/input'
-import { RadioGroup, RadioGroupItemSecondary } from '@/components/ui/radio-group'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
 export const schema7 = z.object({
-  'has-stand': z.string().optional(),
+  displayStandType: z.enum(['reglam', 'ontable', 'none']),
   displayStand: z
-    .array(
-      z.object({
-        brand: z.string(),
-        attachments: z.array(z.string()).optional(),
-      }),
-    )
+    .object({
+      brand: z.string().optional(),
+      attachments: z.array(z.string()).optional(),
+    })
     .optional(),
 })
 
 export type Step7Values = z.infer<typeof schema7>
 
 export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
-  const [previews, setPreviews] = useState<Record<number, string[]>>({})
+  const [previews, setPreviews] = useState<string[]>([])
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: 'displayStand',
-  })
-
-  const handleUpload = (files: FileList, index: number) => {
+  const handleUpload = (files: FileList) => {
     const urls = Array.from(files).map((file) => URL.createObjectURL(file))
 
-    form.setValue(`displayStand.${index}.attachments`, urls)
-    setPreviews((prev) => ({ ...prev, [index]: urls }))
+    form.setValue(`displayStand.attachments`, urls)
+    setPreviews((prev) => [...prev, ...urls])
   }
 
   return (
     <div className="mx-auto w-full max-w-[562px] md:min-h-[300px]">
       <FormLabel className="text-lg font-bold text-black">استند نمایش محصول</FormLabel>
 
-      {fields.map((field, index) => (
-        <div key={field.id} className={cn('grid-cols-2 grid gap-4', index === 0 && 'mt-4')}>
-          {index === 0 && (
-            <FormField
-              control={form.control}
-              name="has-stand"
-              render={({ field }) => (
-                <FormItem className="col-span-2 grid grid-cols-2 gap-[12px] md:flex">
-                  <FormControl>
-                    <RadioGroup
-                      className="col-span-2 grid grid-cols-2 gap-[12px] md:flex"
-                      onValueChange={field.onChange}
-                      defaultValue="false"
-                    >
-                      <FormItem className="order-1 col-span-1 flex items-center space-x-2 md:order-2 md:w-[152px]">
-                        <FormControl>
-                          <RadioGroupItemSecondary
-                            className="h-[67px] md:h-[56px]"
-                            label="دارد"
-                            value="true"
-                          />
-                        </FormControl>
-                      </FormItem>
-                      <FormItem className="order-2 flex items-center space-x-2 md:order-1 md:w-[258px]">
-                        <FormControl>
-                          <RadioGroupItemSecondary
-                            className="h-[67px] md:h-[56px]"
-                            label="ندارد"
-                            value="false"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+      <div className={cn('grid-cols-2 grid gap-4', 'mt-4')}>
+        {
+          <FormField
+            control={form.control}
+            name="displayStandType"
+            render={({ field }) => (
+              <FormItem className="col-span-2 md:w-[358px]">
+                {/*<FormLabel>Type</FormLabel>*/}
+                <FormControl>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger className="h-[64px] w-full border border-[#E4E4E4] bg-[#F9F9F9]">
+                        <SelectValue
+                          placeholder="استند نمایش محصول"
+                          className="h-[64px] text-lg placeholder:text-lg"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="w-full">
+                      <SelectItem value="none">فاقد تابلو سردرب</SelectItem>
+                      <SelectItem value="reglam">رگلام</SelectItem>
+                      <SelectItem value="ontable">رومیزی</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        }
 
-          {form.watch('has-stand') === 'true' && (
-            <FormField
-              control={form.control}
-              name={`displayStand.${index}.brand`}
-              render={({ field }) => (
-                <FormItem className="relative col-span-2 md:col-span-1 md:size-fit">
-                  {fields.length > 1 && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="absolute right-[-32px] top-1/2 translate-y-[-50%]"
-                      onClick={() => remove(index)}
-                    >
-                      <X size={16} />
-                    </Button>
-                  )}
+        {['reglam', 'ontable'].includes(form.watch('displayStandType')) && (
+          <FormField
+            control={form.control}
+            name="displayStand.brand"
+            render={({ field }) => (
+              <FormItem className="relative col-span-2 md:col-span-1 md:size-fit">
+                {/*
+                {fields.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-[-32px] top-1/2 translate-y-[-50%]"
+                    onClick={() => remove(index)}
+                  >
+                    <X size={16} />
+                  </Button>
+                )}
+*/}
 
-                  <FormControl>
-                    <InputSecondary
-                      className="md:w-[260px]"
-                      placeholder="نام برند فعلی"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+                <FormControl>
+                  <InputSecondary className="md:w-[260px]" placeholder="نام برند فعلی" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
-          {form.watch('has-stand') === 'true' && (
-            <FormItem className='md:w-fit"'>
-              <FormLabel
-                htmlFor="signboard-attachment"
-                className="flex w-full cursor-pointer items-center justify-center gap-[18px] rounded-[14px] bg-[#EEEEEE] py-[14px] font-medium md:w-[163px] md:justify-between md:px-4"
-              >
-                <Camera fill="black" stroke="white" />
-                تصویر ضمیمه
-                <InputSecondary
-                  id="signboard-attachment"
-                  className="hidden"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={(e) => e.target.files && handleUpload(e.target.files, index)}
+        {['reglam', 'ontable'].includes(form.watch('displayStandType')) && (
+          <FormItem className='md:w-fit"'>
+            <FormLabel
+              htmlFor="signboard-attachment"
+              className="flex w-full cursor-pointer items-center justify-center gap-[18px] rounded-[14px] bg-[#EEEEEE] py-[14px] font-medium md:w-[163px] md:justify-between md:px-4"
+            >
+              <Camera fill="black" stroke="white" />
+              تصویر ضمیمه
+              <InputSecondary
+                id="signboard-attachment"
+                className="hidden"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => e.target.files && handleUpload(e.target.files)}
+              />
+            </FormLabel>
+
+            <div className="mt-2 flex flex-wrap gap-2">
+              {(previews ?? []).map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt={`preview-${i}`}
+                  className="size-16 rounded border object-cover"
                 />
-              </FormLabel>
-
-              <div className="mt-2 flex flex-wrap gap-2">
-                {(previews[index] ?? []).map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt={`preview-${i}`}
-                    className="size-16 rounded border object-cover"
-                  />
-                ))}
-              </div>
-            </FormItem>
-          )}
-        </div>
-      ))}
-
-      <div className="col-span-2 flex justify-center">
-        <Button
-          type="button"
-          variant="text"
-          disabled={
-            form.watch('has-stand') === 'false' || typeof form.watch('has-stand') === 'undefined'
-          }
-          className="mx-auto"
-          onClick={() => append({ brand: '', attachments: [] })}
-        >
-          + اضافه کردن استند نمایش جدید
-        </Button>
+              ))}
+            </div>
+          </FormItem>
+        )}
       </div>
     </div>
   )

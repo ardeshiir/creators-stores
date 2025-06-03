@@ -17,6 +17,7 @@ export const schema5 = z.object({
     description: z.any(),
     postalcode: z.any(),
     phoneNumber: z.any(),
+    landLine: z.any(),
     // location: skipped for now
   }),
 })
@@ -97,6 +98,24 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
           )}
         />
 
+        {/*<FormLabel>Phone Numbers</FormLabel>*/}
+        <FormField
+          control={form.control}
+          name="address.landLine"
+          render={({ field }) => (
+            <FormItem className="col-span-2 flex w-full flex-col items-start md:col-span-1 ">
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="تلفن ثابت"
+                  startIconClassName="text-placeholder font-medium"
+                  startIcon={field.value ? undefined : '02133445544'}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormItem className="col-span-2 flex flex-col items-start md:col-span-1">
           {/*<FormLabel>Phone Numbers</FormLabel>*/}
           <div className="w-full space-y-2">
@@ -110,7 +129,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="شماره تلفن"
+                        placeholder="تلفن همراه"
                         startIconClassName="text-placeholder font-medium"
                         startIcon={
                           field.value ? undefined : index > 0 ? (
@@ -134,11 +153,24 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
               />
             ))}
           </div>
-          <Button type="button" variant="text" className="text-brand-primary" onClick={addPhone}>
+          <Button
+            type="button"
+            variant="text"
+            className="text-brand-primary md:hidden"
+            onClick={addPhone}
+          >
             + اضافه کردن شماره جدید
           </Button>
         </FormItem>
       </div>
+      <Button
+        type="button"
+        variant="text"
+        className="hidden text-brand-primary md:flex"
+        onClick={addPhone}
+      >
+        + اضافه کردن شماره جدید
+      </Button>
     </div>
   )
 }

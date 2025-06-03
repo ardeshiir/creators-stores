@@ -19,6 +19,7 @@ import { safeArray } from '@/lib/form'
 
 export const schema1 = z.object({
   storeName: z.string().min(2).optional(),
+  storeCode: z.string().min(2).optional(),
   propertyStatus: z.enum(['rental', 'owner']).optional(),
   name: z.string().min(2).optional(),
   familyName: z.string().min(2).optional(),
@@ -47,7 +48,7 @@ export default function Step1({ form }: { form: UseFormReturn<Step1Values> }) {
           control={form.control}
           name="storeName"
           render={({ field }) => (
-            <FormItem className="order-1 col-span-6">
+            <FormItem className="order-1 col-span-6 md:col-span-3">
               <FormControl>
                 <InputSecondary {...field} placeholder="نام فروشگاه" />
               </FormControl>
@@ -55,7 +56,18 @@ export default function Step1({ form }: { form: UseFormReturn<Step1Values> }) {
             </FormItem>
           )}
         />
-
+        <FormField
+          control={form.control}
+          name="storeCode"
+          render={({ field }) => (
+            <FormItem className="order-1 col-span-6 md:col-span-3">
+              <FormControl>
+                <InputSecondary {...field} placeholder="کد فروشگاه" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="propertyStatus"
