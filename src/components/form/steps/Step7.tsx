@@ -63,7 +63,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="w-full">
-                      <SelectItem value="none">فاقد تابلو سردرب</SelectItem>
+                      <SelectItem value="none">فاقد استند نمایش محصول</SelectItem>
                       <SelectItem value="reglam">رگلام</SelectItem>
                       <SelectItem value="ontable">رومیزی</SelectItem>
                     </SelectContent>

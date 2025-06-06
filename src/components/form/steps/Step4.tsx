@@ -103,7 +103,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
             <Button
               type="button"
               onClick={() => addBrand()}
-              className="group flex aspect-square h-full min-h-[64px] items-center justify-center rounded-[20px] border border-black bg-transparent text-black hover:bg-brand-primary"
+              className="group flex aspect-square h-[56px] min-h-[56px] items-center justify-center rounded-[20px] border border-black bg-transparent text-black hover:bg-brand-primary"
             >
               <Plus className="group-hover:text-white" />
             </Button>

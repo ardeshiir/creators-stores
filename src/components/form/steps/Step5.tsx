@@ -156,7 +156,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
           <Button
             type="button"
             variant="text"
-            className="text-brand-primary md:hidden"
+            className="px-0 text-brand-primary md:hidden"
             onClick={addPhone}
           >
             + اضافه کردن شماره جدید
@@ -166,7 +166,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
       <Button
         type="button"
         variant="text"
-        className="hidden text-brand-primary md:flex"
+        className="hidden px-0 text-brand-primary md:flex"
         onClick={addPhone}
       >
         + اضافه کردن شماره جدید

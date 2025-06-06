@@ -154,8 +154,13 @@ export default function Step1({ form }: { form: UseFormReturn<Step1Values> }) {
             />
           ))}
 
-          <Button type="button" variant="text" className="text-brand-primary" onClick={addMobile}>
-            + اضافه کردن شماره جدید{' '}
+          <Button
+            type="button"
+            variant="text"
+            className="px-0 text-brand-primary"
+            onClick={addMobile}
+          >
+            + اضافه کردن شماره جدید
           </Button>
         </div>
       </div>

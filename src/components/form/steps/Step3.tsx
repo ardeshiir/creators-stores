@@ -58,7 +58,7 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
                         <CheckboxSecondary
                           disabled={!!otherInput || !!otherInput?.length}
                           label={option}
-                          className="w-full"
+                          className="h-[56px] w-full"
                           checked={form.watch('foa')?.includes(option)}
                           onCheckedChange={() => toggleFoa(option)}
                         />
@@ -76,12 +76,12 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
                 render={() => (
                   <FormItem
                     key="option"
-                    className="min-w-auto col-span-2 flex items-center space-x-2 md:min-w-[182px]"
+                    className="min-w-auto col-span-2 flex h-[56px] items-center space-x-2 md:min-w-[182px]"
                   >
                     <FormControl>
                       <InputSecondary
                         placeholder="سایر"
-                        className="w-full"
+                        className="w-full placeholder:text-center"
                         onChange={(e) => setOtherInput(e.target.value)}
                       />
                     </FormControl>
@@ -111,14 +111,18 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
               >
                 <FormItem className="flex basis-1/2 items-center md:max-w-[258px]">
                   <FormControl>
-                    <RadioGroupItemSecondary className="w-full" label="مستقیم" value="direct" />
+                    <RadioGroupItemSecondary
+                      className="h-[56px] w-full"
+                      label="مستقیم"
+                      value="direct"
+                    />
                   </FormControl>
                   {/*<FormLabel>مستقیم</FormLabel>*/}
                 </FormItem>
                 <FormItem className="flex basis-1/2 items-center space-x-2 md:max-w-[258px]">
                   <FormControl>
                     <RadioGroupItemSecondary
-                      className="w-full"
+                      className="h-[56px] w-full"
                       label="غیر مستقیم"
                       value="indirect"
                     />
