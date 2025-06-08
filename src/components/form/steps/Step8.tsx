@@ -141,7 +141,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
           )}
 
           {form.watch('has-showcase') === 'true' && (
-            <FormLabel className="mt-4 text-lg font-bold text-black">
+            <FormLabel className="mt-4 text-lg font-bold text-black md:mt-[46px]">
               قابلیت نصب استیکر و مش
             </FormLabel>
           )}
@@ -209,11 +209,11 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
           )}
         </div>
       ))}
-      <div className="col-span-2 flex justify-center">
+      <div className="col-span-2 flex justify-start">
         <Button
           type="button"
           variant="text"
-          className="mx-auto"
+          className="mt-2 px-0 text-brand-primary disabled:cursor-not-allowed disabled:text-brand-primary disabled:opacity-100"
           disabled={form.watch('has-showcase') !== 'true'}
           onClick={() =>
             append({

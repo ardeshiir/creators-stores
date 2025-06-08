@@ -143,7 +143,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="relative col-span-2 mb-4 grid grid-cols-2 space-y-[12px] p-0 md:flex md:items-center md:gap-4"
+              className="relative col-span-2 grid grid-cols-2 p-0 md:flex md:flex-col md:items-start md:gap-4"
             >
               {fields.length > 1 && (
                 <Button
@@ -255,11 +255,11 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
               )}
             </div>
           ))}
-          <div className="col-span-2 flex justify-center">
+          <div className="col-span-2 flex justify-center md:justify-start">
             <Button
               type="button"
               variant="text"
-              className="mx-auto"
+              className="mt-2 px-0 text-brand-primary disabled:cursor-not-allowed disabled:text-brand-primary disabled:opacity-100"
               disabled={form.watch('enviornment')[0].signBoard[0].type === 'none'}
               onClick={() =>
                 append({
