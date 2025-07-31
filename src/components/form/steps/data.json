@@ -1,0 +1,89 @@
+{
+  "storeName": "نام فروشگاه",
+  "storeCode": "۱۲۳۴۵۶",
+  "propertyStatus": "rental",
+  "name": "اسپوکئو",
+  "familyName": "لقائی",
+  "mobile": [
+    "09120233907"
+  ],
+  "storeDescription": {
+    "area": 1111123,
+    "activityHistory": 3,
+    "cooperationHistory": 3,
+    "sellerType": "retailer"
+  },
+  "purchaseMethod": "indirect",
+  // "indirect" | "direct"
+  "otherBrands": [
+    "پارسیکار",
+    "پنتر",
+    "زگال"
+  ],
+  "address": {
+    "state": "تهران",
+    "city": "شهر تهران",
+    "description": "تجریش - فناخسرو",
+    "postalcode": "۱۹۸۱۲۳۴۵۶",
+    "phoneNumber": [
+      "۰۹۱۲۰۲۳۳۹۰۷"
+    ],
+    "location": {
+      "lat": "123.23",
+      "lon": "123.23"
+    },
+    "landLine": "۰۲۱۲۲۷۰۱۰۰۴"
+  },
+  "enviornment": [
+    {
+      "stock": "true",
+      //boolean
+      "mainStreet": "true",
+      //boolean
+      "signBoard": [
+        {
+          "type": "banner",
+          "dimensions": {
+            "width": 12,
+            "height": 10
+          },
+          "attachments": [
+            "blob:http://localhost:3000/ba454ddb-61d2-40bd-86a2-cac19642ec45"
+          ]
+        }
+      ]
+    }
+  ], //nullable
+  "displayStand": {
+    "type": "reglam",
+    "brand": "etretr",
+    "attachments": [
+      "blob:http://localhost:3000/f1cf52a8-2166-4fc4-851a-577bddbdcbe3"
+    ]
+  } // nullable,
+  "showCase": [
+    {
+      "dimensions": {
+        "width": 12,
+        "height": 13
+      },
+      "sticker": false,
+      "attachments": [
+        "blob:http://localhost:3000/bb386c40-58c4-4d21-958e-7ad576db4543"
+      ]
+    }
+  ] nullable,
+  "externalImages": [
+    [
+      "blob:http://localhost:3000/f6b8a3db-fd45-4fcd-9c9c-c90403a9f6dd",
+      "blob:http://localhost:3000/f6b8a3db-fd45-4fcd-9c9c-c90403a9f6dd"
+    ]
+  ],
+  "internalImages": [
+    [
+      "blob:http://localhost:3000/f6b8a3db-fd45-4fcd-9c9c-c90403a9f6dd",
+      "blob:http://localhost:3000/f6b8a3db-fd45-4fcd-9c9c-c90403a9f6dd"
+    ]
+  ],
+  "description": "kinda long description"
+}

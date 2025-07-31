@@ -156,16 +156,16 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                       <RadioGroup
                         className="col-span-2 grid grid-cols-2 gap-[12px] md:flex md:justify-end"
                         onValueChange={field.onChange}
-                        defaultValue="true"
+                        defaultValue={true}
                       >
                         <FormItem className="order-1 col-span-1 flex items-center space-x-2 md:order-2 md:w-[152px]">
                           <FormControl>
-                            <RadioGroupItemSecondary label="دارد" value="false" />
+                            <RadioGroupItemSecondary label="دارد" value={false} />
                           </FormControl>
                         </FormItem>
                         <FormItem className="order-2 flex items-center space-x-2 md:order-1 md:w-[258px]">
                           <FormControl>
-                            <RadioGroupItemSecondary label="ندارد" value="true" />
+                            <RadioGroupItemSecondary label="ندارد" value={true} />
                           </FormControl>
                         </FormItem>
                       </RadioGroup>
