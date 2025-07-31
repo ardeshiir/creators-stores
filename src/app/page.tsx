@@ -1,24 +1,33 @@
 'use client'
-import { useState } from 'react'
 
 import DesktopFooter from '@/components/desktop-footer'
 import Login from '@/components/form/login'
 import BonyanIcon from '@/components/icons/BonyanIcon'
+import LoadingSpinner from '@/components/LoadingSpinner'
 import StoreManagementMenu from '@/components/ui/store-management-menu'
 import { useMediaQuery } from '@/hooks/use-media-query'
+import useAuthentication from '@/hooks/useAuthentication'
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { isAuthenticated, revalidate, isGettingAuthState } = useAuthentication()
   const isDesktop = useMediaQuery('(min-width: 768px)')
+
+  if (isGettingAuthState) {
+    return (
+      <div className="flex size-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    )
+  }
 
   return (
     <div className="flex h-full flex-col items-center justify-between py-6">
-      {isLoggedIn ? (
+      {isAuthenticated ? (
         <StoreManagementMenu />
       ) : (
         <Login
           onLoginSuccessful={() => {
-            setIsLoggedIn(true)
+            revalidate()
           }}
         />
       )}
