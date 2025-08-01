@@ -14,8 +14,8 @@ import { RadioGroup, RadioGroupItemSecondary } from '@/components/ui/radio-group
 const foaOptions = ['لوازم تحریر', 'خرازی', 'کتاب‌فروشی', 'دفتر فنی'] as const
 
 export const schema3 = z.object({
-  foa: z.any().optional(),
-  purchaseMethod: z.any().optional(),
+  foa: z.array(z.string()).min(1, { message: 'انتخاب حداقل ۱ مورد الزامیست' }),
+  purchaseMethod: z.string({ required_error: 'این فیلد الزامیست' }),
 })
 
 export type Step3Values = z.infer<typeof schema3>
@@ -31,7 +31,9 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
         current?.filter((v) => v !== value),
       )
     } else {
-      current?.length && form.setValue('foa', [...current, value])
+      current?.length > 0
+        ? form.setValue('foa', [...current, value])
+        : form.setValue('foa', [value])
     }
   }
 

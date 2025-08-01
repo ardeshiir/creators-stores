@@ -18,12 +18,22 @@ import {
 import { safeArray } from '@/lib/form'
 
 export const schema1 = z.object({
-  storeName: z.string().min(2).optional(),
-  storeCode: z.string().min(2).optional(),
-  propertyStatus: z.enum(['rental', 'owner']).optional(),
-  name: z.string().min(2).optional(),
-  familyName: z.string().min(2).optional(),
-  mobile: z.array(z.string().optional()).optional(),
+  storeName: z.string({ required_error: 'نام فروشگاه الزامی است و باید حداقل ۲ کاراکتر باشد' }),
+  storeCode: z
+    .string({ required_error: 'کد فروشگاه الزامی است و باید حداقل ۲ کاراکتر باشد' })
+    .min(2, { message: 'کد فروشگاه الزامی است و باید حداقل ۲ کاراکتر باشد' }),
+  propertyStatus: z.enum(['rental', 'owner'], {
+    required_error: 'وضعیت ملک الزامی است',
+  }),
+  name: z
+    .string({ required_error: 'نام الزامی است و باید حداقل ۲ کاراکتر باشد' })
+    .min(2, { message: 'نام الزامی است و باید حداقل ۲ کاراکتر باشد' }),
+  familyName: z
+    .string({ required_error: 'نام خانوادگی الزامی است و باید حداقل ۲ کاراکتر باشد' })
+    .min(2, { message: 'نام خانوادگی الزامی است و باید حداقل ۲ کاراکتر باشد' }),
+  mobile: z.array(z.string({ required_error: 'شماره موبایل الزامی است' }), {
+    required_error: 'شماره موبایل الزامی است',
+  }),
 })
 
 export type Step1Values = z.infer<typeof schema1>

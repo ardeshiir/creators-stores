@@ -16,10 +16,10 @@ import {
 
 export const schema2 = z.object({
   storeDescription: z.object({
-    area: z.number().min(1).optional(),
-    activityHistory: z.number().min(0).optional(),
-    cooperationHistory: z.number().min(0).optional(),
-    sellerType: z.enum(['wholesaler', 'retailer']).optional(),
+    area: z.number({ required_error: 'این فیلد الزامیست' }).min(1),
+    activityHistory: z.number({ required_error: 'این فیلد الزامیست' }).min(0),
+    cooperationHistory: z.number({ required_error: 'این فیلد الزامیست' }).min(0),
+    sellerType: z.enum(['wholesaler', 'retailer'], { required_error: 'نوع فروش الزامیست' }),
   }),
 })
 

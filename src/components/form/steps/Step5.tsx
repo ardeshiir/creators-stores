@@ -12,10 +12,10 @@ import { safeArray } from '@/lib/form'
 
 export const schema5 = z.object({
   address: z.object({
-    state: z.any(),
-    city: z.any(),
-    description: z.any(),
-    postalcode: z.any(),
+    state: z.string({ required_error: 'این فیلد الزامیست' }),
+    city: z.string({ required_error: 'این فیلد الزامیست' }),
+    description: z.string({ required_error: 'این فیلد الزامیست' }),
+    postalcode: z.string({ required_error: 'این فیلد الزامیست' }),
     phoneNumber: z.any(),
     landLine: z.any(),
     // location: skipped for now
