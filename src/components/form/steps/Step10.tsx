@@ -3,7 +3,6 @@
 import { ReactNode, useState } from 'react'
 
 import { Camera } from 'lucide-react'
-import Image from 'next/image'
 
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
@@ -12,27 +11,19 @@ import { InputSecondary } from '@/components/ui/input'
 import { useFormStore } from '@/stores/useFormStore'
 
 export function Step10() {
-  const { reset, data } = useFormStore()
-  const [submitted, setSubmitted] = useState(false)
+  const { data } = useFormStore()
   const [previewImg, setPreviewImg] = useState<string | null>(null)
 
-  console.log({ data })
-
-  const handleFinalSubmit = () => {
-    console.log('📝 Submitted:', data)
-    setSubmitted(true)
-  }
-
-  const renderImages = (urls?: string[]) =>
-    urls?.map((url, i) => (
-      <Drawer key={i}>
+  const ImageItem = ({ url }: { url: string }) => {
+    return (
+      <Drawer>
         <DrawerTrigger asChild>
           <button
             onClick={() => setPreviewImg(url)}
             className="border-brand flex w-[138px] items-center justify-between rounded-[8px] border border-brand-primary bg-white px-2 py-1 text-lg leading-[24px] text-brand-primary"
           >
             <Camera fill="var(--brand-primary)" stroke="white" className="text-primary" size={16} />
-            IMG_{i + 1}
+            IMG
           </button>
         </DrawerTrigger>
         <DrawerContent className="p-4">
@@ -43,8 +34,20 @@ export function Step10() {
           />
         </DrawerContent>
       </Drawer>
-    ))
+    )
+  }
 
+  const renderImages = (urls?: string[] | string) => {
+    if (Array.isArray(urls)) {
+      return (
+        <div className="flex items-center gap-3">
+          {urls?.map((url, i) => <ImageItem url={url} key={i} />)}
+        </div>
+      )
+    } else {
+      return <ImageItem url={urls} />
+    }
+  }
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="space-y-2">
       {/*<h3 className="font-semibold text-base border-b pb-1">{title}</h3>*/}
@@ -58,26 +61,6 @@ export function Step10() {
       <span className="font-medium">{value}</span>
     </div>
   )
-
-  if (submitted) {
-    return (
-      <div className="space-y-6 p-4 text-center">
-        <Image src="/logo.svg" alt="logo" width={60} height={60} className="mx-auto" />
-        <h2 className="text-xl font-semibold text-green-600">فرم با موفقیت ثبت شد</h2>
-        <div className="flex flex-col gap-3">
-          <Button
-            onClick={() => {
-              setSubmitted(false)
-              reset()
-            }}
-          >
-            ثبت فرم دیگر
-          </Button>
-          <Button variant="outline">مشاهده فرم‌های ثبت‌شده</Button>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="space-y-6 text-right">
@@ -120,9 +103,9 @@ export function Step10() {
       <Section title="موقعیت مکانی فروشگاه">
         <Row
           label="موقعیت مکانی فروشگاه:"
-          value={`${data.enviornment?.[0]?.stock === 'true' ? 'بورس' : 'غیربورس'}, ${data.enviornment?.[0]?.mainStreet === 'true' ? 'خیابان اصلی' : 'خیابان فرعی'}`}
+          value={`${String(data?.stock) === 'true' ? 'بورس' : 'غیربورس'}, ${String(data?.mainStreet) === 'true' ? 'خیابان اصلی' : 'خیابان فرعی'}`}
         />
-        {data.enviornment?.[0]?.signBoard?.map((sb, i) => (
+        {data?.signBoard?.map((sb, i) => (
           <div key={i} className="space-y-1">
             <Row label="نوع تابلو سر‌در:" value={sb.type} />
             <Row
@@ -138,7 +121,7 @@ export function Step10() {
         <div className="space-y-1">
           <Row
             label="استند نمایش محصول:"
-            value={data.displayStandType === 'none' ? 'فاقد استند' : data.displayStandType}
+            value={data.displayStand.type === 'none' ? 'فاقد استند' : data.displayStand.type}
           />
           <div className="mt-3">{renderImages(data.displayStand?.attachments)}</div>
         </div>
@@ -149,7 +132,10 @@ export function Step10() {
           <div key={i} className="space-y-1">
             <Row label="ارتفاع:" value={`${s.dimensions?.height} متر`} />
             <Row label="عرض:" value={`${s.dimensions?.width} متر`} />
-            <Row label="قابلیت نصب استیکر و مش:" value={s.sticker === 'true' ? 'دارد' : 'ندارد'} />
+            <Row
+              label="قابلیت نصب استیکر و مش:"
+              value={String(s.sticker) === 'true' ? 'دارد' : 'ندارد'}
+            />
             <div className="mt-3">{renderImages(s.attachments)}</div>
           </div>
         ))}

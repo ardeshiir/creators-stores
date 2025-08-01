@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { undefined, z } from 'zod'
 
 import Step1, { schema1 } from '@/components/form/steps/Step1'
 import { Step10 } from '@/components/form/steps/Step10'
@@ -45,29 +45,19 @@ export function StepManager({ step, onNext }: { step: number; onNext: (values: a
         description: '',
         postalcode: '',
       },
-      enviornment: [
+      mainStreet: 'true',
+      stock: 'true',
+      signBoard: [
         {
-          mainStreet: 'true',
-          stock: 'true',
-          signBoard: [
-            {
-              type: 'none',
-            },
-          ],
+          type: 'banner',
+          dimensions: { width: 0, height: 0 },
+          attachments: null,
         },
       ],
-      banner: {
-        type: 'banner',
-        dimensions: { width: undefined, height: undefined },
-        attachments: [],
-      },
-      displayStandType: 'none',
-      displayStand: { brand: '', attachments: [] },
-      showCase: [
-        { dimensions: { width: undefined, height: undefined }, sticker: false, attachments: [] },
-      ],
-      externalImages: [['', '']],
-      internalImages: [['', '']],
+      displayStand: { type: 'none', brand: '', attachments: null },
+      showCase: [{ dimensions: { width: 0, height: 0 }, sticker: false, attachments: null }],
+      externalImages: [null, null],
+      internalImages: [null, null],
     },
     mode: 'onTouched',
   })

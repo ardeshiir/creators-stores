@@ -3,9 +3,12 @@
 import { useEffect, useRef, useState } from 'react'
 
 import gsap from 'gsap'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 import CheckCircle from '@/components/icons/CheckCircle'
 import { Button } from '@/components/ui/button'
+import { addShop } from '@/lib/services/shop'
 import { cn } from '@/lib/utils'
 import { useFormStore } from '@/stores/useFormStore'
 
@@ -15,21 +18,34 @@ export default function MultiStepForm() {
   const { updateData, data } = useFormStore()
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter()
   const stepsCount = 10
   const progress = ((step + 1) / stepsCount) * 100
   const contentRef = useRef<HTMLDivElement>(null)
 
   const handleBack = () => setStep((s) => Math.max(s - 1, 0))
   const handleNext = async (values: any) => {
-    console.log({ values })
     updateData(values)
     setStep((s) => Math.min(s + 1, stepsCount - 1))
   }
-  const handleFinalSubmit = (values: any) => {
-    updateData(values)
-    console.log('Submitted:', values)
-    setSubmitted(true)
+
+  const handleFinalSubmit = async (values: any) => {
+    try {
+      setIsSubmitting(true)
+
+      const response = await addShop(data)
+
+      if (response.status === 201) {
+        setSubmitted(true)
+        toast.success('ثبت فروشگاه با موفقیت انجام شد.')
+      }
+    } catch (e) {
+      toast.error('خطایی رخ داده است لطفا دوباذه تلاش کنید.')
+      console.log({ submissionError: e })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   // 👉 Animate step changes with gsap
@@ -65,7 +81,9 @@ export default function MultiStepForm() {
           >
             ثبت فروشنده جدید
           </Button>
-          <Button className="h-12 w-full bg-black text-white">فروشندگان ثبت شده</Button>
+          <Button onClick={() => router.push('/shops')} className="h-12 w-full bg-black text-white">
+            فروشندگان ثبت شده
+          </Button>
         </div>
       </div>
     )
@@ -90,6 +108,7 @@ export default function MultiStepForm() {
             form={`step-form-${step}`}
             variant="brand"
             type="submit"
+            disabled={isSubmitting}
             className={cn(
               'order-1 h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
               step === stepsCount - 1 && 'bg-[#00BD52]',

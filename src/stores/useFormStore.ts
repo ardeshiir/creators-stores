@@ -1,7 +1,7 @@
 // stores/useFormStore.ts
 import { create } from 'zustand'
 
-interface FormState {
+export interface FormState {
   step: number
   data: {
     storeName?: string
@@ -26,22 +26,20 @@ interface FormState {
       phoneNumber?: string[]
       location?: [number, number]
     }
-    enviornment?: {
-      stock?: boolean
-      mainStreet?: boolean
-      signBoard?: {
-        type: 'banner' | 'composite' | 'other'
-        dimensions?: {
-          width: number
-          height: number
-        }
-      }[]
-      attachments?: string[]
+    stock?: boolean
+    mainStreet?: boolean
+    signBoard?: {
+      type: 'banner' | 'composite' | 'other'
+      dimensions?: {
+        width: number
+        height: number
+      }
+      attachments?: string
     }[]
-    displayStandType?: string
     displayStand?: {
+      type: string
       brand: string
-      attachments: string[]
+      attachments: string
     }
     showCase?: {
       dimensions: {
@@ -49,7 +47,7 @@ interface FormState {
         height: number
       }
       sticker: boolean
-      attachments: string[]
+      attachments: string
     }[]
     externalImages?: string[]
     internalImages?: string[]

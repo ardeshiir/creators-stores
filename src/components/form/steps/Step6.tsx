@@ -1,9 +1,8 @@
 // components/form/steps/Step6.tsx
 'use client'
 
-import { useState } from 'react'
-
 import { Camera, X } from 'lucide-react'
+import Image from 'next/image'
 import { useFieldArray, UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -18,46 +17,64 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { uploadFile } from '@/lib/services/upload'
+import { cn } from '@/lib/utils'
 
 export const schema6 = z.object({
-  enviornment: z.array(
-    z.object({
-      stock: z.enum(['true', 'false']).optional(),
-      mainStreet: z.enum(['true', 'false']).optional(),
-      signBoard: z
-        .array(
-          z.object({
-            type: z.enum(['banner', 'composite', 'other', 'none']),
-            dimensions: z
-              .object({
-                width: z.number().optional(),
-                height: z.number().optional(),
-              })
-              .optional(),
-            attachments: z.array(z.string()).optional(),
-          }),
-        )
-        .optional(),
-      attachments: z.array(z.string()).optional(),
-    }),
-  ),
+  stock: z.enum(['true', 'false']).optional(),
+  mainStreet: z.enum(['true', 'false']).optional(),
+  signBoard: z
+    .array(
+      z.object({
+        type: z.enum(['banner', 'composite', 'other', 'none']),
+        dimensions: z
+          .object({
+            width: z.number().optional(),
+            height: z.number().optional(),
+          })
+          .optional(),
+        attachments: z.string().optional().nullable(),
+      }),
+    )
+    .optional(),
 })
 
 export type Step6Values = z.infer<typeof schema6>
 
 export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
-  const [preview, setPreview] = useState<string[]>([])
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: 'enviornment.0.signBoard',
+    name: 'signBoard',
   })
 
-  const uploadEnvAttachments = (files: FileList) => {
-    const urls = Array.from(files).map((file) => URL.createObjectURL(file))
+  const handleUpload = async (files: FileList, index: number) => {
+    const selectedFile = files[0]
 
-    form.setValue('enviornment.0.attachments', urls)
-    setPreview(urls)
+    console.log({ selectedFile })
+
+    if (selectedFile) {
+      const formData = new FormData()
+
+      formData.append('file', selectedFile)
+      console.log({ formData })
+
+      try {
+        const uploadResponse = await uploadFile(formData)
+
+        console.log({ uploadResponse })
+
+        if (uploadResponse?.data?.url) {
+          form.setValue(`signBoard.${index}.attachments`, uploadResponse?.data?.url)
+        }
+      } catch (e) {
+        console.log({ uploadError: e })
+      }
+    }
   }
+
+  const signBoards = form.watch('signBoard')
+
+  console.log({ signBoards })
 
   return (
     <div className="mx-auto flex w-full max-w-screen-lg items-center justify-center md:min-h-[300px]">
@@ -67,7 +84,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
           <div className="col-span-2 grid grid-cols-2 gap-4 md:flex ">
             <FormField
               control={form.control}
-              name="enviornment.0.stock"
+              name="stock"
               render={({ field }) => (
                 <FormItem className="col-span-2 grid grid-cols-2 gap-4 md:col-span-1 md:flex">
                   <FormControl>
@@ -102,7 +119,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
 
             <FormField
               control={form.control}
-              name="enviornment.0.mainStreet"
+              name="mainStreet"
               render={({ field }) => (
                 <FormItem className="col-span-2 grid grid-cols-2 gap-4 md:col-span-1 md:flex">
                   {/*<FormLabel>On Main Street</FormLabel>*/}
@@ -159,7 +176,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
               <FormLabel className="text-lg font-bold text-black">تابلو سردرب</FormLabel>
               <FormField
                 control={form.control}
-                name={`enviornment.0.signBoard.${index}.type`}
+                name={`signBoard.${index}.type`}
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:w-[358px]">
                     {/*<FormLabel>Type</FormLabel>*/}
@@ -186,11 +203,11 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                 )}
               />
 
-              {form.watch('enviornment')[0].signBoard[0].type !== 'none' && (
+              {form.watch('signBoard')?.[0]?.type !== 'none' && (
                 <div className="col-span-2 flex gap-4">
                   <FormField
                     control={form.control}
-                    name={`enviornment.0.signBoard.${index}.dimensions.height`}
+                    name={`signBoard.${index}.dimensions.height`}
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         {/*<FormLabel>Width</FormLabel>*/}
@@ -209,7 +226,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                   />
                   <FormField
                     control={form.control}
-                    name={`enviornment.0.signBoard.${index}.dimensions.width`}
+                    name={`signBoard.${index}.dimensions.width`}
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         {/*<FormLabel>Height</FormLabel>*/}
@@ -228,26 +245,49 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                   />
                 </div>
               )}
-
-              {form.watch('enviornment')[0].signBoard[0].type !== 'none' && (
+              {form.watch('signBoard')?.[0]?.type !== 'none' && (
                 <FormItem className="col-span-1">
                   <FormLabel
                     htmlFor="signboard-attachment"
-                    className="flex w-full cursor-pointer items-center justify-center gap-[18px] rounded-[14px] bg-[#EEEEEE] py-[14px] font-medium md:w-[163px] md:justify-between md:px-4"
+                    className={cn(
+                      'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
+                      signBoards?.[index] &&
+                        signBoards?.[index].attachments &&
+                        typeof signBoards?.[index].attachments === 'string'
+                        ? ''
+                        : 'md:px-4 py-[14px] rounded-[14px] bg-[#EEEEEE]',
+                    )}
                   >
-                    <Camera fill="black" stroke="white" /> تصویر ضمیمه
+                    {signBoards?.[index] &&
+                    signBoards?.[index].attachments &&
+                    typeof signBoards?.[index].attachments === 'string' ? (
+                      <div className="relative aspect-video h-32 overflow-hidden rounded-[20px]">
+                        <Image
+                          fill={true}
+                          src={signBoards?.[index].attachments}
+                          alt="banner-attachment"
+                        />
+                        <div className="absolute flex size-full items-center justify-center bg-white/10">
+                          <div
+                            className="flex items-center justify-center gap-2 p-4"
+                            style={{ background: 'rgba(238,238,238,0.6)', borderRadius: 16 }}
+                          >
+                            <Camera fill="black" stroke="white" /> تعویض
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <Camera fill="black" stroke="white" /> تصویر ضمیمه
+                      </>
+                    )}
                     <InputSecondary
                       id="signboard-attachment"
                       className="hidden"
                       type="file"
                       accept="image/*"
-                      multiple
-                      onChange={(e) => {
-                        const urls = Array.from(e.target.files ?? []).map((f) =>
-                          URL.createObjectURL(f),
-                        )
-
-                        form.setValue(`enviornment.0.signBoard.${index}.attachments`, urls)
+                      onChange={async (e) => {
+                        if (e.target.files) handleUpload(e.target.files, index)
                       }}
                     />
                   </FormLabel>
@@ -260,33 +300,18 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
               type="button"
               variant="text"
               className="mt-2 px-0 text-brand-primary disabled:cursor-not-allowed disabled:text-brand-primary disabled:opacity-100"
-              disabled={form.watch('enviornment')[0].signBoard[0].type === 'none'}
+              disabled={form.watch('signBoard')?.[0]?.type === 'none'}
               onClick={() =>
                 append({
                   type: 'banner',
                   dimensions: { width: 0, height: 0 },
-                  attachments: [],
+                  attachments: undefined,
                 })
               }
             >
               + اضافه کردن تابلو سردرب جدید
             </Button>
           </div>
-
-          {/*<FormItem className="mt-6">
-                    <FormLabel>Environment Attachments</FormLabel>
-                    <Input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={(e) => e.target.files && uploadEnvAttachments(e.target.files)}
-                    />
-                    <div className="flex gap-2 mt-2 flex-wrap">
-                        {preview.map((src, i) => (
-                            <img key={i} src={src} alt="env-preview" className="w-16 h-16 rounded object-cover"/>
-                        ))}
-                    </div>
-                </FormItem>*/}
         </div>
       </div>
     </div>

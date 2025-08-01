@@ -1,134 +1,176 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-
 import { Camera, X } from 'lucide-react'
-import { useFieldArray, UseFormReturn } from 'react-hook-form'
+import Image from 'next/image'
+import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { InputSecondary } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { uploadFile } from '@/lib/services/upload'
+import { cn } from '@/lib/utils'
+import { useFormStore } from '@/stores/useFormStore'
 
 export const schema9 = z.object({
-  externalImages: z.array(z.array(z.string().optional()).length(2)).optional(),
-  internalImages: z.array(z.array(z.string().optional()).length(2)).optional(),
+  externalImages: z.array(z.string().optional().nullable()).optional(),
+  internalImages: z.array(z.string().optional().nullable()).optional(),
   description: z.string().optional(),
 })
 
 export type Step9Values = z.infer<typeof schema9>
 
 export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
-  const [extPreview, setExtPreview] = useState<Record<number, string[]>>({})
-  const [intPreview, setIntPreview] = useState<Record<number, string[]>>({})
+  const { data } = useFormStore()
 
-  const externalImages = useFieldArray({
-    control: form.control,
-    name: 'externalImages',
-  })
+  console.log({ step1Data: data })
 
-  const internalImages = useFieldArray({
-    control: form.control,
-    name: 'internalImages',
-  })
+  const internalImages = form.watch('internalImages')
 
-  useEffect(() => {
-    if (!form.getValues('externalImages')?.length) {
-      form.setValue('externalImages', [['', '']])
-    }
+  const externalImages = form.watch('externalImages')
 
-    if (!form.getValues('internalImages')?.length) {
-      form.setValue('internalImages', [['', '']])
-    }
-  }, [form])
-
-  const handleUpload = (
+  const handleUpload = async (
     files: FileList,
+    type: 'internalImages' | 'externalImages',
     index: number,
-    pos: 0 | 1,
-    type: 'externalImages' | 'internalImages',
   ) => {
-    const url = URL.createObjectURL(files[0])
-    const current = form.getValues(type) ?? []
-    const pair = [...(current[index] ?? ['', ''])]
+    const selectedFile = files[0]
 
-    pair[pos] = url
+    if (!selectedFile) return
 
-    const updated = [...current]
+    console.log({ selectedType: type })
 
-    updated[index] = pair
-    form.setValue(type, updated)
+    const formData = new FormData()
 
-    const setPreview = type === 'externalImages' ? setExtPreview : setIntPreview
-    const previewState = type === 'externalImages' ? extPreview : intPreview
+    formData.append('file', selectedFile)
 
-    setPreview({ ...previewState, [index]: pair })
+    try {
+      const uploadResponse = await uploadFile(formData)
+
+      if (uploadResponse?.data?.url) {
+        // Get the current array (fallback to [null, null] if empty)
+        const currentArray = (form.getValues(type) || [null, null]) as (string | null)[]
+
+        // Clone the array to avoid mutating directly
+        const updatedArray = [...currentArray]
+
+        // ✅ Replace the item at the specific index with the new URL
+        updatedArray[index] = uploadResponse.data.url
+
+        // ✅ If all slots are filled, append a new empty slot (optional, for continuous adding)
+        if (!updatedArray.includes(null) && updatedArray.length < 5) {
+          updatedArray.push(null) // <-- allows adding more images dynamically
+        }
+
+        // ✅ Update the form value
+        form.setValue(type, updatedArray, {
+          shouldDirty: true,
+          shouldValidate: true,
+        })
+      }
+    } catch (e) {
+      console.log({ uploadError: e })
+    }
   }
 
-  const renderImagePairs = (
-    type: 'externalImages' | 'internalImages',
-    array: typeof externalImages,
-    previewMap: Record<number, string[]>,
-    label: string,
-  ) => (
+  console.log({
+    externalImages,
+    internalImages,
+  })
+
+  function removeItem(type: 'externalImages' | 'internalImages', arr: string[], index: number) {
+    const _arr = [...arr]
+
+    if (index > -1) {
+      _arr.splice(index, 1)
+    }
+
+    form.setValue(type, _arr)
+  }
+
+  const ImagesList = ({
+    type,
+    array,
+    label,
+  }: {
+    type: 'externalImages' | 'internalImages'
+    array: typeof externalImages
+    label: string
+  }) => (
     <div className="space-y-4">
       <FormLabel className="text-lg font-bold text-black">{label}</FormLabel>
+      <div className="flex gap-2">
+        {array?.map((image, index) => (
+          <div key={index} className="relative space-y-4">
+            {array[index]?.length > 1 && (
+              <Button
+                type="button"
+                size="icon"
+                variant="ghost"
+                className="absolute right-[8px] top-[8px] "
+                onClick={() => removeItem(type, array || [], index)}
+              >
+                <span className="z-10 flex items-center justify-center rounded-full bg-slate-100 p-2">
+                  <X size={16} />
+                </span>
+              </Button>
+            )}
 
-      {array.fields.map((field, index) => (
-        <div key={field.id} className="relative space-y-4">
-          {array.fields.length > 1 && (
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              className="absolute right-[-14px] top-1/2 translate-y-[-30%]"
-              onClick={() => array.remove(index)}
-            >
-              <X size={16} />
-            </Button>
-          )}
-
-          <div className="flex items-center gap-4">
-            {[0, 1].map((pos) => (
-              <div key={pos} className="flex-1 space-y-2 md:w-[170px] md:min-w-[170px] md:grow-0">
+            <div className="flex items-center gap-4">
+              <div key={image} className="flex-1 space-y-2 md:w-[170px] md:min-w-[170px] md:grow-0">
                 <FormLabel
-                  htmlFor="display-attachment"
-                  className="flex w-full cursor-pointer items-center justify-center gap-[18px] rounded-[14px] bg-[#EEEEEE] py-[14px] font-medium md:w-[170px] md:justify-between md:px-4"
+                  htmlFor={`${type}-${index}`}
+                  className={cn(
+                    'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
+                    image ? '' : 'md:px-4 py-[14px] rounded-[14px] bg-[#EEEEEE]',
+                  )}
                 >
-                  <Camera fill="black" stroke="white" />
-                  تصویر ضمیمه {pos + 1}
+                  {image ? (
+                    <div className="relative aspect-video h-32 overflow-hidden rounded-[20px]">
+                      <Image fill={true} src={image} alt="banner-attachment" />
+                      <div className="absolute flex size-full items-center justify-center bg-white/10">
+                        <div
+                          className="flex items-center justify-center gap-2 p-4"
+                          style={{ background: 'rgba(238,238,238,0.6)', borderRadius: 16 }}
+                        >
+                          <Camera fill="black" stroke="white" /> تعویض
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <Camera fill="black" stroke="white" />
+                      تصویر ضمیمه {index + 1}
+                    </div>
+                  )}
                   <InputSecondary
-                    id="display-attachment"
+                    id={`${type}-${index}`}
                     className="hidden"
                     type="file"
                     accept="image/*"
-                    multiple
-                    onChange={(e) => {
+                    onChange={async (e) => {
                       if (e.target.files) {
-                        handleUpload(e.target.files, index, pos as 0 | 1, type)
+                        await handleUpload(e.target.files, type, index)
                       }
                     }}
                   />
                 </FormLabel>
-
-                {previewMap[index]?.[pos] && (
-                  <img
-                    src={previewMap[index][pos]}
-                    className="size-16 rounded border object-cover"
-                    alt={`preview-${pos}`}
-                  />
-                )}
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       <Button
         type="button"
         variant="text"
-        onClick={() => array.append(['', ''] as [string, string])}
+        onClick={() =>
+          form.setValue(type, [
+            ...(type === 'externalImages' ? externalImages || [] : internalImages || []),
+            null,
+          ])
+        }
       >
         + تصویر بیشتر{' '}
       </Button>
@@ -137,8 +179,8 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
 
   return (
     <div className="mx-auto w-full max-w-[733px] md:min-h-[300px]">
-      {renderImagePairs('externalImages', externalImages, extPreview, 'تصاویر بیرونی فروشگاه')}
-      {renderImagePairs('internalImages', internalImages, intPreview, 'تصاویر داخلی فروشگاه')}
+      <ImagesList type="externalImages" array={externalImages} label="تصاویر بیرونی فروشگاه" />
+      <ImagesList type="internalImages" array={internalImages} label="تصاویر داخلی فروشگاه" />
 
       <FormField
         control={form.control}

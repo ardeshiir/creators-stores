@@ -4,6 +4,7 @@
 import { useState } from 'react'
 
 import { Camera, X } from 'lucide-react'
+import Image from 'next/image'
 import { useFieldArray, UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -11,83 +12,82 @@ import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input, { InputSecondary } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItemSecondary } from '@/components/ui/radio-group'
+import { uploadFile } from '@/lib/services/upload'
 import { cn } from '@/lib/utils'
 
 export const schema8 = z.object({
-  'has-showcase': z.string().optional(),
-  showCase: z.array(
-    z.object({
-      dimensions: z.object({
-        width: z.number().optional(),
-        height: z.number().optional(),
+  showCase: z
+    .array(
+      z.object({
+        dimensions: z.object({
+          width: z.number().optional(),
+          height: z.number().optional(),
+        }),
+        sticker: z.boolean().optional(),
+        attachments: z.string().optional().nullable(),
       }),
-      sticker: z.boolean().optional(),
-      attachments: z.array(z.string()).optional(),
-    }),
-  ),
+    )
+    .optional(),
 })
 
 export type Step8Values = z.infer<typeof schema8>
 
 export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
-  const [previews, setPreviews] = useState<Record<number, string[]>>({})
-
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'showCase',
   })
 
-  const handleUpload = (files: FileList, index: number) => {
-    const urls = Array.from(files).map((file) => URL.createObjectURL(file))
+  const showCase = form.watch('showCase')
+  const [hasShowCase, setHasShowCase] = useState<boolean>(false)
 
-    form.setValue(`showCase.${index}.attachments`, urls)
-    setPreviews((prev) => ({ ...prev, [index]: urls }))
+  const handleUpload = async (files: FileList, index: number) => {
+    const selectedFile = files[0]
+
+    console.log({ selectedFile })
+
+    if (selectedFile) {
+      const formData = new FormData()
+
+      formData.append('file', selectedFile)
+
+      try {
+        const uploadResponse = await uploadFile(formData)
+
+        if (uploadResponse?.data?.url) {
+          form.setValue(`showCase.${index}.attachments`, uploadResponse?.data?.url)
+        }
+      } catch (e) {
+        console.log({ uploadError: e })
+      }
+    }
   }
 
   return (
     <div className="mx-auto w-full max-w-[733px] md:min-h-[300px]">
-      <FormLabel className="text-lg font-bold text-black">ویترین نمایش محصول</FormLabel>
-
+      <FormLabel className="mb-4 text-lg font-bold text-black">ویترین نمایش محصول</FormLabel>
+      <div className="col-span-2 grid grid-cols-2 gap-[12px]">
+        <RadioGroup
+          className="col-span-2 grid grid-cols-2 gap-[12px] md:flex md:justify-end"
+          onValueChange={(value) => {
+            if (value === 'true') {
+              setHasShowCase(true)
+            } else {
+              setHasShowCase(false)
+            }
+          }}
+        >
+          <div className="order-1 col-span-1 flex items-center space-x-2 md:order-2 md:w-[152px]">
+            <RadioGroupItemSecondary className="h-[67px] md:h-[56px]" label="دارد" value="true" />
+          </div>
+          <div className="order-2 flex items-center space-x-2 md:order-1 md:w-[258px]">
+            <RadioGroupItemSecondary className="h-[67px] md:h-[56px]" label="ندارد" value="false" />
+          </div>
+        </RadioGroup>
+      </div>
       {fields.map((field, index) => (
         <div key={field.id} className={cn('relative', index === 0 && 'mt-4')}>
-          {index === 0 && (
-            <FormField
-              control={form.control}
-              name="has-showcase"
-              render={({ field }) => (
-                <FormItem className="col-span-2 grid grid-cols-2 gap-[12px]">
-                  <FormControl>
-                    <RadioGroup
-                      className="col-span-2 grid grid-cols-2 gap-[12px] md:flex md:justify-end"
-                      onValueChange={field.onChange}
-                    >
-                      <FormItem className="order-1 col-span-1 flex items-center space-x-2 md:order-2 md:w-[152px]">
-                        <FormControl>
-                          <RadioGroupItemSecondary
-                            className="h-[67px] md:h-[56px]"
-                            label="دارد"
-                            value="true"
-                          />
-                        </FormControl>
-                      </FormItem>
-                      <FormItem className="order-2 flex items-center space-x-2 md:order-1 md:w-[258px]">
-                        <FormControl>
-                          <RadioGroupItemSecondary
-                            className="h-[67px] md:h-[56px]"
-                            label="ندارد"
-                            value="false"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-
-          {form.watch('has-showcase') === 'true' && (
+          {hasShowCase && (
             <div className="mt-4 flex gap-4">
               <FormField
                 control={form.control}
@@ -140,12 +140,12 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
             </div>
           )}
 
-          {form.watch('has-showcase') === 'true' && (
+          {hasShowCase && (
             <FormLabel className="mt-4 text-lg font-bold text-black md:mt-[46px]">
               قابلیت نصب استیکر و مش
             </FormLabel>
           )}
-          {form.watch('has-showcase') === 'true' && (
+          {hasShowCase && (
             <div className="col-span-2 mt-4 flex w-full flex-col gap-4 md:flex-row md:items-center">
               <FormField
                 control={form.control}
@@ -178,10 +178,35 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
               <FormItem>
                 <FormLabel
                   htmlFor="display-attachment"
-                  className="flex w-full cursor-pointer items-center justify-center gap-[18px] rounded-[14px] bg-[#EEEEEE] py-[14px] font-medium md:w-[163px] md:justify-between md:px-4"
+                  className={cn(
+                    'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
+                    showCase?.[index].attachments
+                      ? ''
+                      : 'md:px-4 py-[14px] rounded-[14px] bg-[#EEEEEE]',
+                  )}
                 >
-                  <Camera fill="black" stroke="white" />
-                  تصویر ضمیمه
+                  {showCase?.[index].attachments ? (
+                    <div className="relative aspect-video h-32 overflow-hidden rounded-[20px]">
+                      <Image
+                        fill={true}
+                        src={showCase[index].attachments}
+                        alt="banner-attachment"
+                      />
+                      <div className="absolute flex size-full items-center justify-center bg-white/10">
+                        <div
+                          className="flex items-center justify-center gap-2 p-4"
+                          style={{ background: 'rgba(238,238,238,0.6)', borderRadius: 16 }}
+                        >
+                          <Camera fill="black" stroke="white" /> تعویض
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <Camera fill="black" stroke="white" />
+                      تصویر ضمیمه
+                    </>
+                  )}
                   <InputSecondary
                     id="display-attachment"
                     className="hidden"
@@ -191,19 +216,6 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                     onChange={(e) => e.target.files && handleUpload(e.target.files, index)}
                   />
                 </FormLabel>
-
-                {previews[index]?.length && (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {(previews[index] ?? []).map((src, i) => (
-                      <img
-                        key={i}
-                        src={src}
-                        alt={`preview-${i}`}
-                        className="size-16 rounded border object-cover"
-                      />
-                    ))}
-                  </div>
-                )}
               </FormItem>
             </div>
           )}
@@ -214,12 +226,12 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
           type="button"
           variant="text"
           className="mt-2 px-0 text-brand-primary disabled:cursor-not-allowed disabled:text-brand-primary disabled:opacity-100"
-          disabled={form.watch('has-showcase') !== 'true'}
+          disabled={!hasShowCase}
           onClick={() =>
             append({
               dimensions: { width: 0, height: 0 },
               sticker: false,
-              attachments: [],
+              attachments: null,
             })
           }
         >

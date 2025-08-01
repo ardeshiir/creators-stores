@@ -1,9 +1,8 @@
 // components/form/steps/Step7.tsx
 'use client'
 
-import { useState } from 'react'
-
 import { Camera } from 'lucide-react'
+import Image from 'next/image'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -16,14 +15,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { uploadFile } from '@/lib/services/upload'
 import { cn } from '@/lib/utils'
 
 export const schema7 = z.object({
-  displayStandType: z.enum(['reglam', 'ontable', 'none']),
   displayStand: z
     .object({
+      type: z.enum(['reglam', 'ontable', 'none']),
       brand: z.string().optional(),
-      attachments: z.array(z.string()).optional(),
+      attachments: z.string().nullable(),
     })
     .optional(),
 })
@@ -31,14 +31,28 @@ export const schema7 = z.object({
 export type Step7Values = z.infer<typeof schema7>
 
 export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
-  const [previews, setPreviews] = useState<string[]>([])
+  const handleUpload = async (files: FileList) => {
+    const selectedFile = files[0]
 
-  const handleUpload = (files: FileList) => {
-    const urls = Array.from(files).map((file) => URL.createObjectURL(file))
+    console.log({ selectedFile })
 
-    form.setValue(`displayStand.attachments`, urls)
-    setPreviews((prev) => [...prev, ...urls])
+    if (selectedFile) {
+      const formData = new FormData()
+
+      formData.append('file', selectedFile)
+
+      try {
+        const uploadResponse = await uploadFile(formData)
+
+        if (uploadResponse?.data?.url) {
+          form.setValue(`displayStand.attachments`, uploadResponse?.data?.url)
+        }
+      } catch (e) {
+        console.log({ uploadError: e })
+      }
+    }
   }
+  const displayStand = form.watch('displayStand')
 
   return (
     <div className="mx-auto w-full max-w-[562px] md:min-h-[300px]">
@@ -48,7 +62,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
         {
           <FormField
             control={form.control}
-            name="displayStandType"
+            name="displayStand.type"
             render={({ field }) => (
               <FormItem className="col-span-2 md:w-[358px]">
                 {/*<FormLabel>Type</FormLabel>*/}
@@ -75,7 +89,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
           />
         }
 
-        {['reglam', 'ontable'].includes(form.watch('displayStandType')) && (
+        {['reglam', 'ontable'].includes(displayStand.type) && (
           <FormField
             control={form.control}
             name="displayStand.brand"
@@ -104,16 +118,35 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
           />
         )}
 
-        {['reglam', 'ontable'].includes(form.watch('displayStandType')) && (
+        {['reglam', 'ontable'].includes(displayStand.type) && (
           <FormItem className='md:w-fit"'>
             <FormLabel
-              htmlFor="signboard-attachment"
-              className="flex w-full cursor-pointer items-center justify-center gap-[18px] rounded-[14px] bg-[#EEEEEE] py-[14px] font-medium md:w-[163px] md:justify-between md:px-4"
+              htmlFor="displayStand-attachment"
+              className={cn(
+                'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
+                displayStand?.attachments ? '' : 'md:px-4 py-[14px] rounded-[14px] bg-[#EEEEEE]',
+              )}
             >
-              <Camera fill="black" stroke="white" />
-              تصویر ضمیمه
+              {displayStand?.attachments ? (
+                <div className="relative aspect-video h-32 overflow-hidden rounded-[20px]">
+                  <Image fill={true} src={displayStand?.attachments} alt="banner-attachment" />
+                  <div className="absolute flex size-full items-center justify-center bg-white/10">
+                    <div
+                      className="flex items-center justify-center gap-2 p-4"
+                      style={{ background: 'rgba(238,238,238,0.6)', borderRadius: 16 }}
+                    >
+                      <Camera fill="black" stroke="white" /> تعویض
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <Camera fill="black" stroke="white" /> تصویر ضمیمه
+                </>
+              )}
+
               <InputSecondary
-                id="signboard-attachment"
+                id="displayStand-attachment"
                 className="hidden"
                 type="file"
                 accept="image/*"
@@ -121,17 +154,6 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
                 onChange={(e) => e.target.files && handleUpload(e.target.files)}
               />
             </FormLabel>
-
-            <div className="mt-2 flex flex-wrap gap-2">
-              {(previews ?? []).map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt={`preview-${i}`}
-                  className="size-16 rounded border object-cover"
-                />
-              ))}
-            </div>
           </FormItem>
         )}
       </div>
