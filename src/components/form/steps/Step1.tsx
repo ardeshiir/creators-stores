@@ -142,8 +142,10 @@ export default function Step1({ form }: { form: UseFormReturn<Step1Values> }) {
                           >
                             <X size={16} />
                           </Button>
-                        ) : (
+                        ) : form.watch('mobile')?.[0]?.length === 0 ? (
                           '۰۹۱۲۳۴۵۶۷۸۹'
+                        ) : (
+                          ''
                         )
                       }
                     />

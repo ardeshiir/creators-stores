@@ -1,8 +1,5 @@
-import { useParams, usePathname, useRouter } from 'next/navigation'
-
 import BonyanTahrirFooterLogoIcon from '@/components/icons/BonyanTahrirFooterLogoIcon'
 import CreatorsFooterLogoIcon from '@/components/icons/CreatorsFooterLogoIcon'
-import GlobeIcon from '@/components/icons/GlobeIcon'
 import SchepperFooterLogoIcon from '@/components/icons/SchepperFooterLogoIcon'
 import { cn } from '@/lib/utils'
 
@@ -50,11 +47,12 @@ const DesktopFooter = () => {
           © 2025-2026 BONYAN TAHRIR GROUP. All Rights Reserved.
         </span>
       </div>
-      <LanguageSwitch />
+      {/*<LanguageSwitch />*/}
     </div>
   )
 }
 
+/*
 function LanguageSwitch() {
   const { locale } = useParams()
   const pathname = usePathname()
@@ -96,5 +94,6 @@ function LanguageSwitch() {
     </div>
   )
 }
+*/
 
 export default DesktopFooter
