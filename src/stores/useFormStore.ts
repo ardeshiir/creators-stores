@@ -15,6 +15,8 @@ export interface FormState {
       cooperationHistory?: number
       sellerType?: 'wholesaler' | 'retailer'
     }
+    createdAt?: Date
+    shopId?: number
     foa?: string[]
     purchaseMethod?: 'direct' | 'indirect'
     otherBrands?: string[]

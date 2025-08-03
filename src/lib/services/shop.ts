@@ -8,3 +8,7 @@ export const addShop = async (data: FormState['data']) => {
 export const getAllShops = async () => {
   return await baseApi.get<FormState['data'][]>(`/shop`)
 }
+
+export const getShopByShopID = async (id: number) => {
+  return await baseApi.get<FormState['data']>(`/shop/shopid/${id}`)
+}

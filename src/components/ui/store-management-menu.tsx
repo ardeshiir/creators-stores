@@ -18,7 +18,7 @@ const StoreManagementMenu = () => {
             variant="brand"
             className="flex h-[67px] w-full items-center justify-center md:w-[363px]"
           >
-            <Link className="flex size-full items-center justify-center" href="/list">
+            <Link className="flex size-full items-center justify-center" href="/shops">
               فروشندگان ثبت شده
             </Link>
           </Button>

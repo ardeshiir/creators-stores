@@ -1,185 +1,19 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
-
 import { Camera } from 'lucide-react'
 
+import FormFinalPreview from '@/components/form/steps/FormFinalPreview'
 import { Button } from '@/components/ui/button'
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
-import { FormLabel } from '@/components/ui/form'
 import { InputSecondary } from '@/components/ui/input'
 import { useFormStore } from '@/stores/useFormStore'
 
 export function Step10() {
   const { data } = useFormStore()
-  const [previewImg, setPreviewImg] = useState<string | null>(null)
-
-  const ImageItem = ({ url }: { url: string }) => {
-    return (
-      <Drawer>
-        <DrawerTrigger asChild>
-          <button
-            onClick={() => setPreviewImg(url)}
-            className="border-brand flex w-[138px] items-center justify-between rounded-[8px] border border-brand-primary bg-white px-2 py-1 text-lg leading-[24px] text-brand-primary"
-          >
-            <Camera fill="var(--brand-primary)" stroke="white" className="text-primary" size={16} />
-            IMG
-          </button>
-        </DrawerTrigger>
-        <DrawerContent className="p-4">
-          <img
-            src={previewImg ?? ''}
-            alt="Preview"
-            className="mx-auto max-h-[80vh] rounded-lg shadow"
-          />
-        </DrawerContent>
-      </Drawer>
-    )
-  }
-
-  const renderImages = (urls?: string[] | string) => {
-    if (Array.isArray(urls)) {
-      return (
-        <div className="flex items-center gap-3">
-          {urls?.map((url, i) => <ImageItem url={url} key={i} />)}
-        </div>
-      )
-    } else {
-      return <ImageItem url={urls} />
-    }
-  }
-  const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <div className="space-y-2">
-      {/*<h3 className="font-semibold text-base border-b pb-1">{title}</h3>*/}
-      <div className="space-y-1">{children}</div>
-    </div>
-  )
-
-  const Row = ({ label, value }: { label?: string; value?: ReactNode }) => (
-    <div className="flex min-h-[51px] items-center justify-between border-b-[0.5px] border-[#B6B6B6] py-1 font-medium">
-      <span className="text-nowrap font-medium">{label}</span>
-      <span className="font-medium">{value}</span>
-    </div>
-  )
 
   return (
     <div className="space-y-6 text-right">
-      <FormLabel className="text-base font-bold">بررسی نهایی اطلاعات</FormLabel>
+      <FormFinalPreview data={data} />
 
-      <Section title="اطلاعات فروشگاه">
-        <Row label="نام فروشگاه:" value={data.storeName} />
-        <Row label="وضعیت ملک:" value={data.propertyStatus === 'rental' ? 'مستاجر' : 'مالک'} />
-        <Row label="نام و نام خانوادگی:" value={`${data.name} ${data.familyName}`} />
-        <Row label="شماره تلفن:" value={data.mobile?.join(', ')} />
-      </Section>
-
-      <Section title="توضیحات فروشگاه">
-        <Row label="مساحت فروشگاه:" value={`${data.storeDescription?.area} متر`} />
-        <Row label="سابقه فعالیت:" value={`${data.storeDescription?.activityHistory} سال`} />
-        <Row
-          label="سابقه همکاری با پنتل:"
-          value={`${data.storeDescription?.cooperationHistory} سال`}
-        />
-        <Row
-          label="نوع فروش:"
-          value={data.storeDescription?.sellerType === 'wholesaler' ? 'عمده فروش' : 'خرده فروش'}
-        />
-        <Row label="زمینه فعالیت:" value={data.foa?.join(', ')} />
-        <Row
-          label="نحوه خرید:"
-          value={data.purchaseMethod === 'direct' ? 'مستقیم' : 'غیر مستقیم'}
-        />
-        <Row label="سایر برندهای موجود در فروشگاه:" value={data.otherBrands?.join(', ')} />
-      </Section>
-
-      <Section title="آدرس فروشگاه">
-        <Row label="استان:" value={data.address?.state} />
-        <Row label="شهر:" value={data.address?.city} />
-        <Row label="آدرس:" value={data.address?.description} />
-        <Row label="کد پستی:" value={data.address?.postalcode} />
-        <Row label="شماره تلفن ثابت:" value={data.address?.phoneNumber?.join(', ')} />
-      </Section>
-
-      <Section title="موقعیت مکانی فروشگاه">
-        <Row
-          label="موقعیت مکانی فروشگاه:"
-          value={`${String(data?.stock) === 'true' ? 'بورس' : 'غیربورس'}, ${String(data?.mainStreet) === 'true' ? 'خیابان اصلی' : 'خیابان فرعی'}`}
-        />
-        {data?.signBoard?.map((sb, i) => (
-          <div key={i} className="space-y-1">
-            <Row label="نوع تابلو سر‌در:" value={sb.type} />
-            <Row
-              label="ابعاد تابلو سر‌در:"
-              value={`${sb.dimensions?.width} متر × ${sb.dimensions?.height} متر`}
-            />
-            <div className="mt-3">{renderImages(sb.attachments)}</div>
-          </div>
-        ))}
-      </Section>
-
-      <Section title="">
-        <div className="space-y-1">
-          <Row
-            label="استند نمایش محصول:"
-            value={data.displayStand.type === 'none' ? 'فاقد استند' : data.displayStand.type}
-          />
-          <div className="mt-3">{renderImages(data.displayStand?.attachments)}</div>
-        </div>
-      </Section>
-
-      <Section title="ویترین نمایش محصول">
-        {data.showCase?.map((s, i) => (
-          <div key={i} className="space-y-1">
-            <Row label="ارتفاع:" value={`${s.dimensions?.height} متر`} />
-            <Row label="عرض:" value={`${s.dimensions?.width} متر`} />
-            <Row
-              label="قابلیت نصب استیکر و مش:"
-              value={String(s.sticker) === 'true' ? 'دارد' : 'ندارد'}
-            />
-            <div className="mt-3">{renderImages(s.attachments)}</div>
-          </div>
-        ))}
-      </Section>
-
-      <Section title="تصاویر فروشگاه">
-        <Row
-          label="تصاویر بیرونی فروشگاه:"
-          value={
-            <>
-              {data.externalImages?.map((pair, i) => (
-                <div key={i} className="flex gap-2">
-                  {renderImages(pair)}
-                </div>
-              ))}
-            </>
-          }
-        />
-        <Row
-          label="تصاویر داخلی فروشگاه:"
-          value={
-            <>
-              {' '}
-              {data.internalImages?.map((pair, i) => (
-                <div key={i} className="flex gap-2">
-                  {renderImages(pair)}
-                </div>
-              ))}
-            </>
-          }
-        />
-      </Section>
-
-      <Section title="">
-        <Row
-          label="توضیحات تکمیلی:"
-          value="
-          این فروشگاه با داشتن ویژگی های منحصر به فرد خود، پتانسیل بالایی در دست‌یابی به اهداف
-          سازمانی خواهد داشت.
-        "
-        />
-      </Section>
-
-      {/* 📸 Expert Verification Block */}
       <div className="mt-6 rounded-xl border border-[#E4E4E4] p-4 md:mx-auto md:max-w-[455px] md:px-12 md:py-8">
         <div className="flex h-[51px] items-center justify-between border-b border-[#E4E4E4]">
           <p className="text-[20px] font-bold">احراز هویت کارشناس</p>
