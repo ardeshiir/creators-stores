@@ -130,7 +130,7 @@ const LoginSecondStep = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(submitOTP)}
-        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[14px] px-[96px] py-[72px] md:w-auto md:gap-[24px] md:border"
+        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[14px] px-9 py-[72px] md:w-auto md:gap-[24px] md:border md:px-[96px]"
       >
         <div className="flex w-full flex-col items-start gap-6 md:items-center">
           <span className="text-[18px] font-medium text-black">
@@ -171,7 +171,7 @@ const LoginSecondStep = ({
             />
           </div>
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="flex w-full flex-col gap-6">
           <Button
             disabled={isSubmitting}
             variant="brand"
@@ -181,17 +181,20 @@ const LoginSecondStep = ({
             تایید
           </Button>
           <div className="flex w-full items-center justify-between">
-            <span className="text-[18px]">کد دریافت نکردید؟</span>
+            <span className="text-[14px] md:text-[18px]">کد دریافت نکردید؟</span>
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                className={cn('text-[18px] text-[#0038db]', timer > 0 && 'text-neutral-400')}
+                className={cn(
+                  'md:text-[18px] text-[14px] text-[#0038db]',
+                  timer > 0 && 'text-neutral-400',
+                )}
                 disabled={timer > 0}
                 onClick={() => resendOTP(credentials.phone as string, credentials.userId as number)}
               >
                 ارسال مجدد
               </button>
-              <span className="font-yekan">{formatTimer(timer)}</span>
+              <span className="font-yekan text-[14px] md:text-[18px]">{formatTimer(timer)}</span>
             </div>
           </div>
         </div>
@@ -223,9 +226,14 @@ const LoginFirstStep = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const submit: SubmitHandler<CredentialsFormValues> = async (data) => {
     setIsSubmitting(true)
+
     // @ts-ignore
-    await onSubmit(data.phone, data.userId)
-    setIsSubmitting(false)
+    try {
+      await onSubmit(data.phone, data.userId)
+    } catch (e) {
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -245,6 +253,7 @@ const LoginFirstStep = ({
                   <Input
                     placeholder="شماره موبایل"
                     className="!bg-white placeholder:text-center"
+                    inputMode="numeric"
                     {...field}
                   />
                 </FormControl>
@@ -261,6 +270,7 @@ const LoginFirstStep = ({
                   <Input
                     placeholder="شماره شناسه"
                     className="!bg-white placeholder:text-center"
+                    inputMode="numeric"
                     {...field}
                   />
                 </FormControl>
