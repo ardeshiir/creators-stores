@@ -22,13 +22,13 @@ import { cn, numberToEnglish } from '@/lib/utils'
 
 const Login = ({ onLoginSuccessful }: { onLoginSuccessful: () => void }) => {
   const [loginStep, setLoginStep] = useState(1)
-  const [credentials, setCredentials] = useState<ICredentials>({ phone: null, userId: null })
-  const sendOTP = async (phone: string, userId: number) => {
+  const [credentials, setCredentials] = useState<ICredentials>({ phone: null })
+  const sendOTP = async (phone: string) => {
     try {
-      const response = await requestOTP({ phone, userId })
+      const response = await requestOTP({ phone })
 
       if (response.status === 200) {
-        setCredentials({ phone, userId })
+        setCredentials({ phone })
         setLoginStep(2)
       }
     } catch (error: any) {
@@ -57,7 +57,7 @@ const LoginSecondStep = ({
   credentials,
 }: {
   onLoginSuccessful: () => void
-  sendOTP: (phone: string, userId: number) => Promise<void>
+  sendOTP: (phone: string) => Promise<void>
   credentials: ICredentials
 }) => {
   const [timer, setTimer] = useState(120)
@@ -121,8 +121,8 @@ const LoginSecondStep = ({
     }
   }
 
-  const resendOTP = async (phone: string, userId: number) => {
-    await sendOTP(phone, userId)
+  const resendOTP = async (phone: string) => {
+    await sendOTP(phone)
     setTimer(120)
   }
 
@@ -190,7 +190,7 @@ const LoginSecondStep = ({
                   timer > 0 && 'text-neutral-400',
                 )}
                 disabled={timer > 0}
-                onClick={() => resendOTP(credentials.phone as string, credentials.userId as number)}
+                onClick={() => resendOTP(credentials.phone as string)}
               >
                 ارسال مجدد
               </button>
@@ -209,16 +209,11 @@ const credentialsSchema = z.object({
     .refine((val) => phoneNumberValidator.pattern.test(numberToEnglish(val)), {
       message: 'شماره همراه معتبر نیست',
     }),
-  userId: z.string(),
 })
 
 type CredentialsFormValues = z.infer<typeof credentialsSchema>
 
-const LoginFirstStep = ({
-  onSubmit,
-}: {
-  onSubmit: (phone: string, userId: number) => Promise<void>
-}) => {
+const LoginFirstStep = ({ onSubmit }: { onSubmit: (phone: string) => Promise<void> }) => {
   const credentialsForm = useForm<CredentialsFormValues>({
     resolver: zodResolver(credentialsSchema),
   })
@@ -229,7 +224,7 @@ const LoginFirstStep = ({
 
     // @ts-ignore
     try {
-      await onSubmit(data.phone, data.userId)
+      await onSubmit(data.phone)
     } catch (e) {
     } finally {
       setIsSubmitting(false)
@@ -261,24 +256,6 @@ const LoginFirstStep = ({
               </FormItem>
             )}
           />
-          <FormField
-            control={credentialsForm.control}
-            name="userId"
-            render={({ field }) => (
-              <FormItem className="text-text-secondary-600 flex flex-col gap-2 text-sm">
-                <FormControl>
-                  <Input
-                    placeholder="شماره شناسه"
-                    className="!bg-white placeholder:text-center"
-                    inputMode="numeric"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <Button
             variant="brand"
             className="button-shadow flex h-[56px] w-full items-center justify-center md:h-[67px] md:w-[363px]"

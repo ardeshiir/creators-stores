@@ -2,13 +2,11 @@ import { baseApi } from '@/lib/services/index'
 
 export interface ICredentials {
   phone: string | null
-  userId: number | null
 }
 
-export const requestOTP = async ({ phone, userId }: ICredentials) => {
+export const requestOTP = async ({ phone }: ICredentials) => {
   return await baseApi.post<{ error_key?: string; message: string }>(`/auth/send-otp`, {
     phone,
-    userId,
   })
 }
 
