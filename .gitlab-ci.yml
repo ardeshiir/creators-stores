@@ -1,0 +1,28 @@
+stages: [ deploy ]
+
+deploy_production:
+  stage: deploy
+  image: alpine:3.19
+  only:
+    - main    # deploy only on main; adjust if needed
+  before_script:
+    - apk add --no-cache openssh-client git
+    # write the private key
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    # trust the VPS host key
+    - ssh-keyscan -p ${SSH_PORT:-22} -H "$SSH_HOST" >> ~/.ssh/known_hosts
+  script:
+    # 1) pull latest code on the server
+    - >
+      ssh -p ${SSH_PORT:-22} "$SSH_USER@$SSH_HOST"
+      "set -e;
+       cd $APP_DIR;
+       git fetch --all;
+       git reset --hard origin/main;
+       docker compose pull || true;
+       docker compose up -d --build;
+       docker system prune -f --volumes || true"
+  environment:
+    name: production
