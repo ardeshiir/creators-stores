@@ -3,6 +3,7 @@ stages: [ deploy ]
 deploy_production:
   stage: deploy
   image: alpine:3.19
+  tags: [ deploy ]
   only:
     - main    # deploy only on main; adjust if needed
   before_script:
