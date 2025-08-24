@@ -1,0 +1,22 @@
+# dependencies & caches
+node_modules
+.pnp.*
+.pnpm-store
+.yarn/cache
+.yarn/unplugged
+.yarn/install-state.gz
+.yarn/build-state.yml
+npm-debug.log*
+yarn-error.log*
+
+# next build artifacts (we only copy from the builder stage)
+.next/cache
+
+# vcs & editor
+.git
+.gitignore
+.vscode
+.idea
+
+# misc
+.DS_Store
