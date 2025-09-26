@@ -1,10 +1,12 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 import FormFinalPreview from '@/components/form/steps/FormFinalPreview'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { Button } from '@/components/ui/button'
+import { useAuthStore } from '@/hooks/useAuthentication'
 import { getShopByShopID } from '@/lib/services/shop'
 
 const Page = () => {
@@ -15,6 +17,14 @@ const Page = () => {
     queryKey: [shopID, 'shop-item'],
     queryFn: async () => await getShopByShopID(Number(shopID)),
   })
+  const { isAuthenticated, isGettingAuthState } = useAuthStore()
+
+  if (!isAuthenticated && !isGettingAuthState) {
+    toast.error('لطفا ابتدا وارد حساب کاربری خود شوید')
+    router.replace('/')
+
+    return null
+  }
 
   if (isLoading) {
     return (
@@ -43,7 +53,7 @@ const Page = () => {
           بازگشت
         </Button>
         <Button
-          className="h-[56px] w-full font-bold md:w-[255px]"
+          className="h-[56px] w-full font-bold hover:bg-white md:w-[255px]"
           variant="brand"
           onClick={() => router.push('/form')}
         >

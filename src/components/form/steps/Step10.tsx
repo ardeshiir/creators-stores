@@ -1,19 +1,33 @@
 'use client'
 
-import { Camera } from 'lucide-react'
+import { UseFormReturn } from 'react-hook-form'
+import { z } from 'zod'
 
 import FormFinalPreview from '@/components/form/steps/FormFinalPreview'
-import { Button } from '@/components/ui/button'
-import { InputSecondary } from '@/components/ui/input'
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import Input from '@/components/ui/input'
+import { phoneNumberValidator } from '@/lib/inputValidators'
+import { numberToEnglish } from '@/lib/utils'
 import { useFormStore } from '@/stores/useFormStore'
 
-export function Step10() {
+export const schema10 = z.object({
+  specialistName: z.string().min(1, { message: 'نام الزامیست' }),
+  specialistPhoneNumber: z
+    .string()
+    .min(1, { message: 'شماره همراه الزامی است' })
+    .refine((val) => phoneNumberValidator.pattern.test(numberToEnglish(val)), {
+      message: 'شماره همراه معتبر نیست',
+    }),
+})
+
+export type Step10Values = z.infer<typeof schema10>
+
+export function Step10({ form }: { form: UseFormReturn<Step10Values> }) {
   const { data } = useFormStore()
 
   return (
     <div className="space-y-6 text-right">
       <FormFinalPreview data={data} />
-
       <div className="mt-6 rounded-xl border border-[#E4E4E4] p-4 md:mx-auto md:max-w-[455px] md:px-12 md:py-8">
         <div className="flex h-[51px] items-center justify-between border-b border-[#E4E4E4]">
           <p className="text-[20px] font-bold">احراز هویت کارشناس</p>
@@ -30,21 +44,42 @@ export function Step10() {
             />
           </svg>
         </div>
-        <InputSecondary
-          className="mt-6 border-[#E4E4E4] placeholder:text-[#9D9D9D]"
-          placeholder="نام و نام خانوادگی"
-        />
-        <InputSecondary
-          className="mt-4 border-[#E4E4E4] placeholder:text-[#9D9D9D]"
-          placeholder="شماره شناسه"
-        />
-        <Button
-          variant="outline"
-          className="mt-4 flex h-[56px] w-full items-center justify-between rounded-[14px] border border-brand-primary !bg-white text-lg font-medium text-brand-primary"
-        >
-          احراز هویت با دوربین
-          <Camera fill="var(--brand-primary)" stroke="white" size={16} />
-        </Button>
+        <div className="flex flex-col gap-3">
+          <FormField
+            control={form.control}
+            name="specialistName"
+            render={({ field }) => (
+              <FormItem className="mt-6 border-[#E4E4E4] placeholder:text-[#9D9D9D]">
+                <FormControl>
+                  <Input
+                    placeholder="نام و نام خانوادگی"
+                    className="!bg-white placeholder:text-start"
+                    inputMode="numeric"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="specialistPhoneNumber"
+            render={({ field }) => (
+              <FormItem className="border-[#E4E4E4] placeholder:text-[#9D9D9D]">
+                <FormControl>
+                  <Input
+                    placeholder="شماره موبایل"
+                    className="!bg-white placeholder:text-start"
+                    inputMode="numeric"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
       </div>
     </div>
   )

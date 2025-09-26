@@ -18,7 +18,7 @@ import {
   requestOTP,
   verifyOtp,
 } from '@/lib/services/authentication'
-import { cn, numberToEnglish } from '@/lib/utils'
+import { cn, formatTimer, numberToEnglish } from '@/lib/utils'
 
 const Login = ({ onLoginSuccessful }: { onLoginSuccessful: () => void }) => {
   const [loginStep, setLoginStep] = useState(1)
@@ -72,16 +72,9 @@ const LoginSecondStep = ({
     }
   }, [timer])
 
-  function formatTimer(seconds: number) {
-    const minutes = Math.floor(seconds / 60)
-    const secs = seconds % 60
-
-    return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
-  }
-
   const FormSchema = z.object({
     pin: z.string().min(5, {
-      message: 'Your one-time password must be 6 characters.',
+      message: 'کد ورود باید ۶ رقم باشد.',
     }),
   })
 
@@ -105,6 +98,11 @@ const LoginSecondStep = ({
 
       if (response?.data?.token) {
         setCookie(undefined, 'accessToken', response.data.token)
+
+        if (response?.data?.user) {
+          setCookie(undefined, 'user-info', JSON.stringify(response.data.user))
+        }
+
         toast.success('خوش آمدید')
         onLoginSuccessful()
       }

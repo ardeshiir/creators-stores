@@ -41,7 +41,9 @@ const ImageGroup = ({ urls }: { urls?: string[] | string }) => {
   if (Array.isArray(urls)) {
     return (
       <div className="flex items-center gap-3">
-        {urls?.map((url, i) => <ImageItem url={url} key={i} />)}
+        {urls?.map((url, i) => (
+          <ImageItem url={url} key={i} />
+        ))}
       </div>
     )
   } else {
@@ -210,7 +212,11 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
       </Section>
 
       <Section title="">
-        <Row label="توضیحات تکمیلی:" value={data.description} />
+        <Row
+          label="توضیحات تکمیلی:"
+          className="flex-col items-start border-b-0"
+          value={data.description}
+        />
       </Section>
     </>
   )

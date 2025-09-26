@@ -1,16 +1,22 @@
 'use client'
 
+import { useEffect } from 'react'
+
 import DesktopFooter from '@/components/desktop-footer'
 import Login from '@/components/form/login'
 import BonyanIcon from '@/components/icons/BonyanIcon'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import StoreManagementMenu from '@/components/ui/store-management-menu'
 import { useMediaQuery } from '@/hooks/use-media-query'
-import useAuthentication from '@/hooks/useAuthentication'
+import { useAuthStore } from '@/hooks/useAuthentication'
 
 export default function Home() {
-  const { isAuthenticated, revalidate, isGettingAuthState } = useAuthentication()
+  const { isAuthenticated, getLoginState, isGettingAuthState } = useAuthStore()
   const isDesktop = useMediaQuery('(min-width: 768px)')
+
+  useEffect(() => {
+    getLoginState()
+  }, [])
 
   if (isGettingAuthState) {
     return (
@@ -27,7 +33,7 @@ export default function Home() {
       ) : (
         <Login
           onLoginSuccessful={() => {
-            revalidate()
+            getLoginState()
           }}
         />
       )}

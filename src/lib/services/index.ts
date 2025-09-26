@@ -2,7 +2,7 @@ import axios from 'axios'
 import { parseCookies } from 'nookies'
 
 export const baseApi = axios.create({
-  baseURL: process.env.BASE_API_URL || 'https://api.creatorsclass.co/api/v1',
+  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL || 'https://api.creatorsclass.co/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },

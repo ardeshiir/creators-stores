@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation'
 import DesktopFooter from '@/components/desktop-footer'
 import MultiStepForm from '@/components/form/MultiStepForm'
 import { useMediaQuery } from '@/hooks/use-media-query'
-import useAuthentication from '@/hooks/useAuthentication'
+import { useAuthStore } from '@/hooks/useAuthentication'
 
 export default function FormPage() {
-  const { isAuthenticated, isGettingAuthState } = useAuthentication()
+  const { isAuthenticated, isGettingAuthState } = useAuthStore()
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const router = useRouter()
 

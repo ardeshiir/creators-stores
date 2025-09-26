@@ -1,5 +1,6 @@
 // stores/useFormStore.ts
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export interface FormState {
   step: number
@@ -54,6 +55,8 @@ export interface FormState {
     externalImages?: string[]
     internalImages?: string[]
     description?: string
+    specialistName: string
+    specialistPhoneNumber: string
   }
   setStep: (step: number) => void
   nextStep: () => void
@@ -62,12 +65,32 @@ export interface FormState {
   reset: () => void
 }
 
-export const useFormStore = create<FormState>((set) => ({
-  step: 1,
-  data: {},
-  setStep: (step) => set({ step }),
-  nextStep: () => set((state) => ({ step: state.step + 1 })),
-  prevStep: () => set((state) => ({ step: state.step - 1 })),
-  updateData: (partial) => set((state) => ({ data: { ...state.data, ...partial } })),
-  reset: () => set({ step: 1, data: {} }),
-}))
+export const useFormStore = create<FormState>()(
+  persist(
+    (set) => ({
+      step: 0,
+      data: {},
+      setStep: (step) => set({ step }),
+      nextStep: () => set((state) => ({ step: state.step + 1 })),
+      prevStep: () => set((state) => ({ step: state.step - 1 })),
+      updateData: (partial) => set((state) => ({ data: { ...state.data, ...partial } })),
+      reset: () => set({ step: 1, data: {} }),
+    }),
+    {
+      name: 'form-storage',
+      storage: {
+        getItem: (name) => {
+          const value = sessionStorage.getItem(name)
+
+          return value ? JSON.parse(value) : null
+        },
+        setItem: (name, value) => {
+          sessionStorage.setItem(name, JSON.stringify(value))
+        },
+        removeItem: (name) => {
+          sessionStorage.removeItem(name)
+        },
+      },
+    },
+  ),
+)

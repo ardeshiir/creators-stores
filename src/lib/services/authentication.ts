@@ -10,11 +10,27 @@ export const requestOTP = async ({ phone }: ICredentials) => {
   })
 }
 
+export interface UserInfo {
+  name: string
+  family: string
+  phone: string
+  role: 'field_agent' | 'regional_manager' | 'global_manager'
+  permissions: string[]
+  createdAt: Date
+  state?: string
+  city?: string
+  district?: number
+  _id?: string
+  identifierCode: string
+}
+
 export const verifyOtp = async ({ phone, code }: { phone: string; code: string }) => {
-  return await baseApi.post<{ token: string; error_key?: string; message?: string }>(
-    `/auth/verify-otp`,
-    { phone, code },
-  )
+  return await baseApi.post<{
+    token: string
+    user: UserInfo
+    error_key?: string
+    message?: string
+  }>(`/auth/verify-otp`, { phone, code })
 }
 
 export const ERRORS_DICTIONARY: Record<string, string> = {
