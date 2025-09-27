@@ -53,11 +53,10 @@ const Page = () => {
     if ((!isSuperAdmin || !isAuthenticated) && !isGettingAuthState) {
       toast.error('شما سطح دسترسی لازم را ندارید')
       router.replace('/')
-
     }
   }, [])
 
-  if (isLoading ) {
+  if (isLoading) {
     return (
       <div className="flex size-full items-center justify-center">
         <LoadingSpinner />
@@ -79,10 +78,15 @@ const Page = () => {
         />
       </div>
       <div className="mt-5 flex h-[70vh] flex-wrap items-start justify-center gap-6 overflow-y-auto">
-        {isLoadingSearch ?<div className={'size-full'}><LoadingSpinner /></div>}
-        {!isLoadingSearch && (results?.length ? results : (data?.data as UserInfo[])).map((user) => (
-          <UserItemCard user={user} key={`${user._id as string}-${user.name as string}`} />
-        ))}
+        {isLoadingSearch && (
+          <div className="flex size-full items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        )}
+        {!isLoadingSearch &&
+          (results?.length ? results : (data?.data as UserInfo[])).map((user) => (
+            <UserItemCard user={user} key={`${user._id as string}-${user.name as string}`} />
+          ))}
       </div>
       <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4">
         <Button
