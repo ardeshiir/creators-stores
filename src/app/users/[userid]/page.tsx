@@ -1,4 +1,6 @@
 'use client'
+import { useEffect } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -19,12 +21,12 @@ const Page = () => {
     queryFn: async () => await getUserByID(userId as string),
   })
 
-  if ((!isSuperAdmin || !isAuthenticated) && !isGettingAuthState) {
-    toast.error('شما سطح دسترسی لازم را ندارید')
-    router.replace('/')
-
-    return null
-  }
+  useEffect(() => {
+    if ((!isSuperAdmin || !isAuthenticated) && !isGettingAuthState) {
+      toast.error('شما سطح دسترسی لازم را ندارید')
+      router.replace('/')
+    }
+  }, [])
 
   if (isLoading) {
     return (

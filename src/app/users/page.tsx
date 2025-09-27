@@ -49,14 +49,15 @@ const Page = () => {
     return () => clearTimeout(timeout)
   }, [query])
 
-  if ((!isSuperAdmin || !isAuthenticated) && !isGettingAuthState) {
-    toast.error('شما سطح دسترسی لازم را ندارید')
-    router.replace('/')
+  useEffect(() => {
+    if ((!isSuperAdmin || !isAuthenticated) && !isGettingAuthState) {
+      toast.error('شما سطح دسترسی لازم را ندارید')
+      router.replace('/')
 
-    return null
-  }
+    }
+  }, [])
 
-  if (isLoading || isLoadingSearch) {
+  if (isLoading ) {
     return (
       <div className="flex size-full items-center justify-center">
         <LoadingSpinner />
@@ -78,7 +79,8 @@ const Page = () => {
         />
       </div>
       <div className="mt-5 flex h-[70vh] flex-wrap items-start justify-center gap-6 overflow-y-auto">
-        {(results?.length ? results : (data?.data as UserInfo[])).map((user) => (
+        {isLoadingSearch ?<div className={'size-full'}><LoadingSpinner /></div>}
+        {!isLoadingSearch && (results?.length ? results : (data?.data as UserInfo[])).map((user) => (
           <UserItemCard user={user} key={`${user._id as string}-${user.name as string}`} />
         ))}
       </div>
