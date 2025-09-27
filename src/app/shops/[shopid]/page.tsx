@@ -45,7 +45,7 @@ const Page = () => {
   return (
     <div className="container mx-auto flex flex-col items-center px-[24px] md:px-[56px] lg:px-[80px]">
       <FormFinalPreview data={data?.data} />
-      <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4">
+      <div className="my-[75px] flex w-full items-center justify-center gap-4">
         <Button
           onClick={() => router.push('/')}
           className="h-[56px] w-full bg-[#E4E4E4] font-bold text-black hover:bg-[#E4E4E4]/10 md:w-[255px]"

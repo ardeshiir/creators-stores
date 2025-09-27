@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -22,25 +23,25 @@ import { addUser, updateUserByID } from '@/lib/services/users'
 import { numberToEnglish } from '@/lib/utils'
 
 const formSchema = z.object({
-  name: z.string().min(2, {
+  name: z.string({ required_error: 'این فیلد الزامیست' }).min(2, {
     message: 'نام معتبر نیست',
   }),
-  family: z.string().min(2, {
+  lastName: z.string({ required_error: 'این فیلد الزامیست' }).min(2, {
     message: 'نام خانوادگی معتبر نیست',
   }),
-  identifierCode: z.string().min(2, {
+  identifierCode: z.string({ required_error: 'این فیلد الزامیست' }).min(1, {
     message: 'شماره شناسه معتبر نیست',
   }),
   phone: z
-    .string()
-    .min(1, { message: 'شماره همراه الزامی است' })
+    .string({ required_error: 'این فیلد الزامیست' })
+    .min(1, { message: 'این فیلد الزامیست' })
     .refine((val) => phoneNumberValidator.pattern.test(numberToEnglish(val)), {
       message: 'شماره همراه معتبر نیست',
     }),
-  state: z.string().min(2, {
+  state: z.string({ required_error: 'این فیلد الزامیست' }).min(2, {
     message: 'استان معتبر نیست',
   }),
-  city: z.string().min(2, {
+  city: z.string({ required_error: 'این فیلد الزامیست' }).min(2, {
     message: 'شهر معتبر نیست',
   }),
   district: z.preprocess(
@@ -54,14 +55,16 @@ const formSchema = z.object({
 
       return val
     },
-    z.number({ invalid_type_error: 'منطقه معتبر نیست' }).min(1, {
-      message: 'منطقه معتبر نیست',
-    }),
+    z
+      .number({ invalid_type_error: 'منطقه معتبر نیست', required_error: 'این فیلد الزامیست' })
+      .min(1, {
+        message: 'منطقه معتبر نیست',
+      }),
   ),
   role: z.enum(['field_agent', 'regional_manager', 'global_manager']),
 }) as z.ZodType<{
   name: string
-  family: string
+  lastName: string
   identifierCode: string
   phone: string
   state: string
@@ -77,7 +80,7 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
     defaultValues: defaultUserValues
       ? {
           name: defaultUserValues?.name,
-          family: defaultUserValues?.family,
+          lastName: defaultUserValues?.lastName,
           identifierCode: defaultUserValues?.identifierCode,
           phone: defaultUserValues?.phone,
           state: defaultUserValues?.state,
@@ -134,7 +137,7 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
 
             <FormField
               control={form.control}
-              name="family"
+              name="lastName"
               render={({ field }) => (
                 <FormItem className="col-span-3">
                   {/*<FormLabel>Family Name</FormLabel>*/}
@@ -241,13 +244,23 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
               )}
             />
           </div>
-          <Button
-            className="radius-[20px] h-[67px] !px-[69px] !py-[18px] text-[20px]"
-            type="submit"
-            variant="brand"
-          >
-            ثبت اطلاعات {submitting && <LoadingSpinner />}
-          </Button>
+          <div className="grid w-full grid-cols-3 gap-6">
+            <Button
+              className="radius-[20px] col-span-2 h-[67px] !px-[69px] !py-[18px] text-[20px]"
+              type="submit"
+              variant="brand"
+            >
+              ثبت اطلاعات {submitting && <LoadingSpinner />}
+            </Button>
+            <Button
+              className="radius-[20px] col-span-1 h-[67px] !px-[69px] !py-[18px] text-[20px]"
+              type="button"
+              variant="default"
+              asChild
+            >
+              <Link href="/users">لیست کارشناسان</Link>
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

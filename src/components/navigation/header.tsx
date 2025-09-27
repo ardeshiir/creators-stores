@@ -50,7 +50,7 @@ const MenuDropDown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" className="mr-6 mt-1 bg-white">
         <DropdownMenuLabel className="justify-end text-end">
-          {userInfo?.name + ' ' + userInfo?.family}
+          {userInfo?.name ?? '' + ' ' + userInfo?.lastName ?? ''}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="cursor-pointer text-start" onClick={() => logout()}>

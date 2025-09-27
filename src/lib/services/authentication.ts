@@ -12,7 +12,7 @@ export const requestOTP = async ({ phone }: ICredentials) => {
 
 export interface UserInfo {
   name: string
-  family: string
+  lastName: string
   phone: string
   role: 'field_agent' | 'regional_manager' | 'global_manager'
   permissions: string[]

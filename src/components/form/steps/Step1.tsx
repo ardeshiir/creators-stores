@@ -28,7 +28,7 @@ export const schema1 = z.object({
   name: z
     .string({ required_error: 'نام الزامی است و باید حداقل ۲ کاراکتر باشد' })
     .min(2, { message: 'نام الزامی است و باید حداقل ۲ کاراکتر باشد' }),
-  familyName: z
+  lastName: z
     .string({ required_error: 'نام خانوادگی الزامی است و باید حداقل ۲ کاراکتر باشد' })
     .min(2, { message: 'نام خانوادگی الزامی است و باید حداقل ۲ کاراکتر باشد' }),
   mobile: z.array(z.string({ required_error: 'شماره موبایل الزامی است' }), {
@@ -118,7 +118,7 @@ export default function Step1({ form }: { form: UseFormReturn<Step1Values> }) {
 
         <FormField
           control={form.control}
-          name="familyName"
+          name="lastName"
           render={({ field }) => (
             <FormItem className="order-4 col-span-6 md:order-3 md:col-span-3">
               {/*<FormLabel>Family Name</FormLabel>*/}

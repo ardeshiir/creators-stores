@@ -8,7 +8,7 @@ export interface FormState {
     storeName?: string
     propertyStatus?: 'rental' | 'owner'
     name?: string
-    familyName?: string
+    lastName?: string
     mobile?: string[]
     storeDescription?: {
       area?: number

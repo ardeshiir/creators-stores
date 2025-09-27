@@ -24,3 +24,7 @@ export const deleteUserByID = async (id: number) => {
 export const deactivateUserByID = async (id: number) => {
   return await baseApi.put<Partial<UserInfo>>(`/user/${id}`, { isActive: false })
 }
+
+export const searchUsers = async (searchQuery: string) => {
+  return await baseApi.get<Partial<UserInfo>[]>(`/user/search?q=${searchQuery}`)
+}
