@@ -3,6 +3,7 @@
 import { Camera, X } from 'lucide-react'
 import Image from 'next/image'
 import { UseFormReturn } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -69,7 +70,8 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
           shouldValidate: true,
         })
       }
-    } catch (e) {
+    } catch (e: any) {
+      toast.success(e?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
       console.log({ uploadError: e })
     }
   }

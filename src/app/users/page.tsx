@@ -39,7 +39,8 @@ const Page = () => {
         const res = await searchUsers(query)
 
         setResults(res.data)
-      } catch (err) {
+      } catch (err: any) {
+        toast.success(err?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
         console.error(err)
       } finally {
         setIsLoadingSearch(false)
@@ -162,7 +163,8 @@ const UserDeactivationModal = ({
     try {
       setIsSubmitting(true)
       await deactivateUserByID(userId)
-    } catch (error) {
+    } catch (error: any) {
+      toast.success(error?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
       console.log({ error })
     } finally {
       setIsSubmitting(false)

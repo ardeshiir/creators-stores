@@ -4,6 +4,7 @@
 import { Camera } from 'lucide-react'
 import Image from 'next/image'
 import { UseFormReturn } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -47,7 +48,8 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
         if (uploadResponse?.data?.url) {
           form.setValue(`displayStand.attachments`, uploadResponse?.data?.url)
         }
-      } catch (e) {
+      } catch (e: any) {
+        toast.success(e?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
         console.log({ uploadError: e })
       }
     }

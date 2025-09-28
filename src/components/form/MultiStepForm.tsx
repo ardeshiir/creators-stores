@@ -47,7 +47,8 @@ export default function MultiStepForm() {
         setPreSubmittedShopId(response.data.shopId)
         toast.success('ثبت فروشگاه با موفقیت انجام شد.')
       }
-    } catch (e) {
+    } catch (e: any) {
+      toast.success(e?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
       toast.error('خطایی رخ داده است لطفا دوباذه تلاش کنید.')
       console.log({ submissionError: e })
     } finally {

@@ -107,8 +107,9 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
         await addUser(values)
         toast.success('اطلاعات کاربر ثبت شد')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log({ error })
+      toast.success(error?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
     } finally {
       setSubmitting(false)
     }
@@ -274,8 +275,8 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
 }
 
 const rolesMap = {
-  field_agent: 'گارشناس میدانی',
-  regional_manager: 'مدیر منظقه',
+  field_agent: 'کارشناس میدانی',
+  regional_manager: 'مدیر منطقه',
   global_manager: 'مدیر سراسری',
 }
 

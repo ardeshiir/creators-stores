@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { Camera, X } from 'lucide-react'
 import Image from 'next/image'
 import { useFieldArray, UseFormReturn } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -57,7 +58,8 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
         if (uploadResponse?.data?.url) {
           form.setValue(`showCase.${index}.attachments`, uploadResponse?.data?.url)
         }
-      } catch (e) {
+      } catch (e: any) {
+        toast.success(e?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
         console.log({ uploadError: e })
       }
     }
