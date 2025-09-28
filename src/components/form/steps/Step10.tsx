@@ -73,6 +73,11 @@ export function Step10({ form }: { form: UseFormReturn<Step10Values> }) {
                     className="!bg-white placeholder:text-start"
                     inputMode="numeric"
                     {...field}
+                    onChange={(e) => {
+                      const normalized = numberToEnglish(e.target.value)
+
+                      field.onChange(normalized)
+                    }}
                   />
                 </FormControl>
                 <FormMessage />

@@ -158,6 +158,11 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
                     <Input
                       startIconClassName="text-placeholder font-medium"
                       {...field}
+                      onChange={(e) => {
+                        const normalized = numberToEnglish(e.target.value)
+
+                        field.onChange(normalized)
+                      }}
                       placeholder="شماره موبایل"
                       startIcon={form.watch('phone')?.length === 0 ? '۰۹۱۲۳۴۵۶۷۸۹' : ''}
                     />
@@ -235,8 +240,8 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="w-full">
-                      <SelectItem value="field_agent">گارشناس میدانی</SelectItem>
-                      <SelectItem value="regional_manager">مدیر منظقه</SelectItem>
+                      <SelectItem value="field_agent">کارشناس میدانی</SelectItem>
+                      <SelectItem value="regional_manager">مدیر منطقه</SelectItem>
                       <SelectItem value="global_manager">مدیر سراسری</SelectItem>
                     </SelectContent>
                   </Select>

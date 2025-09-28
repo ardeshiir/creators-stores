@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input from '@/components/ui/input'
 import { safeArray } from '@/lib/form'
+import { numberToEnglish } from '@/lib/utils'
 
 export const schema5 = z.object({
   address: z.object({
@@ -129,6 +130,11 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                     <FormControl>
                       <Input
                         {...field}
+                        onChange={(e) => {
+                          const normalized = numberToEnglish(e.target.value)
+
+                          field.onChange(normalized)
+                        }}
                         placeholder="تلفن همراه"
                         startIconClassName="text-placeholder font-medium"
                         startIcon={
