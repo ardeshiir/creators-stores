@@ -92,8 +92,8 @@ const LoginSecondStep = ({
 
     try {
       const response = await verifyOtp({
-        phone: credentials.phone as string,
-        code: data.pin,
+        phone: numberToEnglish(credentials.phone as string),
+        code: numberToEnglish(data.pin),
       })
 
       if (response?.data?.token) {
@@ -222,7 +222,9 @@ const LoginFirstStep = ({ onSubmit }: { onSubmit: (phone: string) => Promise<voi
 
     // @ts-ignore
     try {
-      await onSubmit(data.phone)
+      const englishPhone = numberToEnglish(data.phone)
+
+      await onSubmit(englishPhone)
     } catch (e) {
     } finally {
       setIsSubmitting(false)
