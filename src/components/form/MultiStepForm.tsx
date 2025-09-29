@@ -21,7 +21,7 @@ import { useFormStore } from '@/stores/useFormStore'
 import { StepManager } from './StepManager'
 
 export default function MultiStepForm() {
-  const { updateData, data, step, setStep } = useFormStore()
+  const { updateData, data, step, setStep, reset } = useFormStore()
   const [submitted, setSubmitted] = useState(false)
   const [preSubmittedShopId, setPreSubmittedShopId] = useState<null | string>(null)
 
@@ -282,6 +282,7 @@ const FormSubmittedSuccessfully = ({
   setStep: (val: number) => void
 }) => {
   const router = useRouter()
+  const { reset } = useFormStore()
 
   return (
     <div className="flex h-full min-h-[80vh] flex-col items-center justify-between py-6 md:mx-auto md:max-w-[363px] md:justify-center md:gap-12">
@@ -294,6 +295,7 @@ const FormSubmittedSuccessfully = ({
           variant="brand"
           className="h-12 w-full"
           onClick={() => {
+            reset()
             setSubmitted(false)
             setStep(0)
           }}

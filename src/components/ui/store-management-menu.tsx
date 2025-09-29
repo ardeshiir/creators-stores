@@ -1,13 +1,17 @@
 'use client'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
 import LoginTitle from '@/components/ui/login-title'
 import { useAuthStore } from '@/hooks/useAuthentication'
+import { useFormStore } from '@/stores/useFormStore'
 
 const StoreManagementMenu = () => {
   const { userInfo } = useAuthStore()
   const isSuperAdmin = userInfo?.role === 'global_manager'
+  const { reset } = useFormStore()
+  const router = useRouter()
 
   return (
     <div className="flex flex-col gap-10">
@@ -28,10 +32,12 @@ const StoreManagementMenu = () => {
             <Button
               asChild
               className="flex h-[67px] w-full items-center justify-center md:w-[363px]"
+              onClick={() => {
+                reset()
+                router.push('/form')
+              }}
             >
-              <Link className="flex size-full items-center justify-center" href="/form">
-                ثبت فروشنده جدید
-              </Link>
+              <div className="flex size-full items-center justify-center">ثبت فروشنده جدید</div>
             </Button>
           )}
           {isSuperAdmin ? (

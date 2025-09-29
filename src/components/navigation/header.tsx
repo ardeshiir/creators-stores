@@ -2,12 +2,14 @@
 import { useEffect } from 'react'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import BurgerMenuIcon from '@/components/icons/BurgerMenuIcon'
 import LogWithTypography from '@/components/icons/LogWithTypography'
 import LogWithTypographyHorizontal from '@/components/icons/LogWithTypographyHorizontal'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useAuthStore } from '@/hooks/useAuthentication'
+import { useFormStore } from '@/stores/useFormStore'
 
 import {
   DropdownMenu,
@@ -34,6 +36,8 @@ export default Header
 const MenuDropDown = () => {
   const { userInfo, isAuthenticated, getLoginState, logout } = useAuthStore()
   const isSuperAdmin = userInfo?.role === 'global_manager'
+  const router = useRouter()
+  const { reset } = useFormStore()
 
   useEffect(() => {
     getLoginState()
@@ -60,9 +64,15 @@ const MenuDropDown = () => {
         </DropdownMenuItem>
         {!isSuperAdmin && (
           <DropdownMenuItem className="cursor-pointer text-start" onClick={() => logout()}>
-            <Link className="flex size-full items-center justify-end" href="/form">
+            <button
+              onClick={() => {
+                router.push('/form')
+                reset()
+              }}
+              className="flex size-full items-center justify-end"
+            >
               ثبت فروشگاه جدید
-            </Link>
+            </button>
           </DropdownMenuItem>
         )}
         {isSuperAdmin && (

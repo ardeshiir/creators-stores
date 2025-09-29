@@ -93,7 +93,9 @@ const Page = () => {
         <Button
           className="h-[56px] w-full font-bold md:w-[255px]"
           variant="brand"
-          onClick={() => router.push('/users/new')}
+          onClick={() => {
+            router.push('/users/new')
+          }}
         >
           ثبت کارشناس جدید <PlusIcon />
         </Button>

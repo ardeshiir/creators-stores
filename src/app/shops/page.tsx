@@ -19,6 +19,7 @@ import { ResponsiveDialog, ResponsiveDialogContent } from '@/components/ui/respo
 import { useAuthStore } from '@/hooks/useAuthentication'
 import { getAllShops, getFilteredShops, ShopFilterParams } from '@/lib/services/shop'
 import { getAllStates } from '@/lib/services/state'
+import { useFormStore } from '@/stores/useFormStore'
 
 const Page = () => {
   const [filters, setFilters] = useState<ShopFilterParams>({})
@@ -28,7 +29,8 @@ const Page = () => {
     queryFn: async () => (Object.keys(filters).length ? getFilteredShops(filters) : getAllShops()),
   })
   const router = useRouter()
-  const { isAuthenticated, isGettingAuthState } = useAuthStore()
+  const { reset } = useFormStore()
+  // const { isAuthenticated, isGettingAuthState } = useAuthStore()
 
   /*if (!isAuthenticated && !isGettingAuthState) {
     toast.error('لطفا ابتدا وارد حساب کاربری خود شوید')
@@ -84,7 +86,10 @@ const Page = () => {
         <Button
           className="h-[56px] w-full font-bold md:w-[255px]"
           variant="brand"
-          onClick={() => router.push('/form')}
+          onClick={() => {
+            reset()
+            router.push('/form')
+          }}
         >
           ثبت فروشنده جدید
         </Button>

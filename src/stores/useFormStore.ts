@@ -74,7 +74,7 @@ export const useFormStore = create<FormState>()(
       nextStep: () => set((state) => ({ step: state.step + 1 })),
       prevStep: () => set((state) => ({ step: state.step - 1 })),
       updateData: (partial) => set((state) => ({ data: { ...state.data, ...partial } })),
-      reset: () => set({ step: 1, data: {} }),
+      reset: () => set({ step: 0, data: {} }),
     }),
     {
       name: 'form-storage',
