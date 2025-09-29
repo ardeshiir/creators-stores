@@ -4,7 +4,6 @@ import { useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
 
 import FiltersMenuIcon from '@/components/icons/FiltersMenuIcon'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -31,12 +30,12 @@ const Page = () => {
   const router = useRouter()
   const { isAuthenticated, isGettingAuthState } = useAuthStore()
 
-  if (!isAuthenticated && !isGettingAuthState) {
+  /*if (!isAuthenticated && !isGettingAuthState) {
     toast.error('لطفا ابتدا وارد حساب کاربری خود شوید')
     router.replace('/')
 
     return null
-  }
+  }*/
 
   if (isLoading) {
     return (

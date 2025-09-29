@@ -1,4 +1,4 @@
-import { parseCookies } from 'nookies'
+import { destroyCookie, parseCookies } from 'nookies'
 import { create } from 'zustand'
 
 import { UserInfo } from '@/lib/services/authentication'
@@ -31,7 +31,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   logout: () => {
-    // you can also clear cookies here if needed
+    destroyCookie(undefined, 'accessToken')
+    destroyCookie(undefined, 'user-info')
     set({
       isAuthenticated: false,
       userInfo: null,

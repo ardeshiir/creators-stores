@@ -1,7 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'next/navigation'
-import { toast } from 'sonner'
 
 import FormFinalPreview from '@/components/form/steps/FormFinalPreview'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -19,12 +18,12 @@ const Page = () => {
   })
   const { isAuthenticated, isGettingAuthState } = useAuthStore()
 
-  if (!isAuthenticated && !isGettingAuthState) {
+  /*if (!isAuthenticated && !isGettingAuthState) {
     toast.error('لطفا ابتدا وارد حساب کاربری خود شوید')
     router.replace('/')
 
     return null
-  }
+  }*/
 
   if (isLoading) {
     return (
