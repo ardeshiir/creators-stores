@@ -212,3 +212,21 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
+
+@font-face {
+    font-family: "YekanBakhVar";
+    src: url('/fonts/YekanBakh/woff2/YekanBakh-VF.woff2') format("woff2"),
+    url('/fonts/YekanBakh/woff/YekanBakh-VF.woff') format('woff');
+}
+
+.var-font-body {
+    font-family: "YekanBakhVar", sans-serif;
+    font-size: 17px;
+    font-variation-settings: "wght" 360, "wdth" 100, "DOTS" 0;
+    word-spacing: -2px;
+}
+
+.var-font-title {
+    font-family: "YekanBakhVar", sans-serif;
+    font-variation-settings: "wght" 580, "wdth" 100, "DOTS" 0;
+}

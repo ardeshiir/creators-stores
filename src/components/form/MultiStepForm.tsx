@@ -9,6 +9,16 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import Step1, { schema1 } from '@/components/form/steps/Step1'
+import { Step10 } from '@/components/form/steps/Step10'
+import { schema2, Step2 } from '@/components/form/steps/Step2'
+import Step3, { schema3 } from '@/components/form/steps/Step3'
+import Step4, { schema4 } from '@/components/form/steps/Step4'
+import Step5, { schema5 } from '@/components/form/steps/Step5'
+import { schema6, Step6 } from '@/components/form/steps/Step6'
+import { schema7, Step7 } from '@/components/form/steps/Step7'
+import { schema8, Step8 } from '@/components/form/steps/Step8'
+import { schema9, Step9 } from '@/components/form/steps/step9'
 import CheckCircle from '@/components/icons/CheckCircle'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
@@ -20,10 +30,55 @@ import { useFormStore } from '@/stores/useFormStore'
 
 import { StepManager } from './StepManager'
 
+const schema10 = z.object({})
+
+export const steps = [
+  { Component: Step1, schema: schema1 },
+  { Component: Step2, schema: schema2 },
+  { Component: Step3, schema: schema3 },
+  { Component: Step4, schema: schema4 },
+  { Component: Step5, schema: schema5 },
+  { Component: Step6, schema: schema6 },
+  { Component: Step7, schema: schema7 },
+  { Component: Step8, schema: schema8 },
+  { Component: Step9, schema: schema9 },
+  { Component: Step10, schema: schema10 },
+]
+
 export default function MultiStepForm() {
   const { updateData, data, step, setStep, reset } = useFormStore()
   const [submitted, setSubmitted] = useState(false)
   const [preSubmittedShopId, setPreSubmittedShopId] = useState<null | string>(null)
+  const { schema } = steps[step]
+  const form = useForm({
+    resolver: schema ? zodResolver(schema) : undefined,
+    defaultValues: {
+      mobile: [''],
+      propertyStatus: null,
+      otherBrands: [],
+      address: {
+        phoneNumber: [''],
+        state: '',
+        city: '',
+        description: '',
+        postalcode: '',
+      },
+      mainStreet: 'true',
+      stock: 'true',
+      signBoard: [
+        {
+          type: 'banner',
+          dimensions: { width: 0, height: 0 },
+          attachments: null,
+        },
+      ],
+      displayStand: { type: 'none', brand: '', attachments: null },
+      showCase: [{ dimensions: { width: 0, height: 0 }, sticker: false, attachments: null }],
+      externalImages: [null, null],
+      internalImages: [null, null],
+    },
+    mode: 'onTouched',
+  })
 
   const stepsCount = 10
   const progress = ((step + 1) / stepsCount) * 100
@@ -36,6 +91,17 @@ export default function MultiStepForm() {
   }
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  useEffect(() => {
+    if (data) {
+      console.log({ forData: data })
+      Object.keys(data).map((dataKey) => {
+        if (data[dataKey]) {
+          form.setValue(dataKey, data[dataKey])
+        }
+      })
+    }
+  }, [data])
 
   const handlePreFinalSubmit = async (values: any) => {
     try {
@@ -55,6 +121,8 @@ export default function MultiStepForm() {
       setIsSubmitting(false)
     }
   }
+
+  console.log({ prperty: form.watch('propertyStatus') })
 
   // 👉 Animate step changes with gsap
   useEffect(() => {
@@ -79,6 +147,23 @@ export default function MultiStepForm() {
     return <VerifyOTP shopID={preSubmittedShopId} setSubmitted={setSubmitted} />
   }
 
+  console.log({ mobile: form.watch('mobile') })
+
+  // @ts-ignore
+  const storeName = form.watch('storeName')?.length > 0
+  // @ts-ignore
+  const storeCode = form.watch('storeCode')?.length > 0
+  // @ts-ignore
+  const propertyStatus = form.watch('propertyStatus')?.length > 0
+  // @ts-ignore
+  const name = form.watch('name')?.length > 0
+  // @ts-ignore
+  const lastName = form.watch('lastName')?.length > 0
+  // @ts-ignore
+  const mobile = form.watch('mobile')?.length > 0
+
+  const firstStepIsValid = storeName && storeCode && propertyStatus && name && lastName && mobile
+
   return (
     <div className="relative flex h-full grow flex-col justify-between">
       {/* 👇 Animation wrapper */}
@@ -86,6 +171,7 @@ export default function MultiStepForm() {
         <StepManager
           step={step}
           onNext={step === stepsCount - 1 ? handlePreFinalSubmit : handleNext}
+          form={form}
         />
       </div>
       {/* Buttons + Progress Bar */}
@@ -97,7 +183,7 @@ export default function MultiStepForm() {
             form={`step-form-${step}`}
             variant="brand"
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !firstStepIsValid}
             className={cn(
               'order-1 h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
               step === stepsCount - 1 && 'bg-[#00BD52]',

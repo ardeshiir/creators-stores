@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
+import PdfIcon from '@/components/icons/PDFIcon'
 import { Button } from '@/components/ui/button'
 import LoginTitle from '@/components/ui/login-title'
 import { useAuthStore } from '@/hooks/useAuthentication'
@@ -64,9 +65,7 @@ const StoreManagementMenu = () => {
       </div>
       <button className="flex h-[47px] items-center justify-between rounded-[14px] border border-[#BABCBE] px-5 font-bold">
         دانلود فایل راهنما
-        <span className="flex h-[26px] w-[50px] items-center justify-center rounded-[10px] bg-[#FF0000] text-lg font-[900] text-white">
-          PDF
-        </span>
+        <PdfIcon />
       </button>
     </div>
   )

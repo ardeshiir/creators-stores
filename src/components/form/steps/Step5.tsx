@@ -148,7 +148,9 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                               <X size={16} />
                             </Button>
                           ) : (
-                            '۰۹۱۲۳۴۵۶۷۸۹'
+                            <span onClick={() => form.setFocus('address.phoneNumber.0')}>
+                              ۰۹۱۲۳۴۵۶۷۸۹
+                            </span>
                           )
                         }
                       />

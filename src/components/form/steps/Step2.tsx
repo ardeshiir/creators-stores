@@ -41,7 +41,11 @@ export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
                   placeholder="مساحت فروشگاه"
                   type="number"
                   {...field}
-                  onChange={(e) => field.onChange(+e.target.value)}
+                  onChange={(e) => {
+                    if (Number(e.target.value) >= 0) {
+                      field.onChange(+e.target.value)
+                    }
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -61,7 +65,11 @@ export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
                   placeholder="سابقه فعالیت فروشگاه"
                   type="number"
                   {...field}
-                  onChange={(e) => field.onChange(+e.target.value)}
+                  onChange={(e) => {
+                    if (Number(e.target.value) >= 0) {
+                      field.onChange(+e.target.value)
+                    }
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -81,7 +89,11 @@ export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
                   placeholder="سابقه همکاری با بنیان‌تحریر"
                   type="number"
                   {...field}
-                  onChange={(e) => field.onChange(+e.target.value)}
+                  onChange={(e) => {
+                    if (Number(e.target.value) >= 0) {
+                      field.onChange(+e.target.value)
+                    }
+                  }}
                 />
               </FormControl>
               <FormMessage />

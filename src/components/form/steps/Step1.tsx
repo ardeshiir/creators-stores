@@ -17,6 +17,11 @@ import {
 } from '@/components/ui/select'
 import { safeArray } from '@/lib/form'
 
+const propertyDictionary = {
+  rental: 'مستاجر',
+  owner: 'مالک',
+}
+
 export const schema1 = z.object({
   storeName: z.string({ required_error: 'نام فروشگاه الزامی است و باید حداقل ۲ کاراکتر باشد' }),
   storeCode: z
@@ -87,14 +92,14 @@ export default function Step1({ form }: { form: UseFormReturn<Step1Values> }) {
                 <FormControl>
                   <SelectTrigger className="h-[67px] w-full border border-[#E4E4E4] bg-[#F9F9F9] md:h-[56px]">
                     <SelectValue
-                      placeholder="وضعیت ملک"
+                      placeholder={propertyDictionary[form.watch('propertyStatus')] || 'وضعیت ملک'}
                       className="h-[67px] text-lg placeholder:text-lg md:h-[56px]"
                     />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="w-full">
-                  <SelectItem value="rental">مستاجر</SelectItem>
-                  <SelectItem value="owner">مالک</SelectItem>
+                  <SelectItem value="rental">{propertyDictionary['rental']}</SelectItem>
+                  <SelectItem value="owner">{propertyDictionary['owner']}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -153,7 +158,7 @@ export default function Step1({ form }: { form: UseFormReturn<Step1Values> }) {
                             <X size={16} />
                           </Button>
                         ) : form.watch('mobile')?.[0]?.length === 0 ? (
-                          '۰۹۱۲۳۴۵۶۷۸۹'
+                          <span onClick={() => form.setFocus('mobile.0')}>۰۹۱۲۳۴۵۶۷۸۹</span>
                         ) : (
                           ''
                         )

@@ -156,11 +156,11 @@ const LoginSecondStep = ({
                       }}
                     >
                       <InputOTPGroup dir="ltr" className="w-full justify-between">
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
+                        <InputOTPSlot className="text-[18px]" index={0} />
+                        <InputOTPSlot className="text-[18px]" index={1} />
+                        <InputOTPSlot className="text-[18px]" index={2} />
+                        <InputOTPSlot className="text-[18px]" index={3} />
+                        <InputOTPSlot className="text-[18px]" index={4} />
                       </InputOTPGroup>
                     </InputOTP>
                   </FormControl>
@@ -171,7 +171,7 @@ const LoginSecondStep = ({
         </div>
         <div className="flex w-full flex-col gap-6">
           <Button
-            disabled={isSubmitting}
+            disabled={isSubmitting || form.watch('pin')?.length !== 5}
             variant="brand"
             className="button-shadow flex h-[56px] w-full items-center justify-center md:h-[67px] md:w-[363px]"
             type="submit"
@@ -247,7 +247,7 @@ const LoginFirstStep = ({ onSubmit }: { onSubmit: (phone: string) => Promise<voi
                 <FormControl>
                   <Input
                     placeholder="شماره موبایل"
-                    className="!bg-white placeholder:text-center"
+                    className="!bg-white text-center placeholder:text-center"
                     inputMode="numeric"
                     {...field}
                   />

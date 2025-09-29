@@ -165,7 +165,13 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
                         field.onChange(normalized)
                       }}
                       placeholder="شماره موبایل"
-                      startIcon={form.watch('phone')?.length === 0 ? '۰۹۱۲۳۴۵۶۷۸۹' : ''}
+                      startIcon={
+                        form.watch('phone')?.length === 0 ? (
+                          <span onClick={() => form.setFocus('phone')}>۰۹۱۲۳۴۵۶۷۸۹</span>
+                        ) : (
+                          ''
+                        )
+                      }
                     />
                   </FormControl>
                   <FormMessage />

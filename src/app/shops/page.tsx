@@ -56,7 +56,12 @@ const Page = () => {
             setFiltersModalOpen(true)
           }}
         >
-          <FiltersMenuIcon />
+          <div className="flex items-center gap-2 rounded-[10px] border-black px-[8px] py-[10px] md:border">
+            <FiltersMenuIcon />
+            <span className="hidden text-[14px] font-medium leading-[24px] md:flex">
+              مرتب سازی بر اساس
+            </span>
+          </div>
         </button>
         <FiltersMenu
           setIsOpen={setFiltersModalOpen}
