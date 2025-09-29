@@ -54,7 +54,6 @@ export function Step10({ form }: { form: UseFormReturn<Step10Values> }) {
                   <Input
                     placeholder="نام و نام خانوادگی"
                     className="!bg-white placeholder:text-start"
-                    inputMode="numeric"
                     {...field}
                   />
                 </FormControl>
