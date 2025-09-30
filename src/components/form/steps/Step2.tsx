@@ -14,6 +14,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
+// ✅ helper to normalize Persian numbers
+function numberToEnglish(str: string): string {
+  return str.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
+}
+
 export const schema2 = z.object({
   storeDescription: z.object({
     area: z.number({ required_error: 'این فیلد الزامیست' }).min(1),
@@ -28,23 +33,32 @@ export type Step2Values = z.infer<typeof schema2>
 export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
   return (
     <div className="md:min-h-[300px]">
-      <div className="mx-auto grid max-w-[733px] grid-cols-6 gap-4 ">
+      <div className="mx-auto grid max-w-[733px] grid-cols-6 gap-4">
+        {/* Area */}
         <FormField
           control={form.control}
           name="storeDescription.area"
           render={({ field }) => (
             <FormItem className="col-span-6 h-fit md:col-span-3">
-              {/*<FormLabel>Store Area (m²)</FormLabel>*/}
               <FormControl>
                 <Input
-                  startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
-                  placeholder="مساحت فروشگاه"
-                  type="number"
                   {...field}
+                  startIcon={
+                    <span
+                      className="text-lg text-[#babcbe]"
+                      onClick={() => form.setFocus('storeDescription.area')}
+                    >
+                      متر
+                    </span>
+                  }
+                  placeholder="مساحت فروشگاه"
+                  inputMode="numeric" // ✅ allows Persian or English numbers
+                  value={field.value ?? ''}
                   onChange={(e) => {
-                    if (Number(e.target.value) >= 0) {
-                      field.onChange(+e.target.value)
-                    }
+                    const normalized = numberToEnglish(e.target.value)
+                    const num = parseInt(normalized, 10)
+
+                    field.onChange(isNaN(num) ? undefined : num)
                   }}
                 />
               </FormControl>
@@ -53,22 +67,33 @@ export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
           )}
         />
 
+        {/* Activity History */}
         <FormField
           control={form.control}
           name="storeDescription.activityHistory"
           render={({ field }) => (
             <FormItem className="col-span-6 h-fit md:col-span-3">
-              {/*<FormLabel>Years of Activity</FormLabel>*/}
               <FormControl>
                 <Input
-                  startIcon={<span className="text-lg text-[#babcbe]">سال</span>}
-                  placeholder="سابقه فعالیت فروشگاه"
-                  type="number"
                   {...field}
+                  startIcon={
+                    <span
+                      className="text-lg text-[#babcbe]"
+                      onClick={() => {
+                        form.setFocus('storeDescription.activityHistory')
+                      }}
+                    >
+                      سال
+                    </span>
+                  }
+                  placeholder="سابقه فعالیت فروشگاه"
+                  inputMode="numeric"
+                  value={field.value ?? ''}
                   onChange={(e) => {
-                    if (Number(e.target.value) >= 0) {
-                      field.onChange(+e.target.value)
-                    }
+                    const normalized = numberToEnglish(e.target.value)
+                    const num = parseInt(normalized, 10)
+
+                    field.onChange(isNaN(num) ? undefined : num)
                   }}
                 />
               </FormControl>
@@ -77,22 +102,33 @@ export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
           )}
         />
 
+        {/* Cooperation History */}
         <FormField
           control={form.control}
           name="storeDescription.cooperationHistory"
           render={({ field }) => (
             <FormItem className="col-span-6 h-fit md:col-span-3">
-              {/*<FormLabel>Years of Cooperation</FormLabel>*/}
               <FormControl>
                 <Input
-                  startIcon={<span className="text-lg text-[#babcbe]">سال</span>}
-                  placeholder="سابقه همکاری با بنیان‌تحریر"
-                  type="number"
                   {...field}
+                  startIcon={
+                    <span
+                      className="text-lg text-[#babcbe]"
+                      onClick={() => {
+                        form.setFocus('storeDescription.cooperationHistory')
+                      }}
+                    >
+                      سال
+                    </span>
+                  }
+                  placeholder="سابقه همکاری با بنیان‌تحریر"
+                  inputMode="numeric"
+                  value={field.value ?? ''}
                   onChange={(e) => {
-                    if (Number(e.target.value) >= 0) {
-                      field.onChange(+e.target.value)
-                    }
+                    const normalized = numberToEnglish(e.target.value)
+                    const num = parseInt(normalized, 10)
+
+                    field.onChange(isNaN(num) ? undefined : num)
                   }}
                 />
               </FormControl>
@@ -101,12 +137,12 @@ export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
           )}
         />
 
+        {/* Seller Type */}
         <FormField
           control={form.control}
           name="storeDescription.sellerType"
           render={({ field }) => (
             <FormItem className="col-span-6 h-fit md:col-span-3">
-              {/*<FormLabel>Seller Type</FormLabel>*/}
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-full">

@@ -247,7 +247,7 @@ const LoginFirstStep = ({ onSubmit }: { onSubmit: (phone: string) => Promise<voi
                 <FormControl>
                   <Input
                     placeholder="شماره موبایل"
-                    className="!bg-white text-center placeholder:text-center"
+                    className="h-[56px] !bg-white text-center placeholder:text-center md:h-[67px]"
                     inputMode="numeric"
                     {...field}
                   />

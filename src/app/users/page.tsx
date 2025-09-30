@@ -7,6 +7,7 @@ import { PlusIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
+import FilterIconSecondary from '@/components/icons/FilterIconSecondary'
 import SearchIcon from '@/components/icons/SearchIcon'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { Button } from '@/components/ui/button'
@@ -70,15 +71,19 @@ const Page = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-[22px] font-bold text-black">لیست کارشناسان فروش</h1>
       </div>
-      <div className="mx-auto mt-6 flex justify-center sm:w-[450px]">
+      <div className="w-aut mx-auto mt-6 flex justify-center sm:w-[450px]">
         <Input
           startIcon={<SearchIcon />}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="جستجو بر اساس نام یا نام خانوادگی"
+          className="grow placeholder:text-[#BABCBE]"
+          placeholder="جستجو"
         />
+        <button className="flex size-[62px] items-center justify-center rounded-[10px] border border-[#BABCBE]">
+          <FilterIconSecondary />
+        </button>
       </div>
-      <div className="mt-5 flex h-[70vh] flex-wrap items-start justify-center gap-6 overflow-y-auto">
+      <div className="mt-5 flex h-[70vh] flex-wrap items-start justify-center gap-6 overflow-y-auto pb-[120px] md:pb-0">
         {isLoadingSearch && (
           <div className="flex size-full items-center justify-center">
             <LoadingSpinner />
@@ -89,7 +94,7 @@ const Page = () => {
             <UserItemCard user={user} key={`${user._id as string}-${user.name as string}`} />
           ))}
       </div>
-      <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4">
+      <div className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 py-[35px] md:static md:py-[75px]">
         <Button
           className="h-[56px] w-full font-bold md:w-[255px]"
           variant="brand"

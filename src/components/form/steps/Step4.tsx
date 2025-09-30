@@ -73,7 +73,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[733px] md:min-h-[300px]">
+    <div className="mx-auto w-full max-w-[562px] md:min-h-[300px]">
       <FormItem>
         <FormLabel className="text-lg font-bold text-black">
           سایر برند های موجود در فروشگاه
@@ -132,7 +132,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
         {current.map((brand, i) => (
           <li
             key={i}
-            className="flex h-[51px] items-center justify-between rounded-[14px] border border-border bg-[#F5F5F5] px-3 py-1 text-lg font-medium text-black md:min-w-[176px]"
+            className="flex h-[51px] items-center justify-between rounded-[20px] border border-border bg-[#F5F5F5] px-3 py-1 text-lg font-medium text-black md:min-w-[176px] md:rounded-[14px]"
           >
             <Button type="button" size="icon" variant="ghost" onClick={() => removeBrand(i)}>
               <X size={16} />

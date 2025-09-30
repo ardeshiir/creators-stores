@@ -68,12 +68,12 @@ export default function MultiStepForm() {
       signBoard: [
         {
           type: 'banner',
-          dimensions: { width: 0, height: 0 },
+          dimensions: { width: null, height: null },
           attachments: null,
         },
       ],
       displayStand: { type: 'none', brand: '', attachments: null },
-      showCase: [{ dimensions: { width: 0, height: 0 }, sticker: false, attachments: null }],
+      showCase: [{ dimensions: { width: null, height: null }, sticker: false, attachments: null }],
       externalImages: [null, null],
       internalImages: [null, null],
     },
@@ -167,7 +167,7 @@ export default function MultiStepForm() {
   return (
     <div className="relative flex h-full grow flex-col justify-between">
       {/* 👇 Animation wrapper */}
-      <div key={step} ref={contentRef} className="space-y-6 pb-12">
+      <div key={step} ref={contentRef} className="space-y-4 pb-12">
         <StepManager
           step={step}
           onNext={step === stepsCount - 1 ? handlePreFinalSubmit : handleNext}
@@ -185,7 +185,7 @@ export default function MultiStepForm() {
             type="submit"
             disabled={isSubmitting || !firstStepIsValid}
             className={cn(
-              'order-1 h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
+              'order-1 md:h-[56px] h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
               step === stepsCount - 1 && 'bg-[#00BD52]',
             )}
           >
@@ -200,7 +200,7 @@ export default function MultiStepForm() {
             variant="secondary"
             onClick={handleBack}
             disabled={step === 0}
-            className="order-2 col-span-4 h-[67px] bg-[#E4E4E4] font-bold text-black shadow-none md:order-1 md:col-span-6"
+            className="order-2 col-span-4 h-[67px] bg-[#E4E4E4] font-bold text-black shadow-none md:order-1 md:col-span-6 md:h-[56px]"
           >
             بازگشت
           </Button>

@@ -25,6 +25,7 @@ export interface FormState {
       state?: string
       city?: string
       description?: string
+      district?: string
       postalcode?: string
       phoneNumber?: string[]
       location?: [number, number]
@@ -34,8 +35,8 @@ export interface FormState {
     signBoard?: {
       type: 'banner' | 'composite' | 'other'
       dimensions?: {
-        width: number
-        height: number
+        width?: number
+        height?: number
       }
       attachments?: string
     }[]

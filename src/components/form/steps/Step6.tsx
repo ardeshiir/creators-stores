@@ -76,8 +76,6 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
 
   const signBoards = form.watch('signBoard')
 
-  console.log({ signBoards })
-
   return (
     <div className="mx-auto flex w-full max-w-screen-lg items-center justify-center md:min-h-[300px]">
       <div className="w-full">
@@ -91,7 +89,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                 <FormItem className="col-span-2 grid grid-cols-2 gap-4 md:col-span-1 md:flex">
                   <FormControl>
                     <RadioGroup
-                      className="col-span-2 grid grid-cols-2 gap-4 md:flex"
+                      className="col-span-2 grid grid-cols-2 gap-4"
                       onValueChange={field.onChange}
                     >
                       <FormItem className="col-span-1 flex items-center space-x-2 md:w-[182px]">

@@ -17,6 +17,7 @@ export const schema5 = z.object({
     city: z.string({ required_error: 'این فیلد الزامیست' }),
     description: z.string({ required_error: 'این فیلد الزامیست' }),
     postalcode: z.string({ required_error: 'این فیلد الزامیست' }),
+    district: z.string({ required_error: 'این فیلد الزامیست' }),
     phoneNumber: z.any(),
     landLine: z.any(),
     // location: skipped for now
@@ -70,6 +71,19 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
 
         <FormField
           control={form.control}
+          name="address.district"
+          render={({ field }) => (
+            <FormItem className="col-span-1">
+              <FormControl>
+                <Input placeholder="منطقه" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="address.description"
           render={({ field }) => (
             <FormItem className="col-span-2 md:col-span-1">
@@ -91,7 +105,11 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                   placeholder="کد پستی"
                   {...field}
                   startIconClassName="text-placeholder font-medium"
-                  startIcon={field.value ? undefined : '۱۲۳۴۵۶۷۸۹'}
+                  startIcon={
+                    field.value ? undefined : (
+                      <span onClick={() => form.setFocus('address.postalcode')}>۱۲۳۴۵۶۷۸۹</span>
+                    )
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -110,7 +128,11 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                   {...field}
                   placeholder="تلفن ثابت"
                   startIconClassName="text-placeholder font-medium"
-                  startIcon={field.value ? undefined : '02133445544'}
+                  startIcon={
+                    field.value ? undefined : (
+                      <span onClick={() => form.setFocus('address.landLine')}>02133445544</span>
+                    )
+                  }
                 />
               </FormControl>
               <FormMessage />
