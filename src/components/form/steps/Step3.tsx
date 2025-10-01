@@ -38,14 +38,14 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
   }
 
   return (
-    <div className="mx-auto grid max-w-[733px] grid-cols-6 gap-4 md:min-h-[300px]">
+    <div className="mx-auto grid max-w-[733px] grid-cols-6 gap-5 md:min-h-[300px]">
       <FormField
         control={form.control}
         name="foa"
         render={() => (
           <FormItem className="col-span-6">
             <FormLabel className="text-lg font-bold">زمینه فعالیت</FormLabel>
-            <div className="mt-2 grid grid-cols-2 gap-2 md:flex md:flex-wrap">
+            <div className="mt-2 grid grid-cols-2 gap-3 md:flex md:flex-wrap md:gap-4">
               {foaOptions.map((option) => (
                 <FormField
                   key={option}
@@ -78,12 +78,12 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
                 render={() => (
                   <FormItem
                     key="option"
-                    className="min-w-auto col-span-2 flex h-[56px] items-center space-x-2 md:min-w-[182px]"
+                    className="min-w-auto col-span-2 flex items-center md:min-w-[182px]"
                   >
                     <FormControl>
                       <InputSecondary
                         placeholder="سایر"
-                        className="w-full placeholder:text-center"
+                        className="h-[56px] w-full placeholder:text-center"
                         onChange={(e) => setOtherInput(e.target.value)}
                       />
                     </FormControl>

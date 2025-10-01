@@ -76,7 +76,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
     <div className="mx-auto w-full max-w-[562px] md:min-h-[300px]">
       <FormItem>
         <FormLabel className="text-lg font-bold text-black">
-          سایر برند های موجود در فروشگاه
+          سایر برند‌های موجود در فروشگاه
         </FormLabel>
 
         <div className="relative">
@@ -103,7 +103,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
             <Button
               type="button"
               onClick={() => addBrand()}
-              className="group flex aspect-square h-[56px] min-h-[56px] items-center justify-center rounded-[20px] border border-black bg-transparent text-black hover:bg-brand-primary"
+              className="group flex aspect-square h-[67px] min-h-[56px] items-center justify-center rounded-[20px] border border-black bg-transparent text-black hover:bg-brand-primary"
             >
               <Plus className="group-hover:text-white" />
             </Button>

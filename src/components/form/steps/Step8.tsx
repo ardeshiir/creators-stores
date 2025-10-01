@@ -3,12 +3,13 @@
 
 import { useState } from 'react'
 
-import { Camera, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import Image from 'next/image'
 import { useFieldArray, UseFormReturn } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import CameraIcon from '@/components/icons/CameraIcon'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input, { InputSecondary } from '@/components/ui/input'
@@ -160,14 +161,14 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                         onValueChange={field.onChange}
                         defaultValue={true}
                       >
-                        <FormItem className="order-1 col-span-1 flex items-center space-x-2 md:order-2 md:w-[152px]">
-                          <FormControl>
-                            <RadioGroupItemSecondary label="دارد" value={false} />
-                          </FormControl>
-                        </FormItem>
                         <FormItem className="order-2 flex items-center space-x-2 md:order-1 md:w-[258px]">
                           <FormControl>
                             <RadioGroupItemSecondary label="ندارد" value={true} />
+                          </FormControl>
+                        </FormItem>
+                        <FormItem className="order-1 col-span-1 flex items-center space-x-2 md:order-2 md:w-[152px]">
+                          <FormControl>
+                            <RadioGroupItemSecondary label="دارد" value={false} />
                           </FormControl>
                         </FormItem>
                       </RadioGroup>
@@ -199,13 +200,13 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                           className="flex items-center justify-center gap-2 p-4"
                           style={{ background: 'rgba(238,238,238,0.6)', borderRadius: 16 }}
                         >
-                          <Camera fill="black" stroke="white" /> تعویض
+                          <CameraIcon /> تعویض
                         </div>
                       </div>
                     </div>
                   ) : (
                     <>
-                      <Camera fill="black" stroke="white" />
+                      <CameraIcon />
                       تصویر ضمیمه
                     </>
                   )}

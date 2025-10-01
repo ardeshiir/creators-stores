@@ -29,3 +29,7 @@ export function formatTimer(seconds: number) {
 
   return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
 }
+
+export const numberToPersian = (number: number) => {
+  return new Intl.NumberFormat('fa-IR').format(number)
+}

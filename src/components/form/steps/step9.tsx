@@ -1,17 +1,18 @@
 'use client'
 
-import { Camera, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import Image from 'next/image'
 import { UseFormReturn } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import CameraIcon from '@/components/icons/CameraIcon'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { InputSecondary } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { uploadFile } from '@/lib/services/upload'
-import { cn } from '@/lib/utils'
+import { cn, numberToPersian } from '@/lib/utils'
 import { useFormStore } from '@/stores/useFormStore'
 
 export const schema9 = z.object({
@@ -125,7 +126,7 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
                   htmlFor={`${type}-${index}`}
                   className={cn(
                     'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
-                    image ? '' : 'md:px-4 py-[14px] rounded-[14px] bg-[#EEEEEE]',
+                    image ? '' : 'md:px-4 py-[14px] rounded-[20px] bg-[#EEEEEE]',
                   )}
                 >
                   {image ? (
@@ -136,14 +137,14 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
                           className="flex items-center justify-center gap-2 p-4"
                           style={{ background: 'rgba(238,238,238,0.6)', borderRadius: 16 }}
                         >
-                          <Camera fill="black" stroke="white" /> تعویض
+                          <CameraIcon /> تعویض
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="flex items-center">
-                      <Camera fill="black" stroke="white" />
-                      تصویر ضمیمه {index + 1}
+                    <div className="flex items-center gap-[15px] px-3">
+                      <CameraIcon />
+                      تصویر ضمیمه {numberToPersian(index + 1)}
                     </div>
                   )}
                   <InputSecondary
@@ -165,6 +166,7 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
       </div>
 
       <Button
+        className="text-brand-primary"
         type="button"
         variant="text"
         onClick={() =>

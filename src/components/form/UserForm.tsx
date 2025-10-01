@@ -2,7 +2,6 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -257,23 +256,14 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
               )}
             />
           </div>
-          <div className="grid w-full grid-cols-3 gap-6">
-            <Button
-              className="radius-[20px] col-span-2 h-[67px] !px-[69px] !py-[18px] text-[20px]"
-              type="submit"
-              variant="brand"
-            >
-              ثبت اطلاعات {submitting && <LoadingSpinner />}
-            </Button>
-            <Button
-              className="radius-[20px] col-span-1 h-[67px] !px-[69px] !py-[18px] text-[20px]"
-              type="button"
-              variant="default"
-              asChild
-            >
-              <Link href="/users">لیست کارشناسان</Link>
-            </Button>
-          </div>
+
+          <Button
+            className="radius-[20px] col-span-2 h-[67px] !px-[69px] !py-[18px] text-[20px]"
+            type="submit"
+            variant="brand"
+          >
+            ثبت اطلاعات {submitting && <LoadingSpinner />}
+          </Button>
         </form>
       </Form>
     </div>

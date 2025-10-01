@@ -1,8 +1,9 @@
 'use client'
-
 import { useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
+import { isEqual } from 'lodash'
+import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import FiltersMenuIcon from '@/components/icons/FiltersMenuIcon'
@@ -15,10 +16,16 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { ResponsiveDialog, ResponsiveDialogContent } from '@/components/ui/responsive-dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { useAuthStore } from '@/hooks/useAuthentication'
 import { getAllShops, getFilteredShops, ShopFilterParams } from '@/lib/services/shop'
 import { getAllStates } from '@/lib/services/state'
+import { cn } from '@/lib/utils'
 import { useFormStore } from '@/stores/useFormStore'
 
 const Page = () => {
@@ -48,21 +55,36 @@ const Page = () => {
   }
 
   return (
-    <div className="container mx-auto flex flex-col px-[24px] md:px-[56px] lg:px-[80px]">
+    <div className="container relative mx-auto flex h-[calc(100vh-163px)] flex-col px-[24px] md:h-auto md:px-[56px] lg:px-[80px]">
       <div className="flex items-center justify-between">
         <h1 className="text-[22px] font-bold text-black">لیست فروشندگان ثبت شده</h1>
-        <button
-          onClick={() => {
-            setFiltersModalOpen(true)
-          }}
-        >
-          <div className="flex items-center gap-2 rounded-[10px] border-black px-[8px] py-[10px] md:border">
-            <FiltersMenuIcon />
-            <span className="hidden text-[14px] font-medium leading-[24px] md:flex">
-              مرتب سازی بر اساس
-            </span>
-          </div>
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <button>
+              <div className="flex items-center gap-2 rounded-[10px] border-black px-[8px] py-[10px] md:border">
+                <FiltersMenuIcon />
+                <span className="hidden text-[14px] font-medium leading-[24px] md:flex">
+                  مرتب سازی بر اساس
+                </span>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent sideOffset={10} className="translate-x-[20px] bg-white">
+            <DropdownMenuItem className="bg-[#F9F9F9]">جدیدترین</DropdownMenuItem>
+            <DropdownMenuItem>قدیمی ترین</DropdownMenuItem>
+            <DropdownMenuItem
+              className="bg-[#F9F9F9]"
+              onClick={() => {
+                setFiltersModalOpen(true)
+              }}
+            >
+              {' '}
+              پیشرفته
+              <ChevronLeft />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <FiltersMenu
           setIsOpen={setFiltersModalOpen}
           isOpen={filtersModalOpen}
@@ -70,35 +92,46 @@ const Page = () => {
         />
       </div>
       <div className="mt-5 flex h-[65vh] flex-wrap items-start justify-center gap-6 overflow-y-auto md:items-center">
-        {data?.data.map((shop) => (
-          <ShopItemCard
-            key={`${shop.shopId as number}-${shop.name as string}`}
-            address={shop.address?.description as string}
-            id={shop.shopId || 0}
-            date={new Date(shop.createdAt as Date).toLocaleDateString('fa-IR')}
-            name={shop.name as string}
-            storeName={shop.storeName as string}
-          />
-        ))}
+        {data?.data?.length > 0 ? (
+          data?.data.map((shop) => (
+            <ShopItemCard
+              key={`${shop.shopId as number}-${shop.name as string}`}
+              address={shop.address?.description as string}
+              id={shop.shopId || 0}
+              date={new Date(shop.createdAt as Date).toLocaleDateString('fa-IR')}
+              name={shop.name as string}
+              storeName={shop.storeName as string}
+            />
+          ))
+        ) : (
+          <div className="flex size-full max-w-[280px] items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:max-w-full">
+            در حال حاضر اطلاعاتی برای نمایش وجود ندارد.
+          </div>
+        )}
       </div>
-      <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4">
-        <Button
-          onClick={() => router.push('/')}
-          className="h-[56px] w-full bg-[#E4E4E4] font-bold text-black hover:bg-[#E4E4E4]/10 md:w-[255px]"
-        >
-          بازگشت
-        </Button>
-        <Button
-          className="h-[56px] w-full font-bold md:w-[255px]"
-          variant="brand"
-          onClick={() => {
-            reset()
-            router.push('/form')
-          }}
-        >
-          ثبت فروشنده جدید
-        </Button>
-      </div>
+      {!filtersModalOpen && (
+        <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4">
+          <div className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 py-[35px] md:static md:py-[75px]">
+            <Button
+              onClick={() => router.push('/')}
+              className="hidden h-[56px] w-full bg-[#E4E4E4] font-bold text-black hover:bg-[#E4E4E4]/10 md:flex md:w-[255px]"
+            >
+              بازگشت
+            </Button>
+
+            <Button
+              className="h-[67px] w-full font-bold md:h-[56px] md:w-[255px]"
+              variant="brand"
+              onClick={() => {
+                reset()
+                router.push('/form')
+              }}
+            >
+              ثبت فروشنده جدید
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -113,36 +146,54 @@ const FiltersMenu = ({
   setIsOpen: (val: boolean) => void
 }) => {
   const [filters, setFilters] = useState<ShopFilterParams>({})
+  const [lastAcceptedFilters, setLastAcceptedFilters] = useState<ShopFilterParams>({})
+
   const { userInfo } = useAuthStore()
   const { data, isLoading } = useQuery({
     queryKey: ['states'],
     queryFn: getAllStates,
   })
+  const hasChanged = !isEqual(filters, lastAcceptedFilters)
 
   return (
-    <ResponsiveDialog open={isOpen} onOpenChange={setIsOpen}>
-      <ResponsiveDialogContent>
-        <div className="relative flex flex-col pb-16">
-          <Accordion
-            type="multiple"
-            className="flex max-h-[428px] w-full flex-col gap-4 overflow-y-auto"
-            collapsible
-          >
-            {/*استان*/}
-            {userInfo?.role === 'global_manager' && (
-              <AccordionItem value="state" className="rounded-lg border">
-                <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-                  استان
-                </AccordionTrigger>
-                <AccordionContent className="flex max-h-[200px] flex-col overflow-y-auto pb-0">
-                  {data?.data?.map((state) => (
+    <div
+      className={cn(
+        'absolute bg-white transition-all pb-[75px] inset-0',
+        isOpen ? 'translate-x-0' : 'translate-x-full',
+      )}
+    >
+      <div className="relative z-40 flex h-full flex-col pb-16">
+        <Accordion
+          type="multiple"
+          className="flex w-full flex-col gap-4 overflow-y-auto px-10"
+          collapsible
+        >
+          {/* استان */}
+          {userInfo?.role === 'global_manager' && (
+            <AccordionItem value="state" className="rounded-[24px] border">
+              <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
+                استان
+              </AccordionTrigger>
+              <AccordionContent className="flex max-h-[200px] flex-col overflow-y-auto pb-0">
+                {data?.data?.map((state) => {
+                  const checked = filters.state?.includes(state.name) ?? false
+
+                  return (
                     <div
-                      className="flex items-center gap-2 border-y px-[16px] py-[22px]"
                       key={state.name}
+                      className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
+                      onClick={() =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          state: checked
+                            ? prev.state?.filter((s) => s !== state.name)
+                            : [...(prev.state || []), state.name],
+                        }))
+                      }
                     >
                       <Checkbox
                         id={state.name}
-                        checked={filters.state?.includes(state.name)}
+                        checked={checked}
                         onCheckedChange={(checked) =>
                           setFilters((prev) => ({
                             ...prev,
@@ -151,32 +202,45 @@ const FiltersMenu = ({
                               : prev.state?.filter((s) => s !== state.name),
                           }))
                         }
+                        onClick={(e) => e.stopPropagation()}
                       />
-                      <label htmlFor="owner" className="cursor-pointer">
+                      <label htmlFor={state.name} className="cursor-pointer">
                         {state.name}
                       </label>
                     </div>
-                  ))}
-                </AccordionContent>
-              </AccordionItem>
-            )}
+                  )
+                })}
+              </AccordionContent>
+            </AccordionItem>
+          )}
 
-            {/* شهر */}
-            {(userInfo?.role === 'global_manager' || userInfo?.role === 'regional_manager') && (
-              <AccordionItem value="city" className="rounded-lg border">
-                <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-                  شهر
-                </AccordionTrigger>
-                <AccordionContent className="flex max-h-[200px] flex-col overflow-y-auto pb-0">
-                  {data?.data?.map((state) =>
-                    state?.cities?.map((city) => (
+          {/* شهر */}
+          {(userInfo?.role === 'global_manager' || userInfo?.role === 'regional_manager') && (
+            <AccordionItem value="city" className="rounded-[24px] border">
+              <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
+                شهر
+              </AccordionTrigger>
+              <AccordionContent className="flex max-h-[200px] flex-col overflow-y-auto pb-0">
+                {data?.data?.flatMap((state) =>
+                  state?.cities?.map((city) => {
+                    const checked = filters.city?.includes(city) ?? false
+
+                    return (
                       <div
-                        className="flex items-center gap-2 border-y px-[16px] py-[22px]"
                         key={city}
+                        className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
+                        onClick={() =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            city: checked
+                              ? prev.city?.filter((c) => c !== city)
+                              : [...(prev.city || []), city],
+                          }))
+                        }
                       >
                         <Checkbox
                           id={city}
-                          checked={filters.city?.includes(city)}
+                          checked={checked}
                           onCheckedChange={(checked) =>
                             setFilters((prev) => ({
                               ...prev,
@@ -185,274 +249,289 @@ const FiltersMenu = ({
                                 : prev.city?.filter((c) => c !== city),
                             }))
                           }
+                          onClick={(e) => e.stopPropagation()}
                         />
-                        <label htmlFor="owner" className="cursor-pointer">
+                        <label htmlFor={city} className="cursor-pointer">
                           {city}
                         </label>
                       </div>
-                    )),
-                  )}
-                </AccordionContent>
-              </AccordionItem>
-            )}
-            {/* وضعیت ملک */}
-            <AccordionItem value="propertyStatus" className="rounded-lg border">
-              <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-                وضعیت ملک
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col pb-0">
-                <div className="flex items-center gap-2 border-y px-[16px] py-[22px]">
-                  <Checkbox
-                    id="owner"
-                    checked={filters.propertyStatus === 'owner'}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        propertyStatus: checked ? 'owner' : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="owner" className="cursor-pointer">
-                    مالک
-                  </label>
-                </div>
-
-                <div className="flex items-center gap-2 px-[16px] py-[22px]">
-                  <Checkbox
-                    id="rental"
-                    checked={filters.propertyStatus === 'rental'}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        propertyStatus: checked ? 'rental' : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="rental" className="cursor-pointer">
-                    مستاجر
-                  </label>
-                </div>
+                    )
+                  }),
+                )}
               </AccordionContent>
             </AccordionItem>
+          )}
 
-            {/* نوع فروش */}
-            <AccordionItem value="sellerType" className="rounded-lg border">
-              <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-                نوع فروش
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col pb-0">
-                <div className="flex items-center gap-2 border-y px-[16px] py-[22px]">
-                  <Checkbox
-                    id="wholesaler"
-                    checked={filters.sellerType === 'wholesaler'}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        sellerType: checked ? 'wholesaler' : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="wholesaler" className="cursor-pointer">
-                    عمده فروش
-                  </label>
-                </div>
-                <div className="flex items-center gap-2 px-[16px] py-[22px]">
-                  <Checkbox
-                    id="retailer"
-                    checked={filters.sellerType === 'retailer'}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        sellerType: checked ? 'retailer' : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="retailer" className="cursor-pointer">
-                    خرده فروش
-                  </label>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+          {/* وضعیت ملک */}
+          <AccordionItem value="propertyStatus" className="rounded-[24px] border">
+            <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
+              وضعیت ملک
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col pb-0">
+              {[
+                { id: 'owner', label: 'مالک' },
+                { id: 'rental', label: 'مستاجر' },
+              ].map(({ id, label }) => {
+                const checked = filters.propertyStatus === id
 
-            {/* روش خرید */}
-            <AccordionItem value="purchaseMethod" className="rounded-lg border">
-              <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-                روش خرید
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col pb-0">
-                <div className="flex items-center gap-2 border-y px-[16px] py-[22px]">
-                  <Checkbox
-                    id="direct"
-                    checked={filters.purchaseMethod === 'direct'}
-                    onCheckedChange={(checked) =>
+                return (
+                  <div
+                    key={id}
+                    className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
+                    onClick={() =>
                       setFilters((prev) => ({
                         ...prev,
-                        purchaseMethod: checked ? 'direct' : undefined,
+                        propertyStatus: checked ? undefined : id,
                       }))
                     }
-                  />
-                  <label htmlFor="direct" className="cursor-pointer">
-                    مستقیم
-                  </label>
-                </div>
-                <div className="flex items-center gap-2 px-[16px] py-[22px]">
-                  <Checkbox
-                    id="indirect"
-                    checked={filters.purchaseMethod === 'indirect'}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        purchaseMethod: checked ? 'indirect' : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="indirect" className="cursor-pointer">
-                    غیرمستقیم
-                  </label>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+                  >
+                    <Checkbox
+                      id={id}
+                      checked={checked}
+                      onCheckedChange={(checked) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          propertyStatus: checked ? id : undefined,
+                        }))
+                      }
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <label htmlFor={id}>{label}</label>
+                  </div>
+                )
+              })}
+            </AccordionContent>
+          </AccordionItem>
 
-            {/* تابلو */}
-            <AccordionItem value="signBoard" className="rounded-lg border">
-              <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-                تابلو
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col pb-0">
-                <div className="flex items-center gap-2 border-y px-[16px] py-[22px]">
-                  <Checkbox
-                    id="signBoard-yes"
-                    checked={filters.hasSignBoard === true}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        hasSignBoard: checked ? true : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="signBoard-yes" className="cursor-pointer">
-                    دارد
-                  </label>
-                </div>
-                <div className="flex items-center gap-2 px-[16px] py-[22px]">
-                  <Checkbox
-                    id="signBoard-no"
-                    checked={filters.hasSignBoard === false}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        hasSignBoard: checked ? false : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="signBoard-no" className="cursor-pointer">
-                    ندارد
-                  </label>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+          {/* نوع فروش */}
+          <AccordionItem value="sellerType" className="rounded-[24px] border">
+            <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
+              نوع فروش
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col pb-0">
+              {[
+                { id: 'wholesaler', label: 'عمده فروش' },
+                { id: 'retailer', label: 'خرده فروش' },
+              ].map(({ id, label }) => {
+                const checked = filters.sellerType === id
 
-            {/* استند نمایش */}
-            <AccordionItem value="displayStand" className="rounded-lg border">
-              <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-                استند نمایش
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col pb-0">
-                <div className="flex items-center gap-2 border-y px-[16px] py-[22px]">
-                  <Checkbox
-                    id="displayStand-yes"
-                    checked={filters.hasDisplayStand === true}
-                    onCheckedChange={(checked) =>
+                return (
+                  <div
+                    key={id}
+                    className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
+                    onClick={() =>
                       setFilters((prev) => ({
                         ...prev,
-                        hasDisplayStand: checked ? true : undefined,
+                        sellerType: checked ? undefined : id,
                       }))
                     }
-                  />
-                  <label htmlFor="displayStand-yes" className="cursor-pointer">
-                    دارد
-                  </label>
-                </div>
-                <div className="flex items-center gap-2 px-[16px] py-[22px]">
-                  <Checkbox
-                    id="displayStand-no"
-                    checked={filters.hasDisplayStand === false}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        hasDisplayStand: checked ? false : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="displayStand-no" className="cursor-pointer">
-                    ندارد
-                  </label>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+                  >
+                    <Checkbox
+                      id={id}
+                      checked={checked}
+                      onCheckedChange={(checked) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          sellerType: checked ? id : undefined,
+                        }))
+                      }
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <label htmlFor={id}>{label}</label>
+                  </div>
+                )
+              })}
+            </AccordionContent>
+          </AccordionItem>
 
-            {/* ویترین */}
-            <AccordionItem value="showCase" className="rounded-lg border">
-              <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-                ویترین
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col pb-0">
-                <div className="flex items-center gap-2 border-y px-[16px] py-[22px]">
-                  <Checkbox
-                    id="showCase-yes"
-                    checked={filters.hasShowCase === true}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        hasShowCase: checked ? true : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="showCase-yes" className="cursor-pointer">
-                    دارد
-                  </label>
-                </div>
-                <div className="flex items-center gap-2 px-[16px] py-[22px]">
-                  <Checkbox
-                    id="showCase-no"
-                    checked={filters.hasShowCase === false}
-                    onCheckedChange={(checked) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        hasShowCase: checked ? false : undefined,
-                      }))
-                    }
-                  />
-                  <label htmlFor="showCase-no" className="cursor-pointer">
-                    ندارد
-                  </label>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          {/* روش خرید */}
+          <AccordionItem value="purchaseMethod" className="rounded-[24px] border">
+            <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
+              روش خرید
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col pb-0">
+              {[
+                { id: 'direct', label: 'مستقیم' },
+                { id: 'indirect', label: 'غیرمستقیم' },
+              ].map(({ id, label }) => {
+                const checked = filters.purchaseMethod === id
 
-          {/* footer buttons */}
-          <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 pt-6">
-            <Button
-              variant="brand"
-              className="!h-[48px] w-[calc(50%-8px)] rounded-[10px] "
-              onClick={() => {
-                onAccept(filters)
-                setIsOpen(false)
-              }}
-            >
-              اعمال فیلتر
-            </Button>
-            <Button
-              className="!h-[48px] w-[calc(50%-8px)] rounded-[10px] bg-black text-white"
-              onClick={() => setIsOpen(false)}
-            >
-              بستن
-            </Button>
-          </div>
+                return (
+                  <div
+                    key={id}
+                    className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
+                    onClick={() =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        purchaseMethod: checked ? undefined : id,
+                      }))
+                    }
+                  >
+                    <Checkbox
+                      id={id}
+                      checked={checked}
+                      onCheckedChange={(checked) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          purchaseMethod: checked ? id : undefined,
+                        }))
+                      }
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <label htmlFor={id}>{label}</label>
+                  </div>
+                )
+              })}
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* تابلو */}
+          <AccordionItem value="signBoard" className="rounded-[24px] border">
+            <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
+              تابلو
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col pb-0">
+              {[
+                { id: 'signBoard-yes', label: 'دارد', value: true },
+                { id: 'signBoard-no', label: 'ندارد', value: false },
+              ].map(({ id, label, value }) => {
+                const checked = filters.hasSignBoard === value
+
+                return (
+                  <div
+                    key={id}
+                    className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
+                    onClick={() =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        hasSignBoard: checked ? undefined : value,
+                      }))
+                    }
+                  >
+                    <Checkbox
+                      id={id}
+                      checked={checked}
+                      onCheckedChange={(checked) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          hasSignBoard: checked ? value : undefined,
+                        }))
+                      }
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <label htmlFor={id}>{label}</label>
+                  </div>
+                )
+              })}
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* استند نمایش */}
+          <AccordionItem value="displayStand" className="rounded-[24px] border">
+            <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
+              استند نمایش
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col pb-0">
+              {[
+                { id: 'displayStand-yes', label: 'دارد', value: true },
+                { id: 'displayStand-no', label: 'ندارد', value: false },
+              ].map(({ id, label, value }) => {
+                const checked = filters.hasDisplayStand === value
+
+                return (
+                  <div
+                    key={id}
+                    className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
+                    onClick={() =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        hasDisplayStand: checked ? undefined : value,
+                      }))
+                    }
+                  >
+                    <Checkbox
+                      id={id}
+                      checked={checked}
+                      onCheckedChange={(checked) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          hasDisplayStand: checked ? value : undefined,
+                        }))
+                      }
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <label htmlFor={id}>{label}</label>
+                  </div>
+                )
+              })}
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* ویترین */}
+          <AccordionItem value="showCase" className="rounded-[24px] border">
+            <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
+              ویترین
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col pb-0">
+              {[
+                { id: 'showCase-yes', label: 'دارد', value: true },
+                { id: 'showCase-no', label: 'ندارد', value: false },
+              ].map(({ id, label, value }) => {
+                const checked = filters.hasShowCase === value
+
+                return (
+                  <div
+                    key={id}
+                    className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
+                    onClick={() =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        hasShowCase: checked ? undefined : value,
+                      }))
+                    }
+                  >
+                    <Checkbox
+                      id={id}
+                      checked={checked}
+                      onCheckedChange={(checked) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          hasShowCase: checked ? value : undefined,
+                        }))
+                      }
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <label htmlFor={id}>{label}</label>
+                  </div>
+                )
+              })}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        {/* footer buttons */}
+        <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-4 px-10 pt-6">
+          <Button
+            variant="brand"
+            disabled={!hasChanged}
+            className="!h-[48px] w-[calc(50%-8px)] rounded-[10px]"
+            onClick={() => {
+              onAccept(filters)
+              setLastAcceptedFilters(filters)
+              setIsOpen(false)
+            }}
+          >
+            اعمال فیلتر
+          </Button>
+          <Button
+            className="!h-[48px] w-[calc(50%-8px)] rounded-[10px] bg-black text-white"
+            onClick={() => setIsOpen(false)}
+          >
+            بستن
+          </Button>
         </div>
-      </ResponsiveDialogContent>
-    </ResponsiveDialog>
+      </div>
+    </div>
   )
 }
 

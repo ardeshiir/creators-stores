@@ -16,6 +16,7 @@ import { ResponsiveDialog, ResponsiveDialogContent } from '@/components/ui/respo
 import { useAuthStore } from '@/hooks/useAuthentication'
 import { UserInfo } from '@/lib/services/authentication'
 import { deactivateUserByID, getAllUsers, searchUsers } from '@/lib/services/users'
+import { numberToPersian } from '@/lib/utils'
 
 const Page = () => {
   const { data, isLoading } = useQuery({ queryKey: ['users'], queryFn: getAllUsers })
@@ -125,9 +126,9 @@ const UserItemCard = ({ user }: { user: UserInfo }) => {
       </div>
       <div className="flex w-full items-center justify-between">
         <span>شماره موبایل:</span>
-        <span>{user.phone}</span>
+        <span>{user.phone ? numberToPersian(Number(user.phone)) : '-'}</span>
       </div>
-      <p className="w-full max-w-[70%] truncate text-[16px] leading-[22px] text-[#9D9D9D]">{`استان:${user.state ?? 'ثبت نشده'}،شهر:${user.city ?? 'ثبت نشده'}،منطفه${user.district ?? 'ثبت نشده'}`}</p>
+      <p className="w-full max-w-[70%] truncate text-[16px] leading-[22px] text-[#9D9D9D]">{`${user.state ?? ''}، ${user.city ?? ''}، ${user.district ?? ''}`}</p>
       <div className="h-[0.5px] w-full bg-[#b6b6b6]" />
       <div className="grid w-full grid-cols-2 gap-6">
         <Button

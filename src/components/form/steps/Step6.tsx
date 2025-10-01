@@ -1,12 +1,13 @@
 // components/form/steps/Step6.tsx
 'use client'
 
-import { Camera, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import Image from 'next/image'
 import { useFieldArray, UseFormReturn } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import CameraIcon from '@/components/icons/CameraIcon'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input, { InputSecondary } from '@/components/ui/input'
@@ -160,7 +161,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="relative col-span-2 grid grid-cols-2 p-0 md:flex md:flex-col md:items-start md:gap-4"
+              className="relative col-span-2 grid grid-cols-2 gap-4 p-0 md:flex md:flex-col md:items-start"
             >
               {fields.length > 1 && (
                 <Button
@@ -272,13 +273,13 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             className="flex items-center justify-center gap-2 p-4"
                             style={{ background: 'rgba(238,238,238,0.6)', borderRadius: 16 }}
                           >
-                            <Camera fill="black" stroke="white" /> تعویض
+                            <CameraIcon /> تعویض
                           </div>
                         </div>
                       </div>
                     ) : (
                       <>
-                        <Camera fill="black" stroke="white" /> تصویر ضمیمه
+                        <CameraIcon /> تصویر ضمیمه
                       </>
                     )}
                     <InputSecondary

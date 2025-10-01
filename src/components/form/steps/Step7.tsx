@@ -1,12 +1,12 @@
 // components/form/steps/Step7.tsx
 'use client'
 
-import { Camera } from 'lucide-react'
 import Image from 'next/image'
 import { UseFormReturn } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import CameraIcon from '@/components/icons/CameraIcon'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { InputSecondary } from '@/components/ui/input'
 import {
@@ -137,13 +137,13 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
                       className="flex items-center justify-center gap-2 p-4"
                       style={{ background: 'rgba(238,238,238,0.6)', borderRadius: 16 }}
                     >
-                      <Camera fill="black" stroke="white" /> تعویض
+                      <CameraIcon /> تعویض
                     </div>
                   </div>
                 </div>
               ) : (
                 <>
-                  <Camera fill="black" stroke="white" /> تصویر ضمیمه
+                  <CameraIcon /> تصویر ضمیمه
                 </>
               )}
 
