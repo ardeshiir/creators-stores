@@ -110,7 +110,7 @@ const Page = () => {
         )}
       </div>
       {!filtersModalOpen && (
-        <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4">
+        <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4 md:my-[24px]">
           <div className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 py-[35px] md:static md:py-[75px]">
             <Button
               onClick={() => router.push('/')}

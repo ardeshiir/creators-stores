@@ -7,16 +7,29 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   startIcon?: ReactNode
   endIcon?: ReactNode
   startIconClassName?: string
+  containerClassName?: string
   error?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, startIcon, endIcon, error, startIconClassName, ...props }, ref) => {
+  (
+    {
+      containerClassName,
+      className,
+      type,
+      startIcon,
+      endIcon,
+      error,
+      startIconClassName,
+      ...props
+    },
+    ref,
+  ) => {
     const StartIcon = startIcon
     const EndIcon = endIcon
 
     return (
-      <div className="relative w-full">
+      <div className={cn('relative w-full', containerClassName)}>
         {StartIcon && (
           <div className={cn('absolute left-3 top-1/2 -translate-y-1/2', startIconClassName)}>
             {StartIcon}
