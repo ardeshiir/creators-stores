@@ -2,6 +2,7 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -21,6 +22,8 @@ import { phoneNumberValidator } from '@/lib/inputValidators'
 import { UserInfo } from '@/lib/services/authentication'
 import { addUser, updateUserByID } from '@/lib/services/users'
 import { numberToEnglish } from '@/lib/utils'
+
+import CheckCircle from '../icons/CheckCircle'
 
 const formSchema = z.object({
   name: z.string({ required_error: 'این فیلد الزامیست' }).min(2, {
@@ -74,6 +77,7 @@ const formSchema = z.object({
 }>
 const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo> }) => {
   const [submitting, setSubmitting] = useState<boolean>(false)
+  const [submitSuccesfull, setSubmitSuccesfull] = useState<boolean>(false)
   const form = useForm<z.infer<typeof formSchema>>({
     // @ts-ignore
     resolver: zodResolver(formSchema),
@@ -102,9 +106,11 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
       if (defaultUserValues) {
         await updateUserByID(defaultUserValues._id as string, values)
         toast.success('کاربر مورد نظر با موفقیت به‌روزرسانی شد')
+        setSubmitSuccesfull(true)
       } else {
         await addUser(values)
         toast.success('اطلاعات کاربر ثبت شد')
+        setSubmitSuccesfull(true)
       }
     } catch (error: any) {
       console.log({ error })
@@ -112,6 +118,10 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
     } finally {
       setSubmitting(false)
     }
+  }
+
+  if (submitSuccesfull) {
+    return <SubmitSuccessful isUpdate={!!defaultUserValues} />
   }
 
   return (
@@ -274,6 +284,35 @@ const rolesMap = {
   field_agent: 'کارشناس میدانی',
   regional_manager: 'مدیر منطقه',
   global_manager: 'مدیر سراسری',
+}
+
+const SubmitSuccessful = ({ isUpdate }: { isUpdate?: boolean }) => {
+  const router = useRouter()
+
+  return (
+    <div className="flex h-full min-h-[80vh] flex-col items-center justify-between py-6 md:mx-auto md:max-w-[363px] md:justify-center md:gap-12">
+      <div className="flex grow flex-col items-center justify-center gap-6 md:grow-0">
+        <CheckCircle />
+        <h2 className="text-[20px] font-bold">
+          {isUpdate ? 'ویرایش اطلاعات با موفقیت ثبت گردید.' : 'اطلاعات با موفقیت ثبت گردید.'}
+        </h2>
+      </div>
+      <div className="flex w-full flex-col items-center gap-4">
+        <Button
+          variant="brand"
+          className="h-12 w-full"
+          onClick={() => {
+            router.push('/users/new')
+          }}
+        >
+          ثبت کارشناس جدید
+        </Button>
+        <Button onClick={() => router.push('/users')} className="h-12 w-full bg-black text-white">
+          لیست کارشناسان ثبت شده
+        </Button>
+      </div>
+    </div>
+  )
 }
 
 export default UserForm

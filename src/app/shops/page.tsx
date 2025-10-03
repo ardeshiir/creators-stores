@@ -91,7 +91,7 @@ const Page = () => {
           onAccept={setFilters}
         />
       </div>
-      <div className="mt-5 flex h-[65vh] flex-wrap items-start justify-center gap-6 overflow-y-auto md:items-center">
+      <div className="no-scrollbar mt-5 flex h-[65vh] flex-wrap items-start justify-center gap-6 overflow-y-auto md:items-center">
         {data?.data?.length > 0 ? (
           data?.data.map((shop) => (
             <ShopItemCard
@@ -204,9 +204,7 @@ const FiltersMenu = ({
                         }
                         onClick={(e) => e.stopPropagation()}
                       />
-                      <label htmlFor={state.name} className="cursor-pointer">
-                        {state.name}
-                      </label>
+                      <label htmlFor={state.name}>{state.name}</label>
                     </div>
                   )
                 })}
@@ -223,37 +221,36 @@ const FiltersMenu = ({
               <AccordionContent className="flex max-h-[200px] flex-col overflow-y-auto pb-0">
                 {data?.data?.flatMap((state) =>
                   state?.cities?.map((city) => {
-                    const checked = filters.city?.includes(city) ?? false
+                    const cityName = city.name
+                    const checked = filters.city?.includes(cityName) ?? false
 
                     return (
                       <div
-                        key={city}
+                        key={cityName}
                         className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
                         onClick={() =>
                           setFilters((prev) => ({
                             ...prev,
                             city: checked
-                              ? prev.city?.filter((c) => c !== city)
-                              : [...(prev.city || []), city],
+                              ? prev.city?.filter((c) => c !== cityName)
+                              : [...(prev.city || []), cityName],
                           }))
                         }
                       >
                         <Checkbox
-                          id={city}
+                          id={cityName}
                           checked={checked}
                           onCheckedChange={(checked) =>
                             setFilters((prev) => ({
                               ...prev,
                               city: checked
-                                ? [...(prev.city || []), city]
-                                : prev.city?.filter((c) => c !== city),
+                                ? [...(prev.city || []), cityName]
+                                : prev.city?.filter((c) => c !== cityName),
                             }))
                           }
                           onClick={(e) => e.stopPropagation()}
                         />
-                        <label htmlFor={city} className="cursor-pointer">
-                          {city}
-                        </label>
+                        <label htmlFor={cityName}>{cityName}</label>
                       </div>
                     )
                   }),
@@ -261,6 +258,55 @@ const FiltersMenu = ({
               </AccordionContent>
             </AccordionItem>
           )}
+
+          {/* منطقه */}
+          <AccordionItem value="district" className="rounded-[24px] border">
+            <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
+              منطفه
+            </AccordionTrigger>
+            <AccordionContent className="flex max-h-[200px] flex-col overflow-y-auto pb-0">
+              {data?.data?.flatMap((state) =>
+                state.cities?.flatMap((city) =>
+                  city.districts?.map((d) => {
+                    const checked = filters.district?.includes(d) ?? false
+                    const id = `${city.name}-${d}`
+
+                    return (
+                      <div
+                        key={id}
+                        className="flex cursor-pointer items-center gap-2 border-y px-[16px] py-[22px]"
+                        onClick={() =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            district: checked
+                              ? prev.district?.filter((dist) => dist !== d)
+                              : [...(prev.district || []), d],
+                          }))
+                        }
+                      >
+                        <Checkbox
+                          id={id}
+                          checked={checked}
+                          onCheckedChange={(c) =>
+                            setFilters((prev) => ({
+                              ...prev,
+                              district: c
+                                ? [...(prev.district || []), d]
+                                : prev.district?.filter((dist) => dist !== d),
+                            }))
+                          }
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                        <label htmlFor={id}>
+                          {city.name} - ناحیه {d}
+                        </label>
+                      </div>
+                    )
+                  }),
+                ),
+              )}
+            </AccordionContent>
+          </AccordionItem>
 
           {/* وضعیت ملک */}
           <AccordionItem value="propertyStatus" className="rounded-[24px] border">
@@ -551,7 +597,7 @@ const ShopItemCard = ({
   const router = useRouter()
 
   return (
-    <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 sm:w-[350px]">
+    <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 pt-[64px] sm:w-[350px]">
       <div className="flex w-full items-start justify-between">
         <div className="flex flex-col">
           <span className="text-[18px] font-bold">{storeName}</span>

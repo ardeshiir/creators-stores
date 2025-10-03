@@ -24,6 +24,7 @@ export const getShopByShopID = async (id: number) => {
 export interface ShopFilterParams {
   state?: string[]
   city?: string[]
+  district?: number[]
   purchaseMethod?: 'direct' | 'indirect' | string
   propertyStatus?: 'owner' | 'rental' | string
   hasSignBoard?: boolean

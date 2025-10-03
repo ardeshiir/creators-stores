@@ -26,7 +26,7 @@ export function Step10({ form }: { form: UseFormReturn<Step10Values> }) {
   const { data } = useFormStore()
 
   return (
-    <div className="space-y-6 text-right">
+    <div className="pb-[224px] text-right md:pb-[88px] ">
       <FormFinalPreview data={data} />
       <div className="mt-6 rounded-xl border border-[#E4E4E4] p-4 md:mx-auto md:max-w-[455px] md:px-12 md:py-8">
         <div className="flex h-[51px] items-center justify-between border-b border-[#E4E4E4]">

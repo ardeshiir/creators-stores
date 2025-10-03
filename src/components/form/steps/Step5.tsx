@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input from '@/components/ui/input'
 import { safeArray } from '@/lib/form'
-import { numberToEnglish } from '@/lib/utils'
+import { normalizeNumericInput } from '@/lib/utils'
 
 export const schema5 = z.object({
   address: z.object({
@@ -73,7 +73,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
           control={form.control}
           name="address.district"
           render={({ field }) => (
-            <FormItem className="col-span-1">
+            <FormItem className="col-span-2 md:col-span-1">
               <FormControl>
                 <Input placeholder="منطقه" {...field} />
               </FormControl>
@@ -154,9 +154,15 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                       <Input
                         {...field}
                         onChange={(e) => {
-                          const normalized = numberToEnglish(e.target.value)
+                          const normalized = normalizeNumericInput(e.target.value)
 
-                          field.onChange(normalized)
+                          if (normalized === '') {
+                            field.onChange(null)
+
+                            return
+                          }
+
+                          field.onChange(Number(normalized))
                         }}
                         placeholder="تلفن همراه"
                         startIconClassName="text-placeholder font-medium"

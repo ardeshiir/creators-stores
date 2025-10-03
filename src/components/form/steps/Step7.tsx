@@ -23,7 +23,7 @@ export const schema7 = z.object({
   displayStand: z
     .object({
       type: z.enum(['reglam', 'ontable', 'none']),
-      brand: z.string().optional(),
+      brand: z.string().optional().nullable(),
       attachments: z.string().nullable(),
     })
     .optional(),
@@ -90,13 +90,13 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
             )}
           />
         }
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
           {['reglam', 'ontable', 'none'].includes(displayStand.type) && (
             <FormField
               control={form.control}
               name="displayStand.brand"
               render={({ field }) => (
-                <FormItem className="relative col-span-2 md:col-span-1 md:size-fit">
+                <FormItem className="relative w-full md:size-fit">
                   <FormControl>
                     <InputSecondary
                       disabled={displayStand.type === 'none'}
@@ -112,12 +112,14 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
           )}
 
           {['reglam', 'ontable', 'none'].includes(displayStand.type) && (
-            <FormItem className='md:w-fit"'>
+            <FormItem className="md:mr-0 md:w-fit">
               <FormLabel
                 htmlFor="displayStand-attachment"
                 className={cn(
-                  'flex w-full cursor-pointer items-center justify-center gap-[18px] h-[56px] font-medium md:w-[163px] md:justify-between ',
-                  displayStand?.attachments ? '' : 'md:px-4 py-[14px] rounded-[16px] bg-[#EEEEEE]',
+                  'flex w-full mr-auto md:mr-0 cursor-pointer items-center justify-center gap-[18px] h-[56px] font-medium md:w-[163px] md:justify-between ',
+                  displayStand?.attachments
+                    ? ''
+                    : 'md:px-4 px-[19px] py-[14px] rounded-[16px] bg-[#EEEEEE]',
                   displayStand.type === 'none' && 'bg-[#F5F5F5] text-[#b6b6b6b6]',
                 )}
               >

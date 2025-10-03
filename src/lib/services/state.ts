@@ -1,5 +1,15 @@
 import { baseApi } from '@/lib/services/index'
 
+export interface City {
+  name: string
+  districts: number[]
+}
+
+export interface StateDTO {
+  name: string
+  cities: City[]
+}
+
 export const getAllStates = async () => {
-  return await baseApi.get<{ name: string; cities?: string[] }[]>(`/state`)
+  return await baseApi.get<StateDTO[]>(`/state`)
 }

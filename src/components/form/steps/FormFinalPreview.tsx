@@ -15,6 +15,10 @@ const displayStandDict: Record<string, string> = {
 const ImageItem = ({ url }: { url: string }) => {
   const [previewImg, setPreviewImg] = useState<string | null>(null)
 
+  if (!url) {
+    return null
+  }
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -69,23 +73,24 @@ const Row = ({
 }) => (
   <div
     className={cn(
-      'flex py-6 items-center justify-between border-b-[0.5px] border-[#B6B6B6] font-medium',
+      'flex py-3 items-center justify-between border-b-[0.5px] border-[#B6B6B6] font-medium',
       className,
     )}
   >
     <span className="text-nowrap font-medium">{label}</span>
-    <span className="font-medium">{value}</span>
+    <span className="font-fa-num font-medium">{value}</span>
   </div>
 )
 
 const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
+  console.log({ sign: data })
+
   return (
     <>
       <Section title="اطلاعات فروشگاه">
         <Row label="نام فروشگاه:" value={data.storeName} />
         <Row label="وضعیت ملک:" value={data.propertyStatus === 'rental' ? 'مستاجر' : 'مالک'} />
         <Row label="نام و نام خانوادگی:" value={`${data.name} ${data.lastName}`} />
-        <Row label="شماره تلفن:" value={data.mobile?.join(', ')} />
       </Section>
 
       <Section title="توضیحات فروشگاه">
@@ -104,13 +109,19 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
           label="نحوه خرید:"
           value={data.purchaseMethod === 'direct' ? 'مستقیم' : 'غیر مستقیم'}
         />
-        <Row label="سایر برندهای موجود در فروشگاه:" value={data.otherBrands?.join(', ')} />
+        <Row
+          label="سایر برندهای موجود در فروشگاه:"
+          className="flex-col items-start md:flex-row md:items-center"
+          value={data.otherBrands?.join(', ')}
+        />
       </Section>
 
       <Section title="آدرس فروشگاه">
-        <Row label="استان:" value={data.address?.state} />
-        <Row label="شهر:" value={data.address?.city} />
-        <Row label="آدرس:" value={data.address?.description} />
+        <Row
+          label="آدرس فروشگاه:"
+          className="flex-col items-start md:flex-row md:items-center"
+          value={`${data.address?.state ? data.address?.state + ',' : ''}${data.address?.city ? data.address?.city + ',' : ''}${data.address?.description || ''}`}
+        />
         <Row label="کد پستی:" value={data.address?.postalcode} />
         <Row label="شماره تلفن ثابت:" value={data.address?.phoneNumber?.join(', ')} />
       </Section>
@@ -120,39 +131,56 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
           label="موقعیت مکانی فروشگاه:"
           value={`${String(data?.stock) === 'true' ? 'بورس' : 'غیربورس'}, ${String(data?.mainStreet) === 'true' ? 'خیابان اصلی' : 'خیابان فرعی'}`}
         />
-        {data?.signBoard?.map((sb, i) => (
-          <div key={i} className="space-y-1">
-            <Row label="نوع تابلو سر‌درب:" className="border-b-0" value={sb.type} />
-            <Row
-              label="ارتفاع:"
-              className=" border-b-0 py-0"
-              value={<div>{`${sb.dimensions?.height} متر`}</div>}
-            />
-            <Row
-              label="عرض:"
-              className={(!!sb.attachments ? 'border-b-0' : 'pb-6', ' pt-0')}
-              value={<div>{`${sb.dimensions?.width}  متر`}</div>}
-            />
-            {sb.attachments && (
-              <Row label=" " className="pt-0" value={<ImageGroup urls={sb.attachments} />} />
-            )}
-            <div className="mt-3" />
-          </div>
-        ))}
+        {data?.signBoard?.map((sb, i) => {
+          console.log({ sb: sb })
+
+          return (
+            <div key={i} className="space-y-1">
+              <Row
+                label="نوع تابلو سر‌درب:"
+                className="border-b-0"
+                value={signboardDictionary[sb.type]}
+              />
+              <div
+                className={cn(
+                  'flex w-full items-center',
+                  !sb.attachments ? 'border-b-[0.5px] border-[#B6B6B6] pb-3' : 'pb-6',
+                )}
+              >
+                <div className="flex flex-1 items-center justify-between border-l border-[#b6b6b6] pl-3">
+                  <span>ارتفاع:</span>
+                  <span className="font-fa-num">{`${sb.dimensions?.height || 0} متر`}</span>
+                </div>
+                <div className="flex flex-1 items-center justify-between pr-3">
+                  <span>عرض:</span>
+                  <span className="font-fa-num">{`${sb.dimensions?.width || 0}  متر`}</span>
+                </div>
+              </div>
+              {sb.attachments && (
+                <Row label=" " className="pt-0" value={<ImageGroup urls={sb.attachments} />} />
+              )}
+              <div className="mt-3" />
+            </div>
+          )
+        })}
       </Section>
 
       <Section title="">
         <div className="space-y-1">
           <Row
             label="استند نمایش محصول:"
-            className={cn(data.displayStand?.attachments && 'items-start')}
-            value={
-              <div className="flex flex-col items-end">
-                {displayStandDict[data.displayStand?.type as string]}
-                <ImageGroup urls={data.displayStand?.attachments} />
-              </div>
-            }
+            className={cn(
+              data.displayStand?.attachments && 'items-start',
+              data.displayStand?.type !== 'none' && 'border-b-0',
+            )}
+            value={data.displayStand?.type === 'none' ? 'ندارد' : 'دارد'}
           />
+          {data.displayStand?.type !== 'none' && (
+            <div className="flex items-center justify-between border-b-[0.5px] border-[#B6B6B6] pb-3">
+              {displayStandDict[data.displayStand?.type as string]}
+              <ImageGroup urls={data.displayStand?.attachments} />
+            </div>
+          )}
         </div>
       </Section>
 
@@ -164,12 +192,16 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
         />
         {data.showCase?.map((s, i) => (
           <div key={i} className="space-y-1">
-            <Row
-              className=" border-b-0 py-0"
-              label="ارتفاع:"
-              value={`${s.dimensions?.height} متر`}
-            />
-            <Row className=" border-b-0 py-0" label="عرض:" value={`${s.dimensions?.width} متر`} />
+            <div className={cn('flex w-full items-center', 'pb-6')}>
+              <div className="flex flex-1 items-center justify-between border-l border-[#b6b6b6] pl-3">
+                <span>ارتفاع:</span>
+                <span className="font-fa-num">{`${s.dimensions?.height || 0} متر`}</span>
+              </div>
+              <div className="flex flex-1 items-center justify-between pr-3">
+                <span>عرض:</span>
+                <span className="font-fa-num">{`${s.dimensions?.width || 0}  متر`}</span>
+              </div>
+            </div>
             <Row
               label="قابلیت نصب استیکر و مش:"
               className={cn(s.attachments && 'items-start', 'pt-0')}
@@ -189,11 +221,13 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
           label="تصاویر بیرونی فروشگاه:"
           value={
             <div className="flex gap-2">
-              {data.externalImages?.map((pair, i) => (
-                <div key={i} className="flex gap-2">
-                  <ImageGroup urls={pair} />
-                </div>
-              ))}
+              {!data.externalImages?.filter(Boolean).length
+                ? 'ندارد'
+                : data.externalImages?.map((pair, i) => (
+                    <div key={i} className="flex gap-2">
+                      <ImageGroup urls={pair} />
+                    </div>
+                  ))}
             </div>
           }
         />
@@ -201,11 +235,13 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
           label="تصاویر داخلی فروشگاه:"
           value={
             <div className="flex gap-2">
-              {data.internalImages?.map((pair, i) => (
-                <div key={i} className="flex gap-2">
-                  <ImageGroup urls={pair} />
-                </div>
-              ))}
+              {!data.internalImages?.filter(Boolean).length
+                ? 'ندارد'
+                : data.internalImages?.map((pair, i) => (
+                    <div key={i} className="flex gap-2">
+                      <ImageGroup urls={pair} />
+                    </div>
+                  ))}
             </div>
           }
         />
@@ -215,11 +251,18 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
         <Row
           label="توضیحات تکمیلی:"
           className="flex-col items-start border-b-0"
-          value={data.description}
+          value={data.description?.trim() || 'ندارد'}
         />
       </Section>
     </>
   )
+}
+
+const signboardDictionary = {
+  none: 'فاقد تابلو سردرب',
+  banner: 'بنر',
+  composite: 'کامپوزیت',
+  other: 'سایر',
 }
 
 export default FormFinalPreview

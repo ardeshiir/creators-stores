@@ -96,16 +96,18 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
     type,
     array,
     label,
+    className,
   }: {
     type: 'externalImages' | 'internalImages'
     array: typeof externalImages
     label: string
+    className?: string
   }) => (
-    <div className="space-y-4">
+    <div className={cn('space-y-4', className)}>
       <FormLabel className="text-lg font-bold text-black">{label}</FormLabel>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {array?.map((image, index) => (
-          <div key={index} className="relative space-y-4">
+          <div key={index} className="relative flex-1 md:flex-initial">
             {array[index]?.length > 1 && (
               <Button
                 type="button"
@@ -125,8 +127,8 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
                 <FormLabel
                   htmlFor={`${type}-${index}`}
                   className={cn(
-                    'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
-                    image ? '' : 'md:px-4 py-[14px] rounded-[20px] bg-[#EEEEEE]',
+                    'flex w-full cursor-pointer items-center justify-center gap-[18px] font-medium md:w-[163px] md:justify-between ',
+                    image ? '' : 'md:px-4 py-[14px] rounded-[20px] bg-[#EEEEEE] h-[56px]',
                   )}
                 >
                   {image ? (
@@ -142,7 +144,7 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
                       </div>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-[15px] px-3">
+                    <div className="flex items-center gap-[15px] text-nowrap px-3">
                       <CameraIcon />
                       تصویر ضمیمه {numberToPersian(index + 1)}
                     </div>
@@ -164,33 +166,39 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
           </div>
         ))}
       </div>
-
-      <Button
-        className="text-brand-primary"
-        type="button"
-        variant="text"
-        onClick={() =>
-          form.setValue(type, [
-            ...(type === 'externalImages' ? externalImages || [] : internalImages || []),
-            null,
-          ])
-        }
-      >
-        + تصویر بیشتر{' '}
-      </Button>
+      <div className="flex w-full items-center justify-end md:justify-start">
+        <Button
+          className="text-brand-primary"
+          type="button"
+          variant="text"
+          onClick={() =>
+            form.setValue(type, [
+              ...(type === 'externalImages' ? externalImages || [] : internalImages || []),
+              null,
+            ])
+          }
+        >
+          + تصویر بیشتر{' '}
+        </Button>
+      </div>
     </div>
   )
 
   return (
     <div className="mx-auto w-full ">
       <ImagesList type="externalImages" array={externalImages} label="تصاویر بیرونی فروشگاه" />
-      <ImagesList type="internalImages" array={internalImages} label="تصاویر داخلی فروشگاه" />
+      <ImagesList
+        type="internalImages"
+        array={internalImages}
+        label="تصاویر داخلی فروشگاه"
+        className="mt-4"
+      />
 
       <FormField
         control={form.control}
         name="description"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="mt-5">
             {/*<FormLabel>توضیحات</FormLabel>*/}
             <FormControl>
               <Textarea placeholder="توضیحات تکمیلی" rows={4} {...field} />

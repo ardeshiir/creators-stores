@@ -33,3 +33,11 @@ export function formatTimer(seconds: number) {
 export const numberToPersian = (number: number) => {
   return new Intl.NumberFormat('fa-IR').format(number)
 }
+
+export function normalizeNumericInput(str: string): string {
+  // Convert Persian/Arabic digits → English
+  const english = str.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
+
+  // Remove any non-digit characters
+  return english.replace(/[^0-9]/g, '')
+}

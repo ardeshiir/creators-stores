@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { normalizeNumericInput } from '@/lib/utils'
 
 // ✅ helper to normalize Persian numbers
 function numberToEnglish(str: string): string {
@@ -55,10 +56,15 @@ export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
                   inputMode="numeric" // ✅ allows Persian or English numbers
                   value={field.value ?? ''}
                   onChange={(e) => {
-                    const normalized = numberToEnglish(e.target.value)
-                    const num = parseInt(normalized, 10)
+                    const normalized = normalizeNumericInput(e.target.value)
 
-                    field.onChange(isNaN(num) ? undefined : num)
+                    if (normalized === '') {
+                      field.onChange(null)
+
+                      return
+                    }
+
+                    field.onChange(Number(normalized))
                   }}
                 />
               </FormControl>

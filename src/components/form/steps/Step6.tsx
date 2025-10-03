@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { uploadFile } from '@/lib/services/upload'
-import { cn } from '@/lib/utils'
+import { cn, normalizeNumericInput } from '@/lib/utils'
 
 export const schema6 = z.object({
   stock: z.enum(['true', 'false']).optional(),
@@ -31,8 +31,8 @@ export const schema6 = z.object({
         type: z.enum(['banner', 'composite', 'other', 'none']),
         dimensions: z
           .object({
-            width: z.number().optional(),
-            height: z.number().optional(),
+            width: z.number().optional().nullable(),
+            height: z.number().optional().nullable(),
           })
           .optional(),
         attachments: z.string().optional().nullable(),
@@ -163,8 +163,12 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
               key={field.id}
               className="relative col-span-2 grid grid-cols-2 gap-4 p-0 md:flex md:flex-col md:items-start"
             >
-              <FormLabel className="text-lg font-bold text-black">تابلو سردرب</FormLabel>
-              <div className="relative flex items-center justify-center gap-4">
+              {index === 0 && (
+                <FormLabel className="col-span-2 text-lg font-bold text-black">
+                  تابلو سردرب
+                </FormLabel>
+              )}
+              <div className="relative col-span-2 flex flex-wrap items-center justify-center gap-4">
                 {fields.length > 1 && (
                   <Button
                     type="button"
@@ -181,7 +185,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                   control={form.control}
                   name={`signBoard.${index}.type`}
                   render={({ field }) => (
-                    <FormItem className="col-span-2 md:w-[258px]">
+                    <FormItem className="col-span-2 w-full md:w-[258px]">
                       {/*<FormLabel>Type</FormLabel>*/}
                       <FormControl>
                         <Select onValueChange={field.onChange}>
@@ -218,9 +222,19 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             <Input
                               startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
                               placeholder="ارتفاع"
-                              type="number"
+                              inputMode="numeric"
                               {...field}
-                              onChange={(e) => field.onChange(+e.target.value)}
+                              onChange={(e) => {
+                                const normalized = normalizeNumericInput(e.target.value)
+
+                                if (normalized === '') {
+                                  field.onChange(null)
+
+                                  return
+                                }
+
+                                field.onChange(Number(normalized))
+                              }}
                             />
                           </FormControl>
                           <FormMessage />
@@ -237,9 +251,21 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             <Input
                               startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
                               placeholder="عرض"
-                              type="number"
+                              inputMode="numeric"
                               {...field}
-                              onChange={(e) => field.onChange(+e.target.value)}
+                              onChange={(e) => {
+                                const normalized = normalizeNumericInput(e.target.value)
+
+                                console.log({ normalized })
+
+                                if (normalized === '') {
+                                  field.onChange(null)
+
+                                  return
+                                }
+
+                                field.onChange(Number(normalized))
+                              }}
                             />
                           </FormControl>
                           <FormMessage />
@@ -249,11 +275,11 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                   </div>
                 )}
                 {form.watch('signBoard')?.[0]?.type !== 'none' && (
-                  <FormItem className="col-span-1">
+                  <FormItem className="col-span-1 flex w-full justify-start md:w-auto">
                     <FormLabel
                       htmlFor="signboard-attachment"
                       className={cn(
-                        'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
+                        'flex w-fit cursor-pointer px-[19px] items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
                         signBoards?.[index] &&
                           signBoards?.[index].attachments &&
                           typeof signBoards?.[index].attachments === 'string'
@@ -308,7 +334,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
               onClick={() =>
                 append({
                   type: 'banner',
-                  dimensions: { width: 0, height: 0 },
+                  dimensions: { width: null, height: null },
                   attachments: undefined,
                 })
               }

@@ -160,13 +160,13 @@ export default function MultiStepForm() {
   const firstStepIsValid = storeName && storeCode && propertyStatus && name && lastName
 
   return (
-    <div className="relative flex h-full grow flex-col justify-between">
+    <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto md:max-h-full">
       {/* 👇 Animation wrapper */}
       <div
         key={step}
         ref={contentRef}
         className={cn(
-          'min-h-[546px]',
+          'min-h-[546px] w-full',
           step !== 9 && 'mx-auto md:w-[806px] md:max-w-[100vw]',
           step === 5 && 'md:w-auto',
         )}
@@ -178,7 +178,7 @@ export default function MultiStepForm() {
         />
       </div>
       {/* Buttons + Progress Bar */}
-      <div className="mx-auto flex w-full max-w-[562px] flex-col gap-[34px] pb-4 md:gap-[64px]">
+      <div className="fixed inset-x-0 bottom-0 mx-auto flex w-full max-w-[562px] flex-col gap-[34px] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-9 py-[35px] pb-4 md:static md:gap-[64px] md:px-0">
         <div
           className={cn('grid grid-cols-12 gap-4', step === stepsCount - 1 && 'flex-row-reverse')}
         >
@@ -290,7 +290,7 @@ const VerifyOTP = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(submitOTP)}
-        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[16px] px-9 py-[72px] md:w-auto md:gap-[24px] md:border md:px-[96px]"
+        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[16px] py-[72px] md:w-auto md:gap-[24px] md:border md:px-[96px]"
       >
         <div className="flex w-full flex-col items-start gap-6 md:items-center">
           <span className="text-[18px] font-medium text-black">

@@ -15,17 +15,17 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import Input, { InputSecondary } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItemSecondary } from '@/components/ui/radio-group'
 import { uploadFile } from '@/lib/services/upload'
-import { cn } from '@/lib/utils'
+import { cn, normalizeNumericInput } from '@/lib/utils'
 
 export const schema8 = z.object({
   showCase: z
     .array(
       z.object({
         dimensions: z.object({
-          width: z.number().optional(),
-          height: z.number().optional(),
+          width: z.number().optional().nullable(),
+          height: z.number().optional().nullable(),
         }),
-        sticker: z.boolean().optional(),
+        sticker: z.boolean().optional().nullable(),
         attachments: z.string().optional().nullable(),
       }),
     )
@@ -80,11 +80,11 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
             }
           }}
         >
-          <div className="order-1 col-span-1 flex items-center space-x-2 md:order-2 md:w-[152px]">
-            <RadioGroupItemSecondary className="h-[67px] md:h-[56px]" label="دارد" value="true" />
-          </div>
-          <div className="order-2 flex items-center space-x-2 md:order-1 md:w-[258px]">
+          <div className="flex items-center space-x-2 md:w-[258px]">
             <RadioGroupItemSecondary className="h-[67px] md:h-[56px]" label="ندارد" value="false" />
+          </div>
+          <div className="col-span-1 flex items-center space-x-2 md:w-[258px]">
+            <RadioGroupItemSecondary className="h-[67px] md:h-[56px]" label="دارد" value="true" />
           </div>
         </RadioGroup>
       </div>
@@ -115,7 +115,18 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                         startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
                         placeholder="عرض"
                         {...field}
-                        onChange={(e) => field.onChange(+e.target.value)}
+                        inputMode="numeric"
+                        onChange={(e) => {
+                          const normalized = normalizeNumericInput(e.target.value)
+
+                          if (normalized === '') {
+                            field.onChange(null)
+
+                            return
+                          }
+
+                          field.onChange(Number(normalized))
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -133,7 +144,18 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                         startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
                         placeholder="ارتفاع"
                         {...field}
-                        onChange={(e) => field.onChange(+e.target.value)}
+                        inputMode="numeric"
+                        onChange={(e) => {
+                          const normalized = normalizeNumericInput(e.target.value)
+
+                          if (normalized === '') {
+                            field.onChange(null)
+
+                            return
+                          }
+
+                          field.onChange(Number(normalized))
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -161,12 +183,12 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                         onValueChange={field.onChange}
                         defaultValue={true}
                       >
-                        <FormItem className="order-2 flex items-center space-x-2 md:order-1 md:w-[258px]">
+                        <FormItem className="flex items-center md:w-[258px]">
                           <FormControl>
                             <RadioGroupItemSecondary label="ندارد" value={true} />
                           </FormControl>
                         </FormItem>
-                        <FormItem className="order-1 col-span-1 flex items-center space-x-2 md:order-2 md:w-[152px]">
+                        <FormItem className="flex items-center md:w-[258px]">
                           <FormControl>
                             <RadioGroupItemSecondary label="دارد" value={false} />
                           </FormControl>

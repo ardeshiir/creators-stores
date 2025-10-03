@@ -28,3 +28,31 @@ export const deactivateUserByID = async (id: number) => {
 export const searchUsers = async (searchQuery: string) => {
   return await baseApi.get<Partial<UserInfo>[]>(`/user/search?q=${searchQuery}`)
 }
+
+// services/users.ts
+export interface UserFilterParams {
+  state?: string[]
+  city?: string[]
+  district?: number[]
+  role?: 'field_agent' | 'regional_manager' | 'global_manager'
+}
+
+export const getFilteredUsers = async (params: UserFilterParams) => {
+  const query = new URLSearchParams()
+
+  if (params.state?.length) {
+    params.state.forEach((s) => query.append('state', s))
+  }
+
+  if (params.city?.length) {
+    params.city.forEach((c) => query.append('city', c))
+  }
+
+  if (params.district?.length) {
+    params.district.forEach((d) => query.append('district', String(d)))
+  }
+
+  if (params.role) query.append('role', params.role)
+
+  return await baseApi.get<UserInfo[]>(`/user/filter?${query.toString()}`)
+}
