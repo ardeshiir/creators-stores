@@ -57,7 +57,7 @@ export default function Step1({ form }: { form: UseFormReturn<Step1Values> }) {
   }
 
   return (
-    <div className="mx-auto max-w-[733px] md:min-h-[300px]">
+    <div className="mx-auto max-w-[733px]">
       <div className="grid grid-cols-6 gap-4">
         <FormField
           control={form.control}

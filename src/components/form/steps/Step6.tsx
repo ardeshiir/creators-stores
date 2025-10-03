@@ -78,7 +78,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
   const signBoards = form.watch('signBoard')
 
   return (
-    <div className="mx-auto flex w-full max-w-screen-lg items-center justify-center md:min-h-[300px]">
+    <div className="mx-auto flex w-full max-w-screen-lg items-center justify-center">
       <div className="w-full">
         <FormLabel className="text-lg font-bold text-black">موقعیت مکانی فروشگاه</FormLabel>
         <div className="mt-4 grid grid-cols-2 gap-4 md:flex md:flex-col">

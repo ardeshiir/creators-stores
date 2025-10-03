@@ -32,7 +32,7 @@ export type Step2Values = z.infer<typeof schema2>
 
 export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
   return (
-    <div className="md:min-h-[300px]">
+    <div className="">
       <div className="mx-auto grid max-w-[733px] grid-cols-6 gap-4">
         {/* Area */}
         <FormField

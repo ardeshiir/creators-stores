@@ -167,7 +167,7 @@ export default function MultiStepForm() {
   return (
     <div className="relative flex h-full grow flex-col justify-between">
       {/* 👇 Animation wrapper */}
-      <div key={step} ref={contentRef} className="space-y-4 pb-12">
+      <div key={step} ref={contentRef}>
         <StepManager
           step={step}
           onNext={step === stepsCount - 1 ? handlePreFinalSubmit : handleNext}

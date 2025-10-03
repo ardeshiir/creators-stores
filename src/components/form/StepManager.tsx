@@ -23,7 +23,7 @@ export function StepManager({
 
   return (
     <Form {...form}>
-      <form id={`step-form-${step}`} onSubmit={form.handleSubmit(onNext, onerror)} className="pb-6">
+      <form id={`step-form-${step}`} onSubmit={form.handleSubmit(onNext, onerror)}>
         <Component form={form} />
       </form>
     </Form>

@@ -38,7 +38,7 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
   }
 
   return (
-    <div className="mx-auto grid max-w-[733px] grid-cols-6 gap-5 md:min-h-[300px]">
+    <div className="mx-auto grid max-w-[733px] grid-cols-6 gap-5">
       <FormField
         control={form.control}
         name="foa"

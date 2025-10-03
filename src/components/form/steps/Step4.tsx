@@ -74,7 +74,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[562px] md:min-h-[300px]">
+    <div className="mx-auto w-full max-w-[562px]">
       <FormItem>
         <FormLabel className="text-lg font-bold text-black">
           سایر برند‌های موجود در فروشگاه
