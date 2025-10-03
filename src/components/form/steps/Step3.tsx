@@ -38,7 +38,7 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
   }
 
   return (
-    <div className="mx-auto grid max-w-[733px] grid-cols-6 gap-5">
+    <div className="mx-auto grid  grid-cols-6 gap-5">
       <FormField
         control={form.control}
         name="foa"
@@ -54,7 +54,7 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
                   render={() => (
                     <FormItem
                       key={option}
-                      className="min-w-auto col-span-1 flex items-center space-x-2 md:min-w-[182px]"
+                      className="min-w-auto col-span-1 flex items-center space-x-2 md:min-w-[258px]"
                     >
                       <FormControl>
                         <CheckboxSecondary
@@ -78,7 +78,7 @@ export default function Step3({ form }: { form: UseFormReturn<Step3Values> }) {
                 render={() => (
                   <FormItem
                     key="option"
-                    className="min-w-auto col-span-2 flex items-center md:min-w-[182px]"
+                    className="min-w-auto col-span-2 flex items-center md:min-w-[258px]"
                   >
                     <FormControl>
                       <InputSecondary

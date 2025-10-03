@@ -40,7 +40,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[733px]">
+    <div className="mx-auto w-full ">
       <FormLabel className="text-lg font-bold text-black">آدرس فروشگاه</FormLabel>
       <div className="mt-4 grid grid-cols-2 gap-4">
         <FormField
@@ -104,7 +104,8 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                 <Input
                   placeholder="کد پستی"
                   {...field}
-                  startIconClassName="text-placeholder font-medium"
+                  className="font-fa-num"
+                  startIconClassName="text-placeholder font-medium font-fa-num"
                   startIcon={
                     field.value ? undefined : (
                       <span onClick={() => form.setFocus('address.postalcode')}>۱۲۳۴۵۶۷۸۹</span>

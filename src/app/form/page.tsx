@@ -22,7 +22,7 @@ export default function FormPage() {
 
   return (
     <>
-      <div className="h-full px-9 md:mt-12 md:h-auto">
+      <div className="h-full px-9 md:h-auto">
         <MultiStepForm />
       </div>
       {isDesktop && (

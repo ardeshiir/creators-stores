@@ -53,7 +53,6 @@ export default function MultiStepForm() {
   const form = useForm({
     resolver: schema ? zodResolver(schema) : undefined,
     defaultValues: {
-      mobile: [''],
       propertyStatus: null,
       otherBrands: [],
       address: {
@@ -147,8 +146,6 @@ export default function MultiStepForm() {
     return <VerifyOTP shopID={preSubmittedShopId} setSubmitted={setSubmitted} />
   }
 
-  console.log({ mobile: form.watch('mobile') })
-
   // @ts-ignore
   const storeName = form.watch('storeName')?.length > 0
   // @ts-ignore
@@ -159,15 +156,17 @@ export default function MultiStepForm() {
   const name = form.watch('name')?.length > 0
   // @ts-ignore
   const lastName = form.watch('lastName')?.length > 0
-  // @ts-ignore
-  const mobile = form.watch('mobile')?.length > 0
 
-  const firstStepIsValid = storeName && storeCode && propertyStatus && name && lastName && mobile
+  const firstStepIsValid = storeName && storeCode && propertyStatus && name && lastName
 
   return (
     <div className="relative flex h-full grow flex-col justify-between">
       {/* 👇 Animation wrapper */}
-      <div key={step} ref={contentRef}>
+      <div
+        key={step}
+        ref={contentRef}
+        className={cn('min-h-[546px]', step !== 9 && 'mx-auto md:w-[806px] md:max-w-[100vw]')}
+      >
         <StepManager
           step={step}
           onNext={step === stepsCount - 1 ? handlePreFinalSubmit : handleNext}

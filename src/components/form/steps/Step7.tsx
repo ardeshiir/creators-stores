@@ -57,7 +57,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
   const displayStand = form.watch('displayStand')
 
   return (
-    <div className="mx-auto w-full max-w-[562px]">
+    <div className="mx-auto w-full">
       <FormLabel className="text-lg font-bold text-black">استند نمایش محصول</FormLabel>
 
       <div className={cn('grid-cols-2 grid gap-4', 'mt-4')}>

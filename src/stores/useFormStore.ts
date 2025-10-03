@@ -9,7 +9,6 @@ export interface FormState {
     propertyStatus?: 'rental' | 'owner'
     name?: string
     lastName?: string
-    mobile?: string[]
     storeDescription?: {
       area?: number
       activityHistory?: number

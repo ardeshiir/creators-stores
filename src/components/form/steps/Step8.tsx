@@ -67,7 +67,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[733px]">
+    <div className="mx-auto w-full ">
       <FormLabel className="mb-4 text-lg font-bold text-black">ویترین نمایش محصول</FormLabel>
       <div className="col-span-2 grid grid-cols-2 gap-[12px]">
         <RadioGroup

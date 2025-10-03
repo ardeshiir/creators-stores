@@ -182,7 +182,7 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
   )
 
   return (
-    <div className="mx-auto w-full max-w-[733px]">
+    <div className="mx-auto w-full ">
       <ImagesList type="externalImages" array={externalImages} label="تصاویر بیرونی فروشگاه" />
       <ImagesList type="internalImages" array={internalImages} label="تصاویر داخلی فروشگاه" />
 
