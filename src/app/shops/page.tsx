@@ -551,7 +551,7 @@ const ShopItemCard = ({
   const router = useRouter()
 
   return (
-    <div className=" flex w-full flex-col gap-4 rounded-[14px] border border-[#e4e4e4] px-6 py-4 sm:w-[350px]">
+    <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 sm:w-[350px]">
       <div className="flex w-full items-start justify-between">
         <div className="flex flex-col">
           <span className="text-[18px] font-bold">{storeName}</span>

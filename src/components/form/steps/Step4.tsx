@@ -144,7 +144,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
         {current.map((brand, i) => (
           <li
             key={i}
-            className="flex h-[51px] items-center justify-between rounded-[20px] border border-border bg-[#F5F5F5] px-3 py-1 text-lg font-medium text-black md:min-w-[176px] md:rounded-[14px]"
+            className="flex h-[51px] items-center justify-between rounded-[20px] border border-border bg-[#F5F5F5] px-3 py-1 text-lg font-medium text-black md:min-w-[176px] md:rounded-[16px]"
           >
             <Button type="button" size="icon" variant="ghost" onClick={() => removeBrand(i)}>
               <X size={16} />

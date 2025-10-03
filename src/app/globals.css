@@ -79,7 +79,7 @@ body, input, button, span {
 
 @layer components {
     .desktop-card {
-        @apply drop-shadow-[0px_4px_49.6px_0px_#0000001F] md:rounded-[14px] md:border-[0.33px] md:border-border md:px-[56px] md:py-[72px]
+        @apply drop-shadow-[0px_4px_49.6px_0px_#0000001F] md:rounded-[16px] md:border-[0.33px] md:border-border md:px-[56px] md:py-[72px]
     }
 
     .button-shadow {

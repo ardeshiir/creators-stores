@@ -128,7 +128,7 @@ const LoginSecondStep = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(submitOTP)}
-        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[14px] px-9 py-[72px] md:w-auto md:gap-[24px] md:border md:px-[96px]"
+        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[16px] px-9 py-[72px] md:w-auto md:gap-[24px] md:border md:px-[96px]"
       >
         <div className="flex w-full flex-col items-start gap-6 md:items-center">
           <span className="text-[18px] font-medium text-black">

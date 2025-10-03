@@ -19,7 +19,7 @@ import { deactivateUserByID, getAllUsers, searchUsers } from '@/lib/services/use
 import { numberToPersian } from '@/lib/utils'
 
 const Page = () => {
-  const { data, isLoading } = useQuery({ queryKey: ['users'], queryFn: getAllUsers })
+  const { data, isLoading, error } = useQuery({ queryKey: ['users'], queryFn: getAllUsers })
   const { userInfo, isAuthenticated, isGettingAuthState } = useAuthStore()
   const isSuperAdmin = userInfo?.role === 'global_manager'
   const router = useRouter()
@@ -52,12 +52,12 @@ const Page = () => {
     return () => clearTimeout(timeout)
   }, [query])
 
-  useEffect(() => {
-    if ((!isSuperAdmin || !isAuthenticated) && !isGettingAuthState) {
-      toast.error('شما سطح دسترسی لازم را ندارید')
-      router.replace('/')
-    }
-  }, [])
+  /*  useEffect(() => {
+      if ((!isSuperAdmin || !isAuthenticated) && !isGettingAuthState) {
+        toast.error('شما سطح دسترسی لازم را ندارید')
+        router.replace('/')
+      }
+    }, [])*/
 
   if (isLoading) {
     return (
@@ -115,7 +115,7 @@ const UserItemCard = ({ user }: { user: UserInfo }) => {
   const [deletionModalOpen, setDeletionModalOpen] = useState(false)
 
   return (
-    <div className=" flex w-full flex-col gap-4 rounded-[14px] border border-[#e4e4e4] px-6 py-4 sm:w-[450px]">
+    <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 sm:w-[450px]">
       <div className="flex w-full items-center justify-between">
         <div className="flex flex-col">
           <span className="text-[18px] font-bold">{user.name + ' ' + user.lastName}</span>

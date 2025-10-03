@@ -43,7 +43,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            'file:text-black placeholder:text-muted-foreground font-fa-num selection:bg-primary selection:text-primary-foreground border-border flex h-[67px] md:h-[56px] w-full min-w-0 rounded-[14px] border bg-transparent px-3 py-1 text-lg placeholder:text-lg text-secondary-foreground placeholder:text-secondary-foreground shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ',
+            'file:text-black placeholder:text-muted-foreground font-fa-num selection:bg-primary selection:text-primary-foreground border-border flex h-[67px] md:h-[56px] w-full min-w-0 rounded-[16px] border bg-transparent px-3 py-1 text-lg placeholder:text-lg text-secondary-foreground placeholder:text-secondary-foreground shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 ',
             'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]',
             'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
             startIcon ? 'pl-8' : '',
@@ -69,7 +69,7 @@ function InputSecondary({ className, type, ...props }: React.ComponentProps<'inp
       type={type}
       data-slot="input"
       className={cn(
-        'file:text-black placeholder:text-black placeholder:font-medium selection:bg-primary selection:text-primary-foreground border-border flex h-[67px] md:h-[56px] w-full min-w-0 rounded-[14px] border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-lg',
+        'file:text-black placeholder:text-black placeholder:font-medium selection:bg-primary selection:text-primary-foreground border-border flex h-[67px] md:h-[56px] w-full min-w-0 rounded-[16px] border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-lg',
         'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
         'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
         className,

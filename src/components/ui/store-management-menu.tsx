@@ -63,7 +63,7 @@ const StoreManagementMenu = () => {
           )}
         </div>
       </div>
-      <button className="flex h-[47px] items-center justify-between rounded-[14px] border border-[#BABCBE] px-5 font-bold">
+      <button className="flex h-[47px] items-center justify-between rounded-[16px] border border-[#BABCBE] px-5 font-bold">
         دانلود فایل راهنما
         <PdfIcon />
       </button>

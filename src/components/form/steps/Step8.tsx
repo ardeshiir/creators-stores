@@ -185,7 +185,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                     'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
                     showCase?.[index].attachments
                       ? ''
-                      : 'md:px-4 py-[14px] rounded-[14px] bg-[#EEEEEE]',
+                      : 'md:px-4 py-[14px] rounded-[16px] bg-[#EEEEEE]',
                   )}
                 >
                   {showCase?.[index].attachments ? (

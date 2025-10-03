@@ -51,7 +51,7 @@ function RadioGroupItemSecondary({
   return (
     <RadioGroupPrimitive.Item
       className={cn(
-        'w-full text-center flex items-center h-12 justify-center rounded-[14px] border transition-colors text-lg font-medium',
+        'w-full text-center flex items-center h-12 justify-center rounded-[16px] border transition-colors text-lg font-medium',
         'data-[state=checked]:border-brand-primary data-[state=checked]:border-2 data-[state=checked]:font-bold',
         'data-[state=unchecked]:border-gray-200 data-[state=unchecked]:bg-[#FBFBFB] data-[state=unchecked]:text-black',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400',
