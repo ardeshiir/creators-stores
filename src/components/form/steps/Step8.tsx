@@ -41,12 +41,10 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
   })
 
   const showCase = form.watch('showCase')
-  const [hasShowCase, setHasShowCase] = useState<boolean>(false)
+  const [hasShowCase, setHasShowCase] = useState<string>('true')
 
   const handleUpload = async (files: FileList, index: number) => {
     const selectedFile = files[0]
-
-    console.log({ selectedFile })
 
     if (selectedFile) {
       const formData = new FormData()
@@ -74,9 +72,9 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
           className="col-span-2 grid grid-cols-2 gap-[12px] md:flex md:justify-end"
           onValueChange={(value) => {
             if (value === 'true') {
-              setHasShowCase(true)
+              setHasShowCase('true')
             } else {
-              setHasShowCase(false)
+              setHasShowCase('false')
             }
           }}
         >

@@ -62,11 +62,11 @@ export default function MultiStepForm() {
         description: '',
         postalcode: '',
       },
-      mainStreet: 'true',
-      stock: 'true',
+      mainStreet: null,
+      stock: null,
       signBoard: [
         {
-          type: 'banner',
+          type: null,
           dimensions: { width: null, height: null },
           attachments: null,
         },
@@ -146,18 +146,116 @@ export default function MultiStepForm() {
     return <VerifyOTP shopID={preSubmittedShopId} setSubmitted={setSubmitted} />
   }
 
-  // @ts-ignore
-  const storeName = form.watch('storeName')?.length > 0
-  // @ts-ignore
-  const storeCode = form.watch('storeCode')?.length > 0
-  // @ts-ignore
-  const propertyStatus = form.watch('propertyStatus')?.length > 0
-  // @ts-ignore
-  const name = form.watch('name')?.length > 0
-  // @ts-ignore
-  const lastName = form.watch('lastName')?.length > 0
+  const stepValidation = (step: number) => {
+    if (step === 0) {
+      // @ts-ignore
+      const storeName = form.watch('storeName')?.length > 0
+      // @ts-ignore
+      const storeCode = form.watch('storeCode')?.length > 0
+      // @ts-ignore
+      const propertyStatus = form.watch('propertyStatus')?.length > 0
+      // @ts-ignore
+      const name = form.watch('name')?.length > 0
+      // @ts-ignore
+      const lastName = form.watch('lastName')?.length > 0
 
-  const firstStepIsValid = storeName && storeCode && propertyStatus && name && lastName
+      const isStepValid = storeName && storeCode && propertyStatus && name && lastName
+
+      return isStepValid
+    }
+
+    if (step === 1) {
+      // @ts-ignore
+      const area = !isNaN(form.watch('"storeDescription.area"'))
+      // @ts-ignore
+      const activityHistory = !isNaN(form.watch('"storeDescription.activityHistory"'))
+      // @ts-ignore
+      const cooperationHistory = !isNaN(form.watch('"storeDescription.cooperationHistory"'))
+      // @ts-ignore
+      const sellerType = form.watch('"storeDescription.sellerType"')?.length > 0
+
+      const isStepValid = area && activityHistory && cooperationHistory && sellerType
+
+      return isStepValid
+    }
+
+    if (step === 2) {
+      // @ts-ignore
+      const foa = form.watch('foa')?.length > 0
+      // @ts-ignore
+      const purchaseMethod = form.watch('purchaseMethod')?.length > 0
+
+      const isStepValid = foa && purchaseMethod
+
+      return isStepValid
+    }
+
+    if (step === 3) {
+      // @ts-ignore
+      const otherBrands = form.watch('otherBrands')?.length > 0
+
+      const isStepValid = otherBrands
+
+      return isStepValid
+    }
+
+    if (step === 4) {
+      // @ts-ignore
+      const state = form.watch('address.state')?.length > 0
+      // @ts-ignore
+      const city = form.watch('address.city')?.length > 0
+      // @ts-ignore
+      const district = !isNaN(form.watch('address.district'))
+      // @ts-ignore
+      const description = form.watch('address.description')?.length > 0
+      // @ts-ignore
+      const postalcode = form.watch('address.postalcode')?.length > 0
+      // @ts-ignore
+      const landLine = form.watch('address.landLine')?.length > 0
+      // @ts-ignore
+      const phoneNumber = !isNaN(form.watch('address.phoneNumber')?.[0])
+
+      const isStepValid =
+        state && city && district && description && postalcode && landLine && phoneNumber
+
+      return isStepValid
+    }
+
+    if (step === 5) {
+      // @ts-ignore
+      const stock = form.watch('stock') !== null
+      // @ts-ignore
+      const mainStreet = form.watch('mainStreet') !== null
+      // @ts-ignore
+      const signBoard =
+        // @ts-ignore
+        form.watch('signBoard')[0].type === 'none' ||
+        // @ts-ignore
+        (['banner', 'composite', 'other'].includes(form.watch('signBoard')[0].type) &&
+          // @ts-ignore
+          !isNaN(form.watch('signBoard')[0].dimensions.height) &&
+          // @ts-ignore
+          !isNaN(form.watch('signBoard')[0].dimensions.width))
+
+      const isStepValid = stock && mainStreet && signBoard
+
+      return isStepValid
+    }
+
+    if (step === 6) {
+      // @ts-ignore
+      const displayStand = ['reglam', 'ontable', 'none'].includes(form.watch('displayStand').type)
+
+      const isStepValid = displayStand
+
+      return isStepValid
+    }
+
+    if (step === 7 || step === 9 || step === 10) {
+      return true
+    }
+  }
+  const isStepValid = stepValidation(step)
 
   return (
     <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto md:max-h-full">
@@ -186,7 +284,7 @@ export default function MultiStepForm() {
             form={`step-form-${step}`}
             variant="brand"
             type="submit"
-            disabled={isSubmitting || !firstStepIsValid}
+            disabled={isSubmitting || !isStepValid}
             className={cn(
               'order-1 md:h-[56px] h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
               step === stepsCount - 1 && 'bg-[#00BD52]',
