@@ -255,7 +255,7 @@ const FiltersMenu = ({
     <div
       className={cn(
         'absolute bg-white transition-all pb-[75px] inset-0 pt-[64px]',
-        isOpen ? 'translate-x-0' : 'translate-x-full',
+        isOpen ? 'opacity-1 translate-x-0' : 'opacity-0 translate-x-full',
       )}
     >
       <div className="relative z-40 flex h-full flex-col pb-16">
