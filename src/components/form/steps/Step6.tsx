@@ -52,18 +52,13 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
   const handleUpload = async (files: FileList, index: number) => {
     const selectedFile = files[0]
 
-    console.log({ selectedFile })
-
     if (selectedFile) {
       const formData = new FormData()
 
       formData.append('file', selectedFile)
-      console.log({ formData })
 
       try {
         const uploadResponse = await uploadFile(formData)
-
-        console.log({ uploadResponse })
 
         if (uploadResponse?.data?.url) {
           form.setValue(`signBoard.${index}.attachments`, uploadResponse?.data?.url)
@@ -255,8 +250,6 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                               {...field}
                               onChange={(e) => {
                                 const normalized = normalizeNumericInput(e.target.value)
-
-                                console.log({ normalized })
 
                                 if (normalized === '') {
                                   field.onChange(null)

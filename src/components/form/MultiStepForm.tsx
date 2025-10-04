@@ -93,7 +93,6 @@ export default function MultiStepForm() {
 
   useEffect(() => {
     if (data) {
-      console.log({ forData: data })
       Object.keys(data).map((dataKey) => {
         if (data[dataKey]) {
           form.setValue(dataKey, data[dataKey])
@@ -120,8 +119,6 @@ export default function MultiStepForm() {
       setIsSubmitting(false)
     }
   }
-
-  console.log({ prperty: form.watch('propertyStatus') })
 
   // 👉 Animate step changes with gsap
   useEffect(() => {
@@ -364,7 +361,6 @@ const VerifyOTP = ({
         code: data.pin,
       })
 
-      console.log({ response })
       setSubmitted(true)
     } catch (error: any) {
       console.log({ error })
@@ -406,12 +402,10 @@ const VerifyOTP = ({
                       maxLength={5}
                       {...field}
                       onChange={(val) => {
-                        field.onChange(val) // update form state
-                        console.log({ val })
+                        field.onChange(val)
 
                         if (val.length === 5) {
-                          console.log('submitting')
-                          form.handleSubmit(submitOTP)() // auto-submit when full
+                          form.handleSubmit(submitOTP)()
                         }
                       }}
                     >

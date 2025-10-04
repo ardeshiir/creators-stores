@@ -83,8 +83,6 @@ const Row = ({
 )
 
 const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
-  console.log({ sign: data })
-
   return (
     <>
       <Section title="اطلاعات فروشگاه">
@@ -132,8 +130,6 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
           value={`${String(data?.stock) === 'true' ? 'بورس' : 'غیربورس'}, ${String(data?.mainStreet) === 'true' ? 'خیابان اصلی' : 'خیابان فرعی'}`}
         />
         {data?.signBoard?.map((sb, i) => {
-          console.log({ sb: sb })
-
           return (
             <div key={i} className="space-y-1">
               <Row

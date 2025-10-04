@@ -35,8 +35,6 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
   const handleUpload = async (files: FileList) => {
     const selectedFile = files[0]
 
-    console.log({ selectedFile })
-
     if (selectedFile) {
       const formData = new FormData()
 

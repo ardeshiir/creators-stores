@@ -13,7 +13,6 @@ export default function FormPage() {
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const router = useRouter()
 
-  console.log('trigger1')
   useEffect(() => {
     if (!isAuthenticated && !isGettingAuthState) {
       router.push('/')

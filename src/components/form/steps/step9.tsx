@@ -26,8 +26,6 @@ export type Step9Values = z.infer<typeof schema9>
 export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
   const { data } = useFormStore()
 
-  console.log({ step1Data: data })
-
   const internalImages = form.watch('internalImages')
 
   const externalImages = form.watch('externalImages')
@@ -40,8 +38,6 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
     const selectedFile = files[0]
 
     if (!selectedFile) return
-
-    console.log({ selectedType: type })
 
     const formData = new FormData()
 
@@ -76,11 +72,6 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
       console.log({ uploadError: e })
     }
   }
-
-  console.log({
-    externalImages,
-    internalImages,
-  })
 
   function removeItem(type: 'externalImages' | 'internalImages', arr: string[], index: number) {
     const _arr = [...arr]

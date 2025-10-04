@@ -147,10 +147,8 @@ const LoginSecondStep = ({
                       {...field}
                       onChange={(val) => {
                         field.onChange(val) // update form state
-                        console.log({ val })
 
                         if (val.length === 5) {
-                          console.log('submitting')
                           form.handleSubmit(submitOTP)() // auto-submit when full
                         }
                       }}

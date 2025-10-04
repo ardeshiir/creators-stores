@@ -98,8 +98,6 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-
     try {
       setSubmitting(true)
 
