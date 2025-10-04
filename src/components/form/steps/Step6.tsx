@@ -76,7 +76,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
     <div className="flex items-center justify-center">
       <div className="w-full">
         <FormLabel className="text-lg font-bold text-black">موقعیت مکانی فروشگاه</FormLabel>
-        <div className="mt-4 grid grid-cols-2 gap-4 md:flex md:flex-col">
+        <div className="mt-4 grid grid-cols-2 gap-6 md:flex md:flex-col">
           <div className="col-span-2 grid grid-cols-2 gap-4 md:flex md:flex-wrap ">
             <FormField
               control={form.control}
@@ -206,12 +206,12 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                 />
 
                 {form.watch('signBoard')?.[0]?.type !== 'none' && (
-                  <div className="col-span-2 flex gap-4">
+                  <div className="col-span-2 flex w-full gap-4 md:w-auto">
                     <FormField
                       control={form.control}
                       name={`signBoard.${index}.dimensions.height`}
                       render={({ field }) => (
-                        <FormItem className="flex-1">
+                        <FormItem className="flex-1 lg:w-[258px]">
                           {/*<FormLabel>Width</FormLabel>*/}
                           <FormControl>
                             <Input
@@ -240,7 +240,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                       control={form.control}
                       name={`signBoard.${index}.dimensions.width`}
                       render={({ field }) => (
-                        <FormItem className="flex-1">
+                        <FormItem className="flex-1 lg:w-[258px]">
                           {/*<FormLabel>Height</FormLabel>*/}
                           <FormControl>
                             <Input
@@ -277,7 +277,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                           signBoards?.[index].attachments &&
                           typeof signBoards?.[index].attachments === 'string'
                           ? ''
-                          : 'md:px-4 py-[14px] rounded-[16px] bg-[#EEEEEE]',
+                          : 'md:px-4 py-[14px] md:h-[56px] h-[67px] rounded-[16px] bg-[#EEEEEE]',
                       )}
                     >
                       {signBoards?.[index] &&
@@ -316,25 +316,27 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                   </FormItem>
                 )}
               </div>
+              {index === fields.length - 1 && (
+                <div className="col-span-2 flex justify-start">
+                  <Button
+                    type="button"
+                    variant="text"
+                    className="px-0 text-brand-primary disabled:cursor-not-allowed disabled:text-brand-primary disabled:opacity-100"
+                    disabled={form.watch('signBoard')?.[0]?.type === 'none'}
+                    onClick={() =>
+                      append({
+                        type: 'banner',
+                        dimensions: { width: null, height: null },
+                        attachments: undefined,
+                      })
+                    }
+                  >
+                    + اضافه کردن تابلو سردرب جدید
+                  </Button>
+                </div>
+              )}
             </div>
           ))}
-          <div className="col-span-2 flex justify-center md:justify-start">
-            <Button
-              type="button"
-              variant="text"
-              className="mt-2 px-0 text-brand-primary disabled:cursor-not-allowed disabled:text-brand-primary disabled:opacity-100"
-              disabled={form.watch('signBoard')?.[0]?.type === 'none'}
-              onClick={() =>
-                append({
-                  type: 'banner',
-                  dimensions: { width: null, height: null },
-                  attachments: undefined,
-                })
-              }
-            >
-              + اضافه کردن تابلو سردرب جدید
-            </Button>
-          </div>
         </div>
       </div>
     </div>

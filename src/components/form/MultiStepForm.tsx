@@ -56,11 +56,11 @@ export default function MultiStepForm() {
       propertyStatus: null,
       otherBrands: [],
       address: {
-        phoneNumber: [''],
-        state: '',
-        city: '',
-        description: '',
-        postalcode: '',
+        phoneNumber: [null],
+        state: null,
+        city: null,
+        description: null,
+        postalcode: null,
       },
       mainStreet: null,
       stock: null,
@@ -143,7 +143,10 @@ export default function MultiStepForm() {
     return <VerifyOTP shopID={preSubmittedShopId} setSubmitted={setSubmitted} />
   }
 
+  /*
   const stepValidation = (step: number) => {
+    console.log('running validation')
+
     if (step === 0) {
       // @ts-ignore
       const storeName = form.watch('storeName')?.length > 0
@@ -155,6 +158,14 @@ export default function MultiStepForm() {
       const name = form.watch('name')?.length > 0
       // @ts-ignore
       const lastName = form.watch('lastName')?.length > 0
+
+      console.log({
+        storeName,
+        storeCode,
+        propertyStatus,
+        name,
+        lastName,
+      })
 
       const isStepValid = storeName && storeCode && propertyStatus && name && lastName
 
@@ -170,6 +181,13 @@ export default function MultiStepForm() {
       const cooperationHistory = !isNaN(form.watch('"storeDescription.cooperationHistory"'))
       // @ts-ignore
       const sellerType = form.watch('"storeDescription.sellerType"')?.length > 0
+
+      console.log({
+        1: form.watch('"storeDescription.area"'),
+        12: form.watch('"storeDescription.activityHistory"'),
+        13: form.watch('"storeDescription.cooperationHistory"'),
+        14: form.watch('"storeDescription.sellerType"'),
+      })
 
       const isStepValid = area && activityHistory && cooperationHistory && sellerType
 
@@ -252,7 +270,7 @@ export default function MultiStepForm() {
       return true
     }
   }
-  const isStepValid = stepValidation(step)
+*/
 
   return (
     <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto md:max-h-full">
@@ -281,7 +299,7 @@ export default function MultiStepForm() {
             form={`step-form-${step}`}
             variant="brand"
             type="submit"
-            disabled={isSubmitting || !isStepValid}
+            disabled={isSubmitting || !form.formState.isValid}
             className={cn(
               'order-1 md:h-[56px] h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
               step === stepsCount - 1 && 'bg-[#00BD52]',

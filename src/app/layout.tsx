@@ -37,7 +37,9 @@ export default function RootLayout({
             <div className="px-9">
               <Header />
             </div>
-            <div className="relative h-full pt-[64px]">{children}</div>
+            <div className="relative h-full max-h-[calc(100vh-124px)] pt-[64px] md:max-h-[calc(100vh-98px)]">
+              {children}
+            </div>
           </div>
           <Toaster />
         </body>

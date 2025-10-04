@@ -56,7 +56,7 @@ const Page = () => {
 
   return (
     <div className="container relative mx-auto flex h-[calc(100vh-163px)] flex-col px-[24px] md:h-auto md:px-[56px] lg:px-[80px]">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-0.5">
         <h1 className="text-[22px] font-bold text-black">لیست فروشندگان ثبت شده</h1>
         <DropdownMenu>
           <DropdownMenuTrigger>
@@ -78,8 +78,7 @@ const Page = () => {
                 setFiltersModalOpen(true)
               }}
             >
-              {' '}
-              پیشرفته
+              جستجوی پیشرفته
               <ChevronLeft />
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -91,7 +90,7 @@ const Page = () => {
           onAccept={setFilters}
         />
       </div>
-      <div className="no-scrollbar mt-5 flex h-[65vh] flex-wrap items-start justify-center gap-6 overflow-y-auto md:items-center">
+      <div className="no-scrollbar mt-5 flex h-[65vh] flex-wrap items-start justify-center gap-6 overflow-y-auto px-0.5 md:items-center">
         {data?.data?.length > 0 ? (
           data?.data.map((shop) => (
             <ShopItemCard
@@ -262,7 +261,7 @@ const FiltersMenu = ({
           {/* منطقه */}
           <AccordionItem value="district" className="rounded-[24px] border">
             <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-              منطفه
+              منطقه
             </AccordionTrigger>
             <AccordionContent className="flex max-h-[200px] flex-col overflow-y-auto pb-0">
               {data?.data?.flatMap((state) =>
@@ -597,7 +596,7 @@ const ShopItemCard = ({
   const router = useRouter()
 
   return (
-    <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 pt-[64px] sm:w-[350px]">
+    <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 md:flex-1 xl:min-w-[350px]">
       <div className="flex w-full items-start justify-between">
         <div className="flex flex-col">
           <span className="text-[18px] font-bold">{storeName}</span>

@@ -207,19 +207,19 @@ const UserDeactivationModal = ({
 
   return (
     <ResponsiveDialog open={isOpen} onOpenChange={setIsOpen}>
-      <ResponsiveDialogContent className="flex flex-col gap-4">
+      <ResponsiveDialogContent className="flex flex-col gap-[26px] px-[24px] pt-[40px]">
         <p>آیا برای لغو دسترسی این کاربر مطمئن هستید؟</p>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-[16.5px]">
           <Button
             variant="brand"
-            className="h-[67px] flex-1 text-[20px] font-medium"
+            className="h-[67px] flex-1 rounded-[20px] text-[20px] font-medium"
             onClick={deactivateUser}
           >
             بله {isSubmitting && <LoadingSpinner />}
           </Button>
           <Button
             variant="default"
-            className="h-[67px] flex-1 text-[20px] font-medium"
+            className="h-[67px] flex-1 rounded-[20px] text-[20px] font-medium"
             onClick={() => {
               setIsOpen(false)
             }}

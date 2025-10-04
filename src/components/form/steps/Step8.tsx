@@ -94,7 +94,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                 control={form.control}
                 name={`showCase.${index}.dimensions.width`}
                 render={({ field }) => (
-                  <FormItem className="relative flex-1">
+                  <FormItem className="relative flex-1 md:max-w-[258px]">
                     {/*<FormLabel>Width</FormLabel>*/}
                     {fields.length > 1 && (
                       <Button
@@ -135,7 +135,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                 control={form.control}
                 name={`showCase.${index}.dimensions.height`}
                 render={({ field }) => (
-                  <FormItem className="flex-1">
+                  <FormItem className="flex-1 md:max-w-[258px]">
                     {/*<FormLabel>Width</FormLabel>*/}
                     <FormControl>
                       <Input
@@ -181,14 +181,22 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                         onValueChange={field.onChange}
                         defaultValue={true}
                       >
-                        <FormItem className="flex items-center md:w-[258px]">
+                        <FormItem className="flex h-[56px] items-center md:w-[258px]">
                           <FormControl>
-                            <RadioGroupItemSecondary label="ندارد" value={true} />
+                            <RadioGroupItemSecondary
+                              className="h-full"
+                              label="ندارد"
+                              value={true}
+                            />
                           </FormControl>
                         </FormItem>
-                        <FormItem className="flex items-center md:w-[258px]">
+                        <FormItem className="flex h-[56px] items-center md:w-[258px]">
                           <FormControl>
-                            <RadioGroupItemSecondary label="دارد" value={false} />
+                            <RadioGroupItemSecondary
+                              className="h-full"
+                              label="دارد"
+                              value={false}
+                            />
                           </FormControl>
                         </FormItem>
                       </RadioGroup>
@@ -205,7 +213,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                     'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
                     showCase?.[index].attachments
                       ? ''
-                      : 'md:px-4 py-[14px] rounded-[16px] bg-[#EEEEEE]',
+                      : 'md:px-4 py-[14px] h-[56px] rounded-[16px] bg-[#EEEEEE]',
                   )}
                 >
                   {showCase?.[index].attachments ? (

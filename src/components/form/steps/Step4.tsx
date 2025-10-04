@@ -92,7 +92,12 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
                 )}
                 placeholder="نام برند"
                 startIcon={
-                  <span className="relative flex items-center pr-2 after:absolute after:inset-y-0 after:right-0 after:w-px after:bg-[#BABCBE] after:content-['']">
+                  <span
+                    onClick={() => {
+                      setShowSuggestions((prev) => !prev)
+                    }}
+                    className="relative flex items-center pr-2 after:absolute after:inset-y-0 after:right-0 after:w-px after:bg-[#BABCBE] after:content-['']"
+                  >
                     <ChevronDownIcon className="size-4 text-muted-foreground" />
                   </span>
                 }

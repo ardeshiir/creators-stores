@@ -278,7 +278,7 @@ body, input, button, span {
 
 .var-font-title {
     font-family: "YekanBakhVar", sans-serif;
-    font-variation-settings: "wght" 360, "wdth" 100, "DOTS" 0;
+    font-variation-settings: "wght" 500, "wdth" 100, "DOTS" 0;
     @media (min-width: 768px) {
         font-variation-settings: "wght" 580, "wdth" 100, "DOTS" 0;
     }
