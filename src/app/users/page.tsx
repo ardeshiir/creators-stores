@@ -197,6 +197,8 @@ const UserDeactivationModal = ({
     try {
       setIsSubmitting(true)
       await deactivateUserByID(userId)
+      toast('لغو دسترسی با موفقیت انجام شد.')
+      setIsSubmitting(false)
     } catch (error: any) {
       toast.success(error?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
       console.log({ error })
