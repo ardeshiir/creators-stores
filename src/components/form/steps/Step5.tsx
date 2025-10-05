@@ -40,7 +40,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
   }
 
   return (
-    <div className="mx-auto w-full pb-[320px] md:pb-0">
+    <div className="mx-auto w-full pb-[220px] md:pb-0">
       <FormLabel className="text-lg font-bold text-black">آدرس فروشگاه</FormLabel>
       <div className="mt-4 grid grid-cols-2 gap-4">
         <FormField
