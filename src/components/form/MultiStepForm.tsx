@@ -281,7 +281,7 @@ export default function MultiStepForm() {
         className={cn(
           'min-h-[546px] w-full',
           step !== 9 && 'mx-auto md:w-[806px] md:max-w-[100vw]',
-          step === 5 && 'md:w-auto',
+          (step === 5 || step === 6) && 'md:w-auto md:mx-auto',
         )}
       >
         <StepManager
