@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 
 import { useRouter } from 'next/navigation'
 
@@ -22,7 +22,9 @@ export default function FormPage() {
   return (
     <>
       <div className="h-full px-9 md:h-auto">
-        <MultiStepForm />
+        <Suspense>
+          <MultiStepForm />
+        </Suspense>
       </div>
       {isDesktop && (
         <div className="mt-[122px] w-full">
