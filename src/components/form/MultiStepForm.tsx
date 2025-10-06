@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import gsap from 'gsap'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -24,7 +24,12 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import { ERRORS_DICTIONARY } from '@/lib/services/authentication'
-import { addShop, resendShopVerificationOTP, shopFinalSubmission } from '@/lib/services/shop'
+import {
+  addShop,
+  resendShopVerificationOTP,
+  shopFinalSubmission,
+  updateShop,
+} from '@/lib/services/shop'
 import { cn, formatTimer } from '@/lib/utils'
 import { useFormStore } from '@/stores/useFormStore'
 
@@ -50,6 +55,9 @@ export default function MultiStepForm() {
   const [submitted, setSubmitted] = useState(false)
   const [preSubmittedShopId, setPreSubmittedShopId] = useState<null | string>(null)
   const { schema } = steps[step]
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const isEditMode = searchParams.get('edit') === 'true'
   const form = useForm({
     resolver: schema ? zodResolver(schema) : undefined,
     defaultValues: {
@@ -83,7 +91,13 @@ export default function MultiStepForm() {
   const progress = ((step + 1) / stepsCount) * 100
   const contentRef = useRef<HTMLDivElement>(null)
 
-  const handleBack = () => setStep(Math.max(step - 1, 0))
+  const handleBack = () => {
+    if (step > 0) {
+      setStep(Math.max(step - 1, 0))
+    } else {
+      router.back()
+    }
+  }
   const handleNext = async (values: any) => {
     updateData(values)
     setStep(Math.min(step + 1, stepsCount - 1))
@@ -93,7 +107,10 @@ export default function MultiStepForm() {
 
   useEffect(() => {
     if (data) {
-      Object.keys(data).map((dataKey) => {
+      // @ts-ignore
+      const { verified, __v, _id, ...rest } = data
+
+      Object.keys(rest).map((dataKey) => {
         if (data[dataKey]) {
           form.setValue(dataKey, data[dataKey])
         }
@@ -101,11 +118,21 @@ export default function MultiStepForm() {
     }
   }, [data])
 
+  /*useEffect(() => {
+    if (isEditMode && data && Object.keys(data).length > 0) {
+      console.log('Prefilling form in edit mode...');
+      form.reset(data);
+      form.trigger(); // ensures formState.isValid updates correctly
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditMode])*/ // only run once, not on every data update
+
   const handlePreFinalSubmit = async (values: any) => {
     try {
       setIsSubmitting(true)
 
-      const response = await addShop(data)
+      // @ts-ignore
+      const response = isEditMode ? await updateShop(data, data._id) : await addShop(data)
 
       if (response.status === 201) {
         setPreSubmittedShopId(response.data.shopId)
@@ -143,135 +170,6 @@ export default function MultiStepForm() {
     return <VerifyOTP shopID={preSubmittedShopId} setSubmitted={setSubmitted} />
   }
 
-  /*
-  const stepValidation = (step: number) => {
-    console.log('running validation')
-
-    if (step === 0) {
-      // @ts-ignore
-      const storeName = form.watch('storeName')?.length > 0
-      // @ts-ignore
-      const storeCode = form.watch('storeCode')?.length > 0
-      // @ts-ignore
-      const propertyStatus = form.watch('propertyStatus')?.length > 0
-      // @ts-ignore
-      const name = form.watch('name')?.length > 0
-      // @ts-ignore
-      const lastName = form.watch('lastName')?.length > 0
-
-      console.log({
-        storeName,
-        storeCode,
-        propertyStatus,
-        name,
-        lastName,
-      })
-
-      const isStepValid = storeName && storeCode && propertyStatus && name && lastName
-
-      return isStepValid
-    }
-
-    if (step === 1) {
-      // @ts-ignore
-      const area = !isNaN(form.watch('"storeDescription.area"'))
-      // @ts-ignore
-      const activityHistory = !isNaN(form.watch('"storeDescription.activityHistory"'))
-      // @ts-ignore
-      const cooperationHistory = !isNaN(form.watch('"storeDescription.cooperationHistory"'))
-      // @ts-ignore
-      const sellerType = form.watch('"storeDescription.sellerType"')?.length > 0
-
-      console.log({
-        1: form.watch('"storeDescription.area"'),
-        12: form.watch('"storeDescription.activityHistory"'),
-        13: form.watch('"storeDescription.cooperationHistory"'),
-        14: form.watch('"storeDescription.sellerType"'),
-      })
-
-      const isStepValid = area && activityHistory && cooperationHistory && sellerType
-
-      return isStepValid
-    }
-
-    if (step === 2) {
-      // @ts-ignore
-      const foa = form.watch('foa')?.length > 0
-      // @ts-ignore
-      const purchaseMethod = form.watch('purchaseMethod')?.length > 0
-
-      const isStepValid = foa && purchaseMethod
-
-      return isStepValid
-    }
-
-    if (step === 3) {
-      // @ts-ignore
-      const otherBrands = form.watch('otherBrands')?.length > 0
-
-      const isStepValid = otherBrands
-
-      return isStepValid
-    }
-
-    if (step === 4) {
-      // @ts-ignore
-      const state = form.watch('address.state')?.length > 0
-      // @ts-ignore
-      const city = form.watch('address.city')?.length > 0
-      // @ts-ignore
-      const district = !isNaN(form.watch('address.district'))
-      // @ts-ignore
-      const description = form.watch('address.description')?.length > 0
-      // @ts-ignore
-      const postalcode = form.watch('address.postalcode')?.length > 0
-      // @ts-ignore
-      const landLine = form.watch('address.landLine')?.length > 0
-      // @ts-ignore
-      const phoneNumber = !isNaN(form.watch('address.phoneNumber')?.[0])
-
-      const isStepValid =
-        state && city && district && description && postalcode && landLine && phoneNumber
-
-      return isStepValid
-    }
-
-    if (step === 5) {
-      // @ts-ignore
-      const stock = form.watch('stock') !== null
-      // @ts-ignore
-      const mainStreet = form.watch('mainStreet') !== null
-      // @ts-ignore
-      const signBoard =
-        // @ts-ignore
-        form.watch('signBoard')[0].type === 'none' ||
-        // @ts-ignore
-        (['banner', 'composite', 'other'].includes(form.watch('signBoard')[0].type) &&
-          // @ts-ignore
-          !isNaN(form.watch('signBoard')[0].dimensions.height) &&
-          // @ts-ignore
-          !isNaN(form.watch('signBoard')[0].dimensions.width))
-
-      const isStepValid = stock && mainStreet && signBoard
-
-      return isStepValid
-    }
-
-    if (step === 6) {
-      // @ts-ignore
-      const displayStand = ['reglam', 'ontable', 'none'].includes(form.watch('displayStand').type)
-
-      const isStepValid = displayStand
-
-      return isStepValid
-    }
-
-    if (step === 7 || step === 9 || step === 10) {
-      return true
-    }
-  }
-*/
-
   return (
     <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto md:max-h-full">
       {/* 👇 Animation wrapper */}
@@ -299,7 +197,7 @@ export default function MultiStepForm() {
             form={`step-form-${step}`}
             variant="brand"
             type="submit"
-            disabled={isSubmitting || !form.formState.isValid}
+            disabled={isSubmitting || (!form.formState.isValid && !isEditMode)}
             className={cn(
               'order-1 md:h-[56px] h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
               step === stepsCount - 1 && 'bg-[#00BD52]',
@@ -315,7 +213,6 @@ export default function MultiStepForm() {
             type="button"
             variant="secondary"
             onClick={handleBack}
-            disabled={step === 0}
             className="order-2 col-span-4 h-[67px] bg-[#E4E4E4] font-bold text-black shadow-none md:order-1 md:col-span-6 md:h-[56px]"
           >
             بازگشت

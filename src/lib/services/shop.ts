@@ -5,6 +5,10 @@ export const addShop = async (data: FormState['data']) => {
   return await baseApi.post<any>(`/shop`, data)
 }
 
+export const updateShop = async (data: FormState['data'], id: string) => {
+  return await baseApi.put<any>(`/shop/${id}`, data)
+}
+
 export const resendShopVerificationOTP = async (shopID: string) => {
   return await baseApi.post<any>(`/shop/${shopID}/resend-otp`)
 }

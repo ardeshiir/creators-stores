@@ -264,14 +264,22 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
               )}
             />
           </div>
-
-          <Button
-            className="radius-[20px] col-span-2 h-[67px] !px-[69px] !py-[18px] text-[20px]"
-            type="submit"
-            variant="brand"
-          >
-            ثبت اطلاعات {submitting && <LoadingSpinner />}
-          </Button>
+          <div className="col-span-2 flex w-full items-center gap-[16px]">
+            <Button
+              className="radius-[20px] h-[67px] flex-1 !py-[18px] text-[20px]"
+              type="submit"
+              variant="brand"
+            >
+              ثبت اطلاعات {submitting && <LoadingSpinner />}
+            </Button>
+            <Button
+              className="radius-[20px] h-[67px] w-[33%] !py-[18px] text-[20px]"
+              type="button"
+              variant="secondary"
+            >
+              بازگشت
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

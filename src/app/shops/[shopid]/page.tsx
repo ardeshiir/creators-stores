@@ -5,8 +5,8 @@ import { useParams, useRouter } from 'next/navigation'
 import FormFinalPreview from '@/components/form/steps/FormFinalPreview'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { Button } from '@/components/ui/button'
-import { useAuthStore } from '@/hooks/useAuthentication'
 import { getShopByShopID } from '@/lib/services/shop'
+import { useFormStore } from '@/stores/useFormStore'
 
 const Page = () => {
   const params = useParams()
@@ -16,7 +16,7 @@ const Page = () => {
     queryKey: [shopID, 'shop-item'],
     queryFn: async () => await getShopByShopID(Number(shopID)),
   })
-  const { isAuthenticated, isGettingAuthState } = useAuthStore()
+  const { updateData, reset } = useFormStore()
 
   /*if (!isAuthenticated && !isGettingAuthState) {
     toast.error('لطفا ابتدا وارد حساب کاربری خود شوید')
@@ -44,19 +44,26 @@ const Page = () => {
   return (
     <div className="container mx-auto flex flex-col items-center px-[24px] md:px-[56px] lg:px-[80px]">
       <FormFinalPreview data={data?.data} />
-      <div className="my-[24px] flex w-full items-center justify-center gap-4 md:my-[75px]">
+
+      <div className="my-[24px] flex w-full items-center justify-center gap-4 gap-[16px] md:my-[75px]">
         <Button
-          onClick={() => router.push('/')}
-          className="h-[56px] w-full bg-[#E4E4E4] font-bold text-black hover:bg-[#E4E4E4]/10 md:w-[255px]"
-        >
-          بازگشت
-        </Button>
-        <Button
-          className="h-[56px] w-full font-bold hover:bg-white md:w-[255px]"
+          className="radius-[20px] h-[67px] flex-1 !py-[18px] text-[20px]"
+          onClick={() => {
+            reset()
+            updateData(data?.data)
+            router.push('/form?edit=true')
+          }}
           variant="brand"
-          onClick={() => router.push('/form')}
         >
           ویرایش اطلاعات
+        </Button>
+        <Button
+          onClick={() => router.push('/')}
+          className="radius-[20px] h-[67px] w-[33%] !py-[18px] text-[20px] md:w-auto md:flex-1"
+          type="button"
+          variant="secondary"
+        >
+          بازگشت
         </Button>
       </div>
     </div>

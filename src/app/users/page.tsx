@@ -354,10 +354,10 @@ const FiltersMenu = ({
             </AccordionContent>
           </AccordionItem>
 
-          {/* ناحیه */}
+          {/* منطقه */}
           <AccordionItem value="district" className="rounded-[24px] border">
             <AccordionTrigger className="flex h-[56px] items-center justify-between px-4">
-              ناحیه
+              منطقه
             </AccordionTrigger>
             <AccordionContent className="flex max-h-[200px] flex-col overflow-y-auto pb-0">
               {data?.data?.flatMap((state) =>
@@ -393,7 +393,7 @@ const FiltersMenu = ({
                           }
                         />
                         <label htmlFor={id} className="cursor-pointer">
-                          {city.name} - ناحیه {d}
+                          {city.name} - منطقه {d}
                         </label>
                       </div>
                     )

@@ -297,7 +297,7 @@ const FiltersMenu = ({
                           onClick={(e) => e.stopPropagation()}
                         />
                         <label htmlFor={id}>
-                          {city.name} - ناحیه {d}
+                          {city.name} - منطقه {d}
                         </label>
                       </div>
                     )
