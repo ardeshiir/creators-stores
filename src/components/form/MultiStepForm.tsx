@@ -325,11 +325,11 @@ const VerifyOTP = ({
                       }}
                     >
                       <InputOTPGroup dir="ltr" className="w-full justify-between">
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
+                        <InputOTPSlot className="text-[18px]" index={0} />
+                        <InputOTPSlot className="text-[18px]" index={1} />
+                        <InputOTPSlot className="text-[18px]" index={2} />
+                        <InputOTPSlot className="text-[18px]" index={3} />
+                        <InputOTPSlot className="text-[18px]" index={4} />
                       </InputOTPGroup>
                     </InputOTP>
                   </FormControl>
