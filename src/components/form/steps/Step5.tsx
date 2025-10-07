@@ -18,8 +18,8 @@ export const schema5 = z.object({
     description: z.string({ required_error: 'این فیلد الزامیست' }),
     postalcode: z.string({ required_error: 'این فیلد الزامیست' }),
     district: z.string({ required_error: 'این فیلد الزامیست' }),
-    phoneNumber: z.any(),
-    landLine: z.any(),
+    phoneNumber: z.array(z.string().min(1, { message: 'شماره همراه الزامی است' })).min(1),
+    landLine: z.string().min(1, { message: 'شماره تلفن ثابت الزامی است' }),
     // location: skipped for now
   }),
 })
@@ -162,7 +162,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                             return
                           }
 
-                          field.onChange(Number(normalized))
+                          field.onChange(normalized)
                         }}
                         placeholder="تلفن همراه"
                         startIconClassName="text-placeholder font-medium"
@@ -174,7 +174,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                               size="icon"
                               onClick={() => removePhone(index)}
                             >
-                              <X size={16} />
+                              <X size={16} color="#0038DB" />
                             </Button>
                           ) : (
                             <span onClick={() => form.setFocus('address.phoneNumber.0')}>

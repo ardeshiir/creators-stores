@@ -1,3 +1,4 @@
+import { UserInfo } from '@/lib/services/authentication'
 import { baseApi } from '@/lib/services/index'
 import { FormState } from '@/stores/useFormStore'
 
@@ -7,6 +8,10 @@ export const addShop = async (data: FormState['data']) => {
 
 export const updateShop = async (data: FormState['data'], id: string) => {
   return await baseApi.put<any>(`/shop/${id}`, data)
+}
+
+export const deleteShop = async (id: string) => {
+  return await baseApi.delete<Partial<UserInfo>>(`/shop/${id}`)
 }
 
 export const resendShopVerificationOTP = async (shopID: string) => {

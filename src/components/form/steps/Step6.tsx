@@ -73,11 +73,11 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
   const signBoards = form.watch('signBoard')
 
   return (
-    <div className="flex items-center justify-center pb-[220px] md:pb-0">
+    <div className="flex items-center justify-center overflow-x-hidden pb-[220px] md:pb-0">
       <div className="w-full">
         <FormLabel className="text-lg font-bold text-black">موقعیت مکانی فروشگاه</FormLabel>
-        <div className="mt-4 grid grid-cols-2 gap-6 md:flex md:flex-col">
-          <div className="col-span-2 grid grid-cols-2 gap-4 md:flex md:flex-wrap ">
+        <div className="mt-4 grid grid-cols-2 gap-6 overflow-x-hidden md:flex md:flex-col">
+          <div className="col-span-2 grid grid-cols-2 gap-4 overflow-x-hidden md:flex md:flex-wrap">
             <FormField
               control={form.control}
               name="stock"
@@ -118,7 +118,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
               name="mainStreet"
               render={({ field }) => (
                 <FormItem className="col-span-2 grid grid-cols-2 gap-4 md:col-span-1 md:flex">
-                  {/*<FormLabel>On Main Street</FormLabel>*/}
+                  <FormLabel className="hidden">On Main Street</FormLabel>
                   <FormControl>
                     <RadioGroup
                       className="col-span-2 grid grid-cols-2 gap-4 md:flex"
@@ -132,7 +132,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             value="false"
                           />
                         </FormControl>
-                        {/*<FormLabel>No</FormLabel>*/}
+                        <FormLabel className="hidden">No</FormLabel>
                       </FormItem>
                       <FormItem className="relative flex items-center md:w-[258px]">
                         <span className="absolute inset-y-0 right-[-8px] hidden w-px bg-border opacity-50 md:flex" />
@@ -143,7 +143,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             value="true"
                           />
                         </FormControl>
-                        {/*<FormLabel>Yes</FormLabel>*/}
+                        <FormLabel className="hidden">Yes</FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
@@ -169,7 +169,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                     type="button"
                     size="icon"
                     variant="ghost"
-                    className="absolute left-[-48px] top-1/2 translate-y-[-50%]"
+                    className="absolute bottom-0 translate-y-[-50%] md:left-[-48px] md:top-1/2"
                     onClick={() => remove(index)}
                   >
                     <X size={16} color="#0038DB" />
@@ -181,7 +181,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                   name={`signBoard.${index}.type`}
                   render={({ field }) => (
                     <FormItem className="col-span-2 w-full md:w-[258px]">
-                      {/*<FormLabel>Type</FormLabel>*/}
+                      <FormLabel className="hidden">Type</FormLabel>
                       <FormControl>
                         <Select onValueChange={field.onChange}>
                           <FormControl>
@@ -212,7 +212,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                       name={`signBoard.${index}.dimensions.height`}
                       render={({ field }) => (
                         <FormItem className="flex-1 lg:w-[258px]">
-                          {/*<FormLabel>Width</FormLabel>*/}
+                          <FormLabel className="hidden">Width</FormLabel>
                           <FormControl>
                             <Input
                               startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
@@ -241,7 +241,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                       name={`signBoard.${index}.dimensions.width`}
                       render={({ field }) => (
                         <FormItem className="flex-1 lg:w-[258px]">
-                          {/*<FormLabel>Height</FormLabel>*/}
+                          <FormLabel className="hidden">Height</FormLabel>
                           <FormControl>
                             <Input
                               startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
@@ -277,7 +277,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                           signBoards?.[index].attachments &&
                           typeof signBoards?.[index].attachments === 'string'
                           ? ''
-                          : 'md:px-4 py-[14px] md:h-[56px] h-[67px] rounded-[16px] bg-[#EEEEEE]',
+                          : 'md:px-4 py-[14px] h-[51px] md:h-[56px] rounded-[16px] bg-[#EEEEEE]',
                       )}
                     >
                       {signBoards?.[index] &&

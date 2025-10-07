@@ -90,12 +90,12 @@ const Page = () => {
           startIcon={<SearchIcon />}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="h-[62px] grow placeholder:text-[#BABCBE]"
+          className="h-[62px] grow placeholder:text-[#BABCBE] md:h-[62px]"
           placeholder="جستجو"
         />
         <button
           onClick={() => setFiltersOpen(true)}
-          className="flex size-[62px] items-center justify-center rounded-[10px] border border-[#BABCBE] md:size-[56px]"
+          className="flex size-[62px] items-center justify-center rounded-[10px] border border-[#BABCBE] "
         >
           <FilterIconSecondary />
         </button>

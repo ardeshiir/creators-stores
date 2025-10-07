@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 import FiltersMenuIcon from '@/components/icons/FiltersMenuIcon'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -22,8 +23,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { ResponsiveDialog, ResponsiveDialogContent } from '@/components/ui/responsive-dialog'
 import { useAuthStore } from '@/hooks/useAuthentication'
-import { getAllShops, getFilteredShops, ShopFilterParams } from '@/lib/services/shop'
+import { deleteShop, getAllShops, getFilteredShops, ShopFilterParams } from '@/lib/services/shop'
 import { getAllStates } from '@/lib/services/state'
 import { cn } from '@/lib/utils'
 import { useFormStore } from '@/stores/useFormStore'
@@ -69,7 +71,10 @@ const Page = () => {
               </div>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent sideOffset={10} className="translate-x-[20px] bg-white">
+          <DropdownMenuContent
+            sideOffset={20}
+            className="translate-x-[2px] translate-x-[32px] bg-white md:translate-x-[-2px]"
+          >
             <DropdownMenuItem className="bg-[#F9F9F9]">جدیدترین</DropdownMenuItem>
             <DropdownMenuItem>قدیمی ترین</DropdownMenuItem>
             <DropdownMenuItem
@@ -96,6 +101,7 @@ const Page = () => {
             <ShopItemCard
               key={`${shop.shopId as number}-${shop.name as string}`}
               address={shop.address?.description as string}
+              dbid={shop._id}
               id={shop.shopId || 0}
               date={new Date(shop.createdAt as Date).toLocaleDateString('fa-IR')}
               name={shop.name as string}
@@ -585,6 +591,7 @@ const ShopItemCard = ({
   storeName,
   address,
   id,
+  dbid,
   date,
 }: {
   name: string
@@ -592,8 +599,10 @@ const ShopItemCard = ({
   address: string
   id: number
   date: string
+  dbid: string
 }) => {
   const router = useRouter()
+  const [deletionModalOpen, setDeletionModalOpen] = useState(false)
 
   return (
     <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 md:flex-1 xl:min-w-[350px]">
@@ -602,24 +611,87 @@ const ShopItemCard = ({
           <span className="text-[18px] font-bold">{storeName}</span>
           <span className="text-[16px] leading-[22px]">{name}</span>
         </div>
-        <span className="rounded-[10px] border border-[#164ef3] px-2 py-1 text-[18px] font-medium text-[#164ef3]">
+        <span className="font-fa-num rounded-[10px] border border-[#164ef3] px-2 py-1 text-[18px] font-medium text-[#164ef3]">
           {id}
         </span>
       </div>
       <p className="w-full max-w-[70%] truncate text-[16px] leading-[22px]">{address}</p>
       <div className="h-[0.5px] w-full bg-[#b6b6b6]" />
-      <div className="flex items-center justify-between">
-        <div className="text-[16px] font-medium text-[#9d9d9d]">تاریخ ثبت:{date}</div>
+      <div className="flex items-center justify-between gap-[16px]">
         <Button
           onClick={() => {
             router.push(`/shops/${id}`)
           }}
-          className="w-[150px] bg-black text-white"
+          className="w-[150px] rounded-[10px] border border-black bg-white  text-black shadow-none"
         >
-          مشاهده
+          مشاهده اطلاعات
+        </Button>
+        <Button
+          onClick={() => {
+            setDeletionModalOpen(true)
+          }}
+          className="w-[150px] rounded-[10px] border border-[#E23838] bg-white text-[#E23838] shadow-none"
+        >
+          حذف فروشنده
         </Button>
       </div>
+      <ShopDeletionModal
+        isOpen={deletionModalOpen}
+        setIsOpen={setDeletionModalOpen}
+        shopid={dbid}
+      />
     </div>
+  )
+}
+
+const ShopDeletionModal = ({
+  isOpen,
+  setIsOpen,
+  shopid,
+}: {
+  isOpen: boolean
+  setIsOpen: (val: boolean) => void
+  shopid: string
+}) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const deactivateUser = async () => {
+    try {
+      setIsSubmitting(true)
+      await deleteShop(shopid)
+      toast('حذف فروشنده با موفقیت انجام شد.')
+      setIsSubmitting(false)
+    } catch (error: any) {
+      toast.success(error?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
+      console.log({ error })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <ResponsiveDialog open={isOpen} onOpenChange={setIsOpen}>
+      <ResponsiveDialogContent className="flex flex-col gap-[26px] px-[24px] pt-[40px]">
+        <p>آیا برای حذف فروشنده مطمئن هستید؟</p>
+        <div className="flex items-center gap-[16.5px]">
+          <Button
+            variant="brand"
+            className="h-[67px] flex-1 rounded-[20px] text-[20px] font-medium"
+            onClick={deactivateUser}
+          >
+            بله {isSubmitting && <LoadingSpinner />}
+          </Button>
+          <Button
+            variant="default"
+            className="h-[67px] flex-1 rounded-[20px] text-[20px] font-medium"
+            onClick={() => {
+              setIsOpen(false)
+            }}
+          >
+            خیر
+          </Button>
+        </div>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   )
 }
 

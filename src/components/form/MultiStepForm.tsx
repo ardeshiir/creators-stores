@@ -80,7 +80,7 @@ export default function MultiStepForm() {
         },
       ],
       displayStand: { type: 'none', brand: '', attachments: null },
-      showCase: [{ dimensions: { width: null, height: null }, sticker: false, attachments: null }],
+      showCase: [{ dimensions: { width: null, height: null }, sticker: null, attachments: null }],
       externalImages: [null, null],
       internalImages: [null, null],
     },
@@ -171,7 +171,7 @@ export default function MultiStepForm() {
   }
 
   return (
-    <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto md:max-h-full">
+    <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden md:max-h-full">
       {/* 👇 Animation wrapper */}
       <div
         key={step}

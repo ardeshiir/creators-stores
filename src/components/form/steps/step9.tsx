@@ -119,7 +119,9 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
                   htmlFor={`${type}-${index}`}
                   className={cn(
                     'flex w-full cursor-pointer items-center justify-center gap-[18px] font-medium md:w-[163px] md:justify-between ',
-                    image ? '' : 'md:px-4 py-[14px] rounded-[20px] bg-[#EEEEEE] h-[56px]',
+                    image
+                      ? ''
+                      : 'md:px-4 py-[14px] h-[51px] md:h-[56px] rounded-[20px] bg-[#EEEEEE]',
                   )}
                 >
                   {image ? (

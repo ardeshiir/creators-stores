@@ -22,11 +22,11 @@ export const schema8 = z.object({
     .array(
       z.object({
         dimensions: z.object({
-          width: z.number().optional().nullable(),
-          height: z.number().optional().nullable(),
+          width: z.number(),
+          height: z.number(),
         }),
-        sticker: z.boolean().optional().nullable(),
-        attachments: z.string().optional().nullable(),
+        sticker: z.string(),
+        attachments: z.string().nullable(),
       }),
     )
     .optional(),
@@ -42,7 +42,6 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
 
   const showCase = form.watch('showCase')
   const [hasShowCase, setHasShowCase] = useState<string>('true')
-
   const handleUpload = async (files: FileList, index: number) => {
     const selectedFile = files[0]
 
@@ -65,16 +64,23 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
   }
 
   return (
-    <div className="mx-auto w-full ">
+    <div className="mx-auto w-full pb-[300px] md:pb-0">
       <FormLabel className="mb-4 text-lg font-bold text-black">ویترین نمایش محصول</FormLabel>
       <div className="col-span-2 grid grid-cols-2 gap-[12px]">
         <RadioGroup
           className="col-span-2 grid grid-cols-2 gap-[12px] md:flex md:justify-end"
+          defaultValue={hasShowCase}
           onValueChange={(value) => {
             if (value === 'true') {
               setHasShowCase('true')
+              append({
+                dimensions: { width: null, height: null },
+                sticker: null,
+                attachments: null,
+              })
             } else {
               setHasShowCase('false')
+              remove()
             }
           }}
         >
@@ -93,72 +99,80 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
               <FormField
                 control={form.control}
                 name={`showCase.${index}.dimensions.width`}
-                render={({ field }) => (
-                  <FormItem className="relative flex-1 md:max-w-[258px]">
-                    {/*<FormLabel>Width</FormLabel>*/}
-                    {fields.length > 1 && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute right-[-32px] top-1/2 translate-y-[-50%]"
-                        onClick={() => remove(index)}
-                      >
-                        <X size={16} />
-                      </Button>
-                    )}
+                render={({ field }) => {
+                  const { onChange, value, ...rest } = field
 
-                    <FormControl>
-                      <Input
-                        startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
-                        placeholder="عرض"
-                        {...field}
-                        inputMode="numeric"
-                        onChange={(e) => {
-                          const normalized = normalizeNumericInput(e.target.value)
+                  return (
+                    <FormItem className="flex-1 md:max-w-[258px]">
+                      {/*<FormLabel>Width</FormLabel>*/}
+                      {fields.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="absolute bottom-0 right-[calc(50%-12px)] -translate-y-1/4 md:left-[-32px] md:right-auto md:top-full md:-translate-y-[118%]"
+                          onClick={() => remove(index)}
+                        >
+                          <X size={16} color="#0038DB" />
+                        </Button>
+                      )}
 
-                          if (normalized === '') {
-                            field.onChange(null)
+                      <FormControl>
+                        <Input
+                          {...rest}
+                          value={value ?? ''} // ensure controlled input
+                          startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
+                          placeholder="عرض"
+                          disabled={hasShowCase === 'false'}
+                          inputMode="numeric"
+                          onChange={(e) => {
+                            const normalized = normalizeNumericInput(e.target.value)
 
-                            return
-                          }
-
-                          field.onChange(Number(normalized))
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                            if (normalized === '') {
+                              onChange(null)
+                            } else {
+                              onChange(Number(normalized))
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
               />
               <FormField
                 control={form.control}
                 name={`showCase.${index}.dimensions.height`}
-                render={({ field }) => (
-                  <FormItem className="flex-1 md:max-w-[258px]">
-                    {/*<FormLabel>Width</FormLabel>*/}
-                    <FormControl>
-                      <Input
-                        startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
-                        placeholder="ارتفاع"
-                        {...field}
-                        inputMode="numeric"
-                        onChange={(e) => {
-                          const normalized = normalizeNumericInput(e.target.value)
+                render={({ field }) => {
+                  const { onChange, value, ...rest } = field
 
-                          if (normalized === '') {
-                            field.onChange(null)
+                  return (
+                    <FormItem className="flex-1 md:max-w-[258px]">
+                      {/*<FormLabel>Width</FormLabel>*/}
+                      <FormControl>
+                        <Input
+                          {...rest}
+                          startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
+                          placeholder="ارتفاع"
+                          disabled={hasShowCase === 'false'}
+                          inputMode="numeric"
+                          value={value ?? ''}
+                          onChange={(e) => {
+                            const normalized = normalizeNumericInput(e.target.value)
 
-                            return
-                          }
-
-                          field.onChange(Number(normalized))
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                            if (normalized === '') {
+                              onChange(null)
+                            } else {
+                              onChange(Number(normalized))
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
               />
             </div>
           )}
@@ -179,14 +193,13 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                       <RadioGroup
                         className="col-span-2 grid grid-cols-2 gap-[12px] md:flex md:justify-end"
                         onValueChange={field.onChange}
-                        defaultValue={true}
                       >
                         <FormItem className="flex h-[56px] items-center md:w-[258px]">
                           <FormControl>
                             <RadioGroupItemSecondary
                               className="h-full"
                               label="ندارد"
-                              value={true}
+                              value="true"
                             />
                           </FormControl>
                         </FormItem>
@@ -195,7 +208,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                             <RadioGroupItemSecondary
                               className="h-full"
                               label="دارد"
-                              value={false}
+                              value="false"
                             />
                           </FormControl>
                         </FormItem>
@@ -210,10 +223,10 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                 <FormLabel
                   htmlFor="display-attachment"
                   className={cn(
-                    'flex w-full cursor-pointer items-center justify-center gap-[18px]   font-medium md:w-[163px] md:justify-between ',
+                    'flex w-[calc(50%-6px)] cursor-pointer items-center justify-center gap-[18px] font-medium md:w-[163px] md:justify-between ',
                     showCase?.[index].attachments
                       ? ''
-                      : 'md:px-4 py-[14px] h-[56px] rounded-[16px] bg-[#EEEEEE]',
+                      : 'md:px-4 py-[14px] h-[51px] md:h-[56px] rounded-[16px] bg-[#EEEEEE]',
                   )}
                 >
                   {showCase?.[index].attachments ? (
@@ -261,7 +274,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
           onClick={() =>
             append({
               dimensions: { width: 0, height: 0 },
-              sticker: false,
+              sticker: null,
               attachments: null,
             })
           }

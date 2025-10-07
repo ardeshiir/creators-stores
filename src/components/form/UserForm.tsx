@@ -256,7 +256,7 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
                     <SelectContent className="w-full">
                       <SelectItem value="field_agent">کارشناس میدانی</SelectItem>
                       <SelectItem value="regional_manager">مدیر منطقه</SelectItem>
-                      <SelectItem value="global_manager">مدیر سراسری</SelectItem>
+                      <SelectItem value="global_manager">سوپر ادمین</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -289,7 +289,7 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
 const rolesMap = {
   field_agent: 'کارشناس میدانی',
   regional_manager: 'مدیر منطقه',
-  global_manager: 'مدیر سراسری',
+  global_manager: 'سوپر ادمین',
 }
 
 const SubmitSuccessful = ({ isUpdate }: { isUpdate?: boolean }) => {
