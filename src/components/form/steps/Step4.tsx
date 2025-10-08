@@ -117,7 +117,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
                 }}
               />
               {showSuggestions && filteredSuggestions.length > 0 && (
-                <ul className="absolute z-10  max-h-48 w-full overflow-auto  rounded-lg rounded-t-none border border-[#B6B6B6] bg-white text-[16px] text-sm font-bold leading-[16px] shadow-sm">
+                <ul className="absolute z-10  max-h-48 w-full overflow-y-scroll  rounded-lg rounded-t-none border border-[#B6B6B6] bg-white text-[16px] text-sm font-bold leading-[16px] shadow-sm">
                   {filteredSuggestions.map((s, i) => (
                     <li
                       key={i}
@@ -149,7 +149,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
         {current.map((brand, i) => (
           <li
             key={i}
-            className="flex h-[51px] items-center justify-between rounded-[20px] border border-border bg-[#F5F5F5] px-3 py-1 text-lg font-medium text-black md:min-w-[176px] md:rounded-[16px]"
+            className="flex h-[51px] items-center justify-between rounded-[20px] border border-border bg-[#F5F5F5] px-3 text-lg font-medium text-black md:min-w-[176px] md:rounded-[16px]"
           >
             <Button type="button" size="icon" variant="ghost" onClick={() => removeBrand(i)}>
               <X size={16} />

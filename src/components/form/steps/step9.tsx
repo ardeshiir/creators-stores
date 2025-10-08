@@ -94,9 +94,9 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
     label: string
     className?: string
   }) => (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn('space-y-2', className)}>
       <FormLabel className="text-lg font-bold text-black">{label}</FormLabel>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-[11px]">
         {array?.map((image, index) => (
           <div key={index} className="relative flex-1 md:flex-initial">
             {array[index]?.length > 1 && (

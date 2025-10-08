@@ -85,7 +85,7 @@ const Page = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-[22px] font-bold text-black">لیست کارشناسان فروش</h1>
       </div>
-      <div className="w-aut mt-6 flex justify-center gap-2 sm:w-[450px]">
+      <div className="mt-6 flex w-auto justify-center gap-2 sm:w-[450px]">
         <Input
           startIcon={<SearchIcon />}
           value={query}

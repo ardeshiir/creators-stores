@@ -47,7 +47,7 @@ const Page = () => {
 
       <div className="my-[24px] flex w-full items-center justify-center gap-4 gap-[16px] md:my-[75px]">
         <Button
-          className="radius-[20px] h-[67px] flex-1 !py-[18px] text-[20px]"
+          className="radius-[20px] h-[67px] flex-1 !py-[18px] text-[14px]"
           onClick={() => {
             reset()
             updateData(data?.data)
@@ -59,7 +59,7 @@ const Page = () => {
         </Button>
         <Button
           onClick={() => router.push('/')}
-          className="radius-[20px] h-[67px] w-[33%] !py-[18px] text-[20px] md:w-auto md:flex-1"
+          className="radius-[20px] h-[67px] w-[33%] !py-[18px] text-[14px] md:w-auto md:flex-1"
           type="button"
           variant="secondary"
         >

@@ -95,7 +95,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
       {fields.map((field, index) => (
         <div key={field.id} className={cn('relative', index === 0 && 'mt-4')}>
           {hasShowCase && (
-            <div className="mt-4 flex gap-4">
+            <div className="mt-4 flex gap-3">
               <FormField
                 control={form.control}
                 name={`showCase.${index}.dimensions.width`}

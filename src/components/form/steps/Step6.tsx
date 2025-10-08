@@ -169,7 +169,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                     type="button"
                     size="icon"
                     variant="ghost"
-                    className="absolute bottom-0 translate-y-[-50%] md:left-[-48px] md:top-1/2"
+                    className="absolute bottom-0 left-[49%] translate-y-[-20%] md:left-[-48px] md:top-1/2 md:translate-y-[-50%]"
                     onClick={() => remove(index)}
                   >
                     <X size={16} color="#0038DB" />
@@ -316,7 +316,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                   </FormItem>
                 )}
               </div>
-              {index === fields.length - 1 && (
+              {index === fields.length - 1 && form.watch('signBoard')?.[0].type !== 'none' && (
                 <div className="col-span-2 flex justify-start">
                   <Button
                     type="button"

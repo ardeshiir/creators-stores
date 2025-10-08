@@ -1,13 +1,14 @@
 'use client'
 import { useState } from 'react'
 
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-import FiltersMenuIcon from '@/components/icons/FiltersMenuIcon'
+import FilterIconSecondary from '@/components/icons/FilterIconSecondary'
+import SearchIcon from '@/components/icons/SearchIcon'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import {
   Accordion,
@@ -23,6 +24,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import Input from '@/components/ui/input'
 import { ResponsiveDialog, ResponsiveDialogContent } from '@/components/ui/responsive-dialog'
 import { useAuthStore } from '@/hooks/useAuthentication'
 import { deleteShop, getAllShops, getFilteredShops, ShopFilterParams } from '@/lib/services/shop'
@@ -33,6 +35,7 @@ import { useFormStore } from '@/stores/useFormStore'
 const Page = () => {
   const [filters, setFilters] = useState<ShopFilterParams>({})
   const [filtersModalOpen, setFiltersModalOpen] = useState(false)
+  const [query, setQuery] = useState('')
   const { data, isLoading } = useQuery({
     queryKey: ['shops', filters],
     queryFn: async () => (Object.keys(filters).length ? getFilteredShops(filters) : getAllShops()),
@@ -58,36 +61,40 @@ const Page = () => {
 
   return (
     <div className="container relative mx-auto flex h-[calc(100vh-163px)] flex-col px-[24px] md:h-auto md:px-[56px] lg:px-[80px]">
-      <div className="flex items-center justify-between px-0.5">
+      <div className="flex flex-col px-0.5">
         <h1 className="text-[22px] font-bold text-black">لیست فروشندگان ثبت شده</h1>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <button>
-              <div className="flex items-center gap-2 rounded-[10px] border-black px-[8px] py-[10px] md:border">
-                <FiltersMenuIcon />
-                <span className="hidden text-[14px] font-medium leading-[24px] md:flex">
-                  مرتب سازی بر اساس
-                </span>
-              </div>
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            sideOffset={20}
-            className="translate-x-[2px] translate-x-[32px] bg-white md:translate-x-[-2px]"
-          >
-            <DropdownMenuItem className="bg-[#F9F9F9]">جدیدترین</DropdownMenuItem>
-            <DropdownMenuItem>قدیمی ترین</DropdownMenuItem>
-            <DropdownMenuItem
-              className="bg-[#F9F9F9]"
-              onClick={() => {
-                setFiltersModalOpen(true)
-              }}
+        <div className="mt-6 flex w-auto justify-center gap-2 sm:w-full">
+          <Input
+            startIcon={<SearchIcon />}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="h-[62px] grow placeholder:text-[#BABCBE] md:h-[62px]"
+            placeholder="جستجو"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <button className="flex size-[62px] items-center justify-center rounded-[10px] border border-[#BABCBE] ">
+                <FilterIconSecondary />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              sideOffset={20}
+              className="translate-x-[2px] translate-x-[32px] bg-white md:translate-x-[46px]"
             >
-              جستجوی پیشرفته
-              <ChevronLeft />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <DropdownMenuItem className="bg-[#F9F9F9]">جدیدترین</DropdownMenuItem>
+              <DropdownMenuItem>قدیمی ترین</DropdownMenuItem>
+              <DropdownMenuItem
+                className="bg-[#F9F9F9]"
+                onClick={() => {
+                  setFiltersModalOpen(true)
+                }}
+              >
+                جستجوی پیشرفته
+                <ChevronLeft />
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
 
         <FiltersMenu
           setIsOpen={setFiltersModalOpen}
@@ -95,7 +102,7 @@ const Page = () => {
           onAccept={setFilters}
         />
       </div>
-      <div className="no-scrollbar mt-5 flex h-[65vh] flex-wrap items-start justify-center gap-6 overflow-y-auto px-0.5 md:items-center">
+      <div className="no-scrollbar mt-5 flex h-[65vh] flex-wrap items-start justify-center gap-6 overflow-y-auto px-0.5 md:items-start">
         {data?.data?.length > 0 ? (
           data?.data.map((shop) => (
             <ShopItemCard
@@ -103,9 +110,9 @@ const Page = () => {
               address={shop.address?.description as string}
               dbid={shop._id}
               id={shop.shopId || 0}
-              date={new Date(shop.createdAt as Date).toLocaleDateString('fa-IR')}
               name={shop.name as string}
               storeName={shop.storeName as string}
+              queryKeys={['shops', filters]}
             />
           ))
         ) : (
@@ -592,14 +599,14 @@ const ShopItemCard = ({
   address,
   id,
   dbid,
-  date,
+  queryKeys,
 }: {
   name: string
   storeName: string
   address: string
   id: number
-  date: string
   dbid: string
+  queryKeys: any[]
 }) => {
   const router = useRouter()
   const [deletionModalOpen, setDeletionModalOpen] = useState(false)
@@ -622,7 +629,7 @@ const ShopItemCard = ({
           onClick={() => {
             router.push(`/shops/${id}`)
           }}
-          className="w-[150px] rounded-[10px] border border-black bg-white  text-black shadow-none"
+          className="flex-1 rounded-[10px] border border-black bg-white text-black  shadow-none hover:bg-white"
         >
           مشاهده اطلاعات
         </Button>
@@ -630,7 +637,7 @@ const ShopItemCard = ({
           onClick={() => {
             setDeletionModalOpen(true)
           }}
-          className="w-[150px] rounded-[10px] border border-[#E23838] bg-white text-[#E23838] shadow-none"
+          className="flex-1 rounded-[10px] border border-[#E23838] bg-white text-[#E23838] shadow-none hover:bg-white"
         >
           حذف فروشنده
         </Button>
@@ -639,6 +646,7 @@ const ShopItemCard = ({
         isOpen={deletionModalOpen}
         setIsOpen={setDeletionModalOpen}
         shopid={dbid}
+        queryKeys={queryKeys}
       />
     </div>
   )
@@ -648,18 +656,24 @@ const ShopDeletionModal = ({
   isOpen,
   setIsOpen,
   shopid,
+  queryKeys,
 }: {
   isOpen: boolean
   setIsOpen: (val: boolean) => void
   shopid: string
+  queryKeys: any[]
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const queryClient = useQueryClient()
+
   const deactivateUser = async () => {
     try {
       setIsSubmitting(true)
       await deleteShop(shopid)
+      queryClient.invalidateQueries({ queryKey: queryKeys })
       toast('حذف فروشنده با موفقیت انجام شد.')
       setIsSubmitting(false)
+      setIsOpen(false)
     } catch (error: any) {
       toast.success(error?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
       console.log({ error })

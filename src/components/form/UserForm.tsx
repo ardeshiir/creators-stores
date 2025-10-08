@@ -2,7 +2,7 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -96,6 +96,10 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
           role: 'field_agent',
         },
   })
+  const resetForm = () => {
+    form.reset()
+    setSubmitSuccesfull(false)
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -119,7 +123,7 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
   }
 
   if (submitSuccesfull) {
-    return <SubmitSuccessful isUpdate={!!defaultUserValues} />
+    return <SubmitSuccessful isUpdate={!!defaultUserValues} resetForm={resetForm} />
   }
 
   return (
@@ -292,8 +296,15 @@ const rolesMap = {
   global_manager: 'سوپر ادمین',
 }
 
-const SubmitSuccessful = ({ isUpdate }: { isUpdate?: boolean }) => {
+const SubmitSuccessful = ({
+  isUpdate,
+  resetForm,
+}: {
+  isUpdate?: boolean
+  resetForm: () => void
+}) => {
   const router = useRouter()
+  const pathName = usePathname()
 
   return (
     <div className="flex h-full min-h-[80vh] flex-col items-center justify-between py-6 md:mx-auto md:max-w-[363px] md:justify-center md:gap-12">
@@ -308,7 +319,13 @@ const SubmitSuccessful = ({ isUpdate }: { isUpdate?: boolean }) => {
           variant="brand"
           className="h-12 w-full"
           onClick={() => {
-            router.push('/users/new')
+            console.log({ pathName })
+
+            if (pathName === '/users/new') {
+              resetForm()
+            } else {
+              router.push('/users/new')
+            }
           }}
         >
           ثبت کارشناس جدید
