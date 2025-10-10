@@ -2,15 +2,17 @@
 'use client'
 
 import { X } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
-import Map from '@/components/map'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input from '@/components/ui/input'
 import { safeArray } from '@/lib/form'
 import { normalizeNumericInput } from '@/lib/utils'
+
+const Map = dynamic(() => import('@/components/map'), { ssr: false })
 
 export const schema5 = z.object({
   address: z.object({
