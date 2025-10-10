@@ -158,8 +158,27 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
             </div>
           </div>
         ))}
+        {array.length > 2 && (
+          <div className="relative flex min-w-[100px] flex-1 items-center justify-start md:flex-initial">
+            <Button
+              type="button"
+              variant="text"
+              onClick={() => {
+                const currentArray =
+                  type === 'externalImages'
+                    ? [...(externalImages || [])]
+                    : [...(internalImages || [])]
+
+                currentArray.pop()
+                form.setValue(type, currentArray)
+              }}
+            >
+              <X size={16} color="#0038DB" />
+            </Button>
+          </div>
+        )}
       </div>
-      <div className="flex w-full items-center justify-end md:justify-start">
+      <div className="flex w-full items-center justify-start">
         <Button
           className="text-brand-primary"
           type="button"

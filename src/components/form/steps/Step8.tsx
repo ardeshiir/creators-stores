@@ -1,7 +1,7 @@
 // components/form/steps/Step8.tsx
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { X } from 'lucide-react'
 import Image from 'next/image'
@@ -18,6 +18,7 @@ import { uploadFile } from '@/lib/services/upload'
 import { cn, normalizeNumericInput } from '@/lib/utils'
 
 export const schema8 = z.object({
+  hasShowCase: z.enum(['true', 'false']).optional(),
   showCase: z
     .array(
       z.object({
@@ -62,6 +63,23 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
       }
     }
   }
+  const initiated = useRef<boolean>(null)
+
+  useEffect(() => {
+    console.log({ showCase })
+
+    if (hasShowCase === 'true' && showCase?.length === 0 && !initiated.current) {
+      initiated.current = true
+      append({
+        dimensions: { width: null, height: null },
+        sticker: null,
+        attachments: null,
+      })
+    } else if (hasShowCase === 'false') {
+      remove()
+    }
+  }, [hasShowCase])
+  console.log({ hasShowCase, fields })
 
   return (
     <div className="mx-auto w-full pb-[300px] md:pb-0">
@@ -216,6 +234,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                               className="h-full"
                               label="ندارد"
                               value="true"
+                              checked={showCase[index].sticker === 'true'}
                             />
                           </FormControl>
                         </FormItem>
@@ -225,6 +244,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                               className="h-full"
                               label="دارد"
                               value="false"
+                              checked={showCase[index].sticker === 'false'}
                             />
                           </FormControl>
                         </FormItem>
@@ -281,23 +301,25 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
           )}
         </div>
       ))}
-      <div className="col-span-2 flex justify-start">
-        <Button
-          type="button"
-          variant="text"
-          className="mt-2 px-0 text-brand-primary disabled:cursor-not-allowed disabled:text-brand-primary disabled:opacity-100"
-          disabled={!hasShowCase}
-          onClick={() =>
-            append({
-              dimensions: { width: 0, height: 0 },
-              sticker: null,
-              attachments: null,
-            })
-          }
-        >
-          + اضافه کردن ویترین نمایش محصول جدید
-        </Button>
-      </div>
+      {hasShowCase && (
+        <div className="col-span-2 flex justify-start">
+          <Button
+            type="button"
+            variant="text"
+            className="mt-2 px-0 text-brand-primary disabled:cursor-not-allowed disabled:text-brand-primary disabled:opacity-100"
+            disabled={!hasShowCase}
+            onClick={() =>
+              append({
+                dimensions: { width: 0, height: 0 },
+                sticker: null,
+                attachments: null,
+              })
+            }
+          >
+            + اضافه کردن ویترین نمایش محصول جدید
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

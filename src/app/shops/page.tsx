@@ -102,7 +102,7 @@ const Page = () => {
           onAccept={setFilters}
         />
       </div>
-      <div className="no-scrollbar mt-5 flex h-[65vh] flex-wrap items-start justify-center gap-6 overflow-y-auto px-0.5 md:items-start">
+      <div className="no-scrollbar mt-5 grid h-[65vh] grid-cols-1 gap-6 overflow-y-auto px-0.5 md:grid-cols-2 lg:grid-cols-3 ">
         {data?.data?.length > 0 ? (
           data?.data.map((shop) => (
             <ShopItemCard
@@ -612,7 +612,7 @@ const ShopItemCard = ({
   const [deletionModalOpen, setDeletionModalOpen] = useState(false)
 
   return (
-    <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 md:flex-1 xl:min-w-[350px]">
+    <div className=" flex h-fit w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4">
       <div className="flex w-full items-start justify-between">
         <div className="flex flex-col">
           <span className="text-[18px] font-bold">{storeName}</span>
@@ -624,12 +624,12 @@ const ShopItemCard = ({
       </div>
       <p className="w-full max-w-[70%] truncate text-[16px] leading-[22px]">{address}</p>
       <div className="h-[0.5px] w-full bg-[#b6b6b6]" />
-      <div className="flex items-center justify-between gap-[16px]">
+      <div className="flex items-center justify-between gap-[16px] md:justify-center">
         <Button
           onClick={() => {
             router.push(`/shops/${id}`)
           }}
-          className="flex-1 rounded-[10px] border border-black bg-white text-black  shadow-none hover:bg-white"
+          className="flex-1 rounded-[10px] border border-black bg-white text-black shadow-none hover:bg-white  md:max-w-[147px] md:flex-auto"
         >
           مشاهده اطلاعات
         </Button>
@@ -637,7 +637,7 @@ const ShopItemCard = ({
           onClick={() => {
             setDeletionModalOpen(true)
           }}
-          className="flex-1 rounded-[10px] border border-[#E23838] bg-white text-[#E23838] shadow-none hover:bg-white"
+          className="flex-1 rounded-[10px] border border-[#E23838] bg-white text-[#E23838] shadow-none hover:bg-white md:max-w-[147px] md:flex-auto"
         >
           حذف فروشنده
         </Button>

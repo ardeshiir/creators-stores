@@ -22,6 +22,8 @@ import {
 import { uploadFile } from '@/lib/services/upload'
 import { cn, normalizeNumericInput } from '@/lib/utils'
 
+import { signboardDictionary } from './FormFinalPreview'
+
 export const schema6 = z.object({
   stock: z.enum(['true', 'false']).optional(),
   mainStreet: z.enum(['true', 'false']).optional(),
@@ -72,6 +74,8 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
 
   const signBoards = form.watch('signBoard')
 
+  console.log({ signBoards, stock: form.watch('stock'), mainStreet: form.watch('mainStreet') })
+
   return (
     <div className="flex items-center justify-center overflow-x-hidden pb-[220px] md:pb-0">
       <div className="w-full">
@@ -87,6 +91,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                     <RadioGroup
                       className="col-span-2 grid grid-cols-2 gap-4"
                       onValueChange={field.onChange}
+                      defaultValue={form.watch('stock')}
                     >
                       <FormItem className="col-span-1 flex items-center md:w-[258px]">
                         <FormControl>
@@ -94,6 +99,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             className="h-[67px] md:h-[56px]"
                             label="غیر بورس"
                             value="false"
+                            checked={form.watch('stock') === 'false'}
                           />
                         </FormControl>
                       </FormItem>
@@ -103,6 +109,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             className="h-[67px] md:h-[56px]"
                             label="بورس"
                             value="true"
+                            checked={form.watch('stock') === 'true'}
                           />
                         </FormControl>
                       </FormItem>
@@ -123,6 +130,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                     <RadioGroup
                       className="col-span-2 grid grid-cols-2 gap-4 md:flex"
                       onValueChange={field.onChange}
+                      defaultValue={form.watch('mainStreet')}
                     >
                       <FormItem className="flex items-center md:w-[258px]">
                         <FormControl>
@@ -130,6 +138,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             className="h-[67px] md:h-[56px]"
                             label="خیابان فرعی"
                             value="false"
+                            checked={form.watch('mainStreet') === 'false'}
                           />
                         </FormControl>
                         <FormLabel className="hidden">No</FormLabel>
@@ -141,6 +150,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             className="h-[67px] md:h-[56px]"
                             label="خیابان اصلی"
                             value="true"
+                            checked={form.watch('mainStreet') === 'true'}
                           />
                         </FormControl>
                         <FormLabel className="hidden">Yes</FormLabel>
@@ -164,18 +174,6 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                 </FormLabel>
               )}
               <div className="relative col-span-2 flex flex-wrap items-center justify-center gap-4">
-                {fields.length > 1 && (
-                  <Button
-                    type="button"
-                    size="icon"
-                    variant="ghost"
-                    className="absolute bottom-0 left-[49%] translate-y-[-20%] md:left-[-48px] md:top-1/2 md:translate-y-[-50%]"
-                    onClick={() => remove(index)}
-                  >
-                    <X size={16} color="#0038DB" />
-                  </Button>
-                )}
-
                 <FormField
                   control={form.control}
                   name={`signBoard.${index}.type`}
@@ -187,7 +185,10 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                           <FormControl>
                             <SelectTrigger className="h-[64px] w-full border border-[#E4E4E4] bg-[#F9F9F9] md:w-[258px]">
                               <SelectValue
-                                placeholder="نوع تابلو سردرب"
+                                placeholder={
+                                  signboardDictionary[form.watch(`signBoard.${index}.type`)] ||
+                                  'نوع تابلو سردرب'
+                                }
                                 className="h-[64px] text-lg placeholder:text-lg"
                               />
                             </SelectTrigger>
@@ -274,7 +275,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                   </div>
                 )}
                 {form.watch('signBoard')?.[0]?.type !== 'none' && (
-                  <FormItem className="col-span-1 flex w-full justify-start md:w-auto">
+                  <FormItem className="flex flex-1 justify-start md:flex-auto">
                     <FormLabel
                       htmlFor="signboard-attachment"
                       className={cn(
@@ -283,7 +284,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                           signBoards?.[index].attachments &&
                           typeof signBoards?.[index].attachments === 'string'
                           ? ''
-                          : 'md:px-4 py-[14px] h-[51px] md:h-[56px] rounded-[16px] bg-[#EEEEEE]',
+                          : 'md:px-4 py-[14px] w-full h-[51px] md:h-[56px] rounded-[16px] bg-[#EEEEEE]',
                       )}
                     >
                       {signBoards?.[index] &&
@@ -320,6 +321,19 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                       />
                     </FormLabel>
                   </FormItem>
+                )}
+                {fields.length > 1 && (
+                  <div className="flex flex-1 md:flex-auto">
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="ghost"
+                      className="justify-start !px-0"
+                      onClick={() => remove(index)}
+                    >
+                      <X size={16} color="#0038DB" />
+                    </Button>
+                  </div>
                 )}
               </div>
               {index === fields.length - 1 && form.watch('signBoard')?.[0].type !== 'none' && (

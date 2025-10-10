@@ -79,7 +79,7 @@ export default function MultiStepForm() {
           attachments: null,
         },
       ],
-      displayStand: { type: 'none', brand: '', attachments: null },
+      displayStand: { type: null, brand: '', attachments: null },
       showCase: [{ dimensions: { width: null, height: null }, sticker: null, attachments: null }],
       externalImages: [null, null],
       internalImages: [null, null],
@@ -95,7 +95,7 @@ export default function MultiStepForm() {
     if (step > 0) {
       setStep(Math.max(step - 1, 0))
     } else {
-      router.back()
+      router.push('/')
     }
   }
   const handleNext = async (values: any) => {
@@ -170,6 +170,8 @@ export default function MultiStepForm() {
     return <VerifyOTP shopID={preSubmittedShopId} setSubmitted={setSubmitted} />
   }
 
+  console.log({ formState: form.formState })
+
   return (
     <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden md:max-h-full">
       {/* 👇 Animation wrapper */}
@@ -197,7 +199,12 @@ export default function MultiStepForm() {
             form={`step-form-${step}`}
             variant="brand"
             type="submit"
-            disabled={isSubmitting || (!form.formState.isValid && !isEditMode)}
+            disabled={
+              isSubmitting ||
+              (!form.formState.isValid && !isEditMode && step !== 6) ||
+              (step === 6 &&
+                !['reglam', 'ontable', 'none'].includes(form.watch('displayStand')?.type))
+            }
             className={cn(
               'order-1 md:h-[56px] h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
               step === stepsCount - 1 && 'bg-[#00BD52]',

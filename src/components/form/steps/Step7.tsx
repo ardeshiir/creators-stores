@@ -6,6 +6,7 @@ import { UseFormReturn } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { displayStandDict } from '@/components/form/steps/FormFinalPreview'
 import CameraIcon from '@/components/icons/CameraIcon'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { InputSecondary } from '@/components/ui/input'
@@ -20,13 +21,11 @@ import { uploadFile } from '@/lib/services/upload'
 import { cn } from '@/lib/utils'
 
 export const schema7 = z.object({
-  displayStand: z
-    .object({
-      type: z.enum(['reglam', 'ontable', 'none']),
-      brand: z.string().optional().nullable(),
-      attachments: z.string().nullable(),
-    })
-    .optional(),
+  displayStand: z.object({
+    type: z.enum(['reglam', 'ontable', 'none']).nullable(),
+    brand: z.string().nullable().optional(),
+    attachments: z.string().nullable().optional(),
+  }),
 })
 
 export type Step7Values = z.infer<typeof schema7>
@@ -54,6 +53,8 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
   }
   const displayStand = form.watch('displayStand')
 
+  console.log({ displayStand })
+
   return (
     <div className="mx-auto w-full">
       <FormLabel className="text-lg font-bold text-black">استند نمایش محصول</FormLabel>
@@ -71,7 +72,11 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
                     <FormControl>
                       <SelectTrigger className="h-[64px] w-full border border-[#E4E4E4] bg-[#F9F9F9]">
                         <SelectValue
-                          placeholder="استند نمایش محصول"
+                          placeholder={
+                            displayStand.type
+                              ? displayStandDict[displayStand.type]
+                              : 'استند نمایش محصول'
+                          }
                           className="h-[64px] text-lg placeholder:text-lg"
                         />
                       </SelectTrigger>
@@ -89,7 +94,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
           />
         }
         <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
-          {['reglam', 'ontable', 'none'].includes(displayStand.type) && (
+          {['reglam', 'ontable', 'none'].includes(displayStand?.type) && (
             <FormField
               control={form.control}
               name="displayStand.brand"
@@ -109,7 +114,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
             />
           )}
 
-          {['reglam', 'ontable', 'none'].includes(displayStand.type) && (
+          {['reglam', 'ontable', 'none'].includes(displayStand?.type) && (
             <FormItem className="md:mr-0 md:w-fit">
               <FormLabel
                 htmlFor="displayStand-attachment"

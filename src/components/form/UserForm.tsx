@@ -2,6 +2,7 @@
 import { useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -279,9 +280,10 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
             <Button
               className="radius-[20px] h-[67px] w-[33%] !py-[18px] text-[20px]"
               type="button"
+              asChild
               variant="secondary"
             >
-              بازگشت
+              <Link href="/users">بازگشت</Link>
             </Button>
           </div>
         </form>

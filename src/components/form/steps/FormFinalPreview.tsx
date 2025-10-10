@@ -6,7 +6,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { cn } from '@/lib/utils'
 import { FormState } from '@/stores/useFormStore'
 
-const displayStandDict: Record<string, string> = {
+export const displayStandDict: Record<string, string> = {
   reglam: 'رگلام',
   ontable: 'رومیزی',
   none: 'فاقد استند',
@@ -95,7 +95,7 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
         <Row label="مساحت فروشگاه:" value={`${data.storeDescription?.area} متر`} />
         <Row label="سابقه فعالیت:" value={`${data.storeDescription?.activityHistory} سال`} />
         <Row
-          label="سابقه همکاری با پنتل:"
+          label="سابقه همکاری با بنیان تحریر:"
           value={`${data.storeDescription?.cooperationHistory} سال`}
         />
         <Row
@@ -254,7 +254,7 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
   )
 }
 
-const signboardDictionary = {
+export const signboardDictionary = {
   none: 'فاقد تابلو سردرب',
   banner: 'بنر',
   composite: 'کامپوزیت',
