@@ -361,7 +361,7 @@ const VerifyOTP = ({
               >
                 ارسال مجدد
               </button>
-              <span className="font-yekan text-[14px] md:text-[18px]">{formatTimer(timer)}</span>
+              <span className="font-fa-num text-[14px] md:text-[18px]">{formatTimer(timer)}</span>
             </div>
           </div>
         </div>

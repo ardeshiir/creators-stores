@@ -217,7 +217,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             <Input
                               startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
                               placeholder="ارتفاع"
-                              inputMode="numeric"
+                              inputMode="decimal"
                               {...field}
                               onChange={(e) => {
                                 const normalized = normalizeNumericInput(e.target.value)
@@ -246,7 +246,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                             <Input
                               startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
                               placeholder="عرض"
-                              inputMode="numeric"
+                              inputMode="decimal"
                               {...field}
                               onChange={(e) => {
                                 const normalized = normalizeNumericInput(e.target.value)
@@ -257,7 +257,13 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                                   return
                                 }
 
-                                field.onChange(Number(normalized))
+                                if (normalized.endsWith('.')) {
+                                  field.onChange(normalized)
+                                } else {
+                                  const num = Number(normalized)
+
+                                  field.onChange(isNaN(num) ? normalized : num)
+                                }
                               }}
                             />
                           </FormControl>

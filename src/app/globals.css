@@ -250,3 +250,6 @@ body, input, button, span {
     }
 }
 
+.leaflet-control-attribution.leaflet-control {
+    display: none !important;
+}

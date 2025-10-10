@@ -124,14 +124,22 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                           startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
                           placeholder="عرض"
                           disabled={hasShowCase === 'false'}
-                          inputMode="numeric"
+                          inputMode="decimal"
                           onChange={(e) => {
                             const normalized = normalizeNumericInput(e.target.value)
 
                             if (normalized === '') {
                               onChange(null)
+
+                              return
+                            }
+
+                            if (normalized.endsWith('.')) {
+                              onChange(normalized)
                             } else {
-                              onChange(Number(normalized))
+                              const num = Number(normalized)
+
+                              onChange(isNaN(num) ? normalized : num)
                             }
                           }}
                         />
@@ -156,15 +164,23 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                           startIcon={<span className="text-lg text-[#babcbe]">متر</span>}
                           placeholder="ارتفاع"
                           disabled={hasShowCase === 'false'}
-                          inputMode="numeric"
+                          inputMode="decimal"
                           value={value ?? ''}
                           onChange={(e) => {
                             const normalized = normalizeNumericInput(e.target.value)
 
                             if (normalized === '') {
                               onChange(null)
+
+                              return
+                            }
+
+                            if (normalized.endsWith('.')) {
+                              onChange(normalized)
                             } else {
-                              onChange(Number(normalized))
+                              const num = Number(normalized)
+
+                              field.onChange(isNaN(num) ? normalized : num)
                             }
                           }}
                         />

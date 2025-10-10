@@ -53,7 +53,7 @@ export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
                     </span>
                   }
                   placeholder="مساحت فروشگاه"
-                  inputMode="numeric" // ✅ allows Persian or English numbers
+                  inputMode="decimal"
                   value={field.value ?? ''}
                   onChange={(e) => {
                     const normalized = normalizeNumericInput(e.target.value)
@@ -64,7 +64,13 @@ export function Step2({ form }: { form: UseFormReturn<Step2Values> }) {
                       return
                     }
 
-                    field.onChange(Number(normalized))
+                    if (normalized.endsWith('.')) {
+                      field.onChange(normalized)
+                    } else {
+                      const num = Number(normalized)
+
+                      field.onChange(isNaN(num) ? normalized : num) // convert only if valid
+                    }
                   }}
                 />
               </FormControl>

@@ -57,27 +57,27 @@ const MenuDropDown = () => {
           {userInfo?.name ?? '' + ' ' + userInfo?.lastName ?? ''}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer text-start" onClick={() => logout()}>
-          <Link className="flex size-full items-center justify-end" href="/shops">
+        <DropdownMenuItem className="cursor-pointer text-start">
+          <Link className="flex size-full items-center justify-start" href="/shops">
             فروشگاه‌ها
           </Link>
         </DropdownMenuItem>
         {!isSuperAdmin && (
-          <DropdownMenuItem className="cursor-pointer text-start" onClick={() => logout()}>
+          <DropdownMenuItem className="cursor-pointer text-start">
             <button
               onClick={() => {
                 router.push('/form')
                 reset()
               }}
-              className="flex size-full items-center justify-end"
+              className="flex size-full items-center justify-start"
             >
               ثبت فروشگاه جدید
             </button>
           </DropdownMenuItem>
         )}
         {isSuperAdmin && (
-          <DropdownMenuItem className="cursor-pointer text-start" onClick={() => logout()}>
-            <Link className="flex size-full items-center justify-end" href="/users">
+          <DropdownMenuItem className="cursor-pointer text-start">
+            <Link className="flex size-full items-center justify-start" href="/users">
               کارشناسان فروش
             </Link>
           </DropdownMenuItem>

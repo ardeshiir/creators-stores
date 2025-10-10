@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import DesktopFooter from '@/components/desktop-footer'
 import Login from '@/components/form/login'
 import BonyanIcon from '@/components/icons/BonyanIcon'
@@ -9,6 +11,8 @@ import LoadingSpinner from '@/components/LoadingSpinner'
 import StoreManagementMenu from '@/components/ui/store-management-menu'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useAuthStore } from '@/hooks/useAuthentication'
+
+const Map = dynamic(() => import('../components/map'), { ssr: false })
 
 export default function Home() {
   const { isAuthenticated, getLoginState, isGettingAuthState } = useAuthStore()
