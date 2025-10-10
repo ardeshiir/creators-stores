@@ -32,7 +32,7 @@ const Map = () => {
   }, [])
 
   return (
-    <div className="size-[400px]">
+    <div className="size-full">
       <MapContainer className="size-full" center={position} zoom={13} scrollWheelZoom={true}>
         <TileLayer
           attribution='&copy; <a href="https://carto.com/">CARTO</a>'

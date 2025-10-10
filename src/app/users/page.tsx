@@ -90,6 +90,7 @@ const Page = () => {
           startIcon={<SearchIcon />}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          containerClassName="flex-1 w-auto"
           className="h-[62px] grow placeholder:text-[#BABCBE] md:h-[62px]"
           placeholder="جستجو"
         />

@@ -5,6 +5,7 @@ import { X } from 'lucide-react'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
+import Map from '@/components/map'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input from '@/components/ui/input'
@@ -208,6 +209,9 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
       >
         + اضافه کردن شماره جدید
       </Button>
+      <div className="mt-4 h-[124px] w-full rounded-[20px]">
+        <Map />
+      </div>
     </div>
   )
 }

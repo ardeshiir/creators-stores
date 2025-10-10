@@ -191,7 +191,7 @@ export default function MultiStepForm() {
         />
       </div>
       {/* Buttons + Progress Bar */}
-      <div className="fixed inset-x-0 bottom-0 mx-auto flex w-full max-w-[562px] flex-col gap-[34px] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-9 py-[35px] pb-4 md:static md:gap-[64px] md:px-0">
+      <div className="fixed inset-x-0 bottom-0 z-[99] mx-auto flex w-full max-w-[562px] flex-col gap-[34px] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-9 py-[35px] pb-4 md:static md:gap-[64px] md:px-0">
         <div
           className={cn('grid grid-cols-12 gap-4', step === stepsCount - 1 && 'flex-row-reverse')}
         >
@@ -207,7 +207,7 @@ export default function MultiStepForm() {
             }
             className={cn(
               'order-1 md:h-[56px] h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
-              step === stepsCount - 1 && 'bg-[#00BD52]',
+              step === stepsCount - 1 && '!bg-[#00BD52] hover:bg-[#00BD52]',
             )}
           >
             {step === stepsCount - 2

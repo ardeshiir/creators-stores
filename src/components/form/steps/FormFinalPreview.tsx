@@ -89,6 +89,9 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
         <Row label="نام فروشگاه:" value={data.storeName} />
         <Row label="وضعیت ملک:" value={data.propertyStatus === 'rental' ? 'مستاجر' : 'مالک'} />
         <Row label="نام و نام خانوادگی:" value={`${data.name} ${data.lastName}`} />
+        <Row label="استان:" value={`${data.address?.state}`} />
+        <Row label="شهر:" value={`${data.address?.city}`} />
+        <Row label="منطقه:" value={`${data.address?.district}`} />
       </Section>
 
       <Section title="توضیحات فروشگاه">
