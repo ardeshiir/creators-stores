@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
@@ -27,15 +27,23 @@ import {
 import Input from '@/components/ui/input'
 import { ResponsiveDialog, ResponsiveDialogContent } from '@/components/ui/responsive-dialog'
 import { useAuthStore } from '@/hooks/useAuthentication'
-import { deleteShop, getAllShops, getFilteredShops, ShopFilterParams } from '@/lib/services/shop'
+import {
+  deleteShop,
+  getAllShops,
+  getFilteredShops,
+  searchShops,
+  ShopFilterParams,
+} from '@/lib/services/shop'
 import { getAllStates } from '@/lib/services/state'
 import { cn } from '@/lib/utils'
-import { useFormStore } from '@/stores/useFormStore'
+import { FormState, useFormStore } from '@/stores/useFormStore'
 
 const Page = () => {
   const [filters, setFilters] = useState<ShopFilterParams>({})
   const [filtersModalOpen, setFiltersModalOpen] = useState(false)
   const [query, setQuery] = useState('')
+  const [results, setResults] = useState<Partial<FormState['data']>[]>([])
+  const [isLoadingSearch, setIsLoadingSearch] = useState(false)
   const { data, isLoading } = useQuery({
     queryKey: ['shops', filters],
     queryFn: async () => (Object.keys(filters).length ? getFilteredShops(filters) : getAllShops()),
@@ -50,6 +58,30 @@ const Page = () => {
 
     return null
   }*/
+
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([])
+
+      return
+    }
+
+    const timeout = setTimeout(async () => {
+      setIsLoadingSearch(true)
+
+      try {
+        const res = await searchShops(query)
+
+        setResults(res.data)
+      } catch (err) {
+        toast.error('خطا در جستجو')
+      } finally {
+        setIsLoadingSearch(false)
+      }
+    }, 500)
+
+    return () => clearTimeout(timeout)
+  }, [query])
 
   if (isLoading) {
     return (
@@ -103,8 +135,8 @@ const Page = () => {
         />
       </div>
       <div className="no-scrollbar mt-5 grid h-[65vh] grid-cols-1 gap-6 overflow-y-auto px-0.5 md:grid-cols-2 lg:grid-cols-3 ">
-        {data?.data?.length > 0 ? (
-          data?.data.map((shop) => (
+        {!isLoadingSearch && (data?.data?.length > 0 || results?.length) ? (
+          (results || data?.data).map((shop) => (
             <ShopItemCard
               key={`${shop.shopId as number}-${shop.name as string}`}
               address={shop.address?.description as string}

@@ -68,3 +68,7 @@ export const getFilteredShops = async (params: ShopFilterParams) => {
 
   return await baseApi.get<FormState['data'][]>(`/shop/filter?${query.toString()}`)
 }
+
+export const searchShops = async (searchQuery: string) => {
+  return await baseApi.get(`/shop/search?q=${searchQuery}`)
+}

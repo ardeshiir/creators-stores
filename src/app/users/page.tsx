@@ -139,6 +139,8 @@ const UserItemCard = ({ user }: { user: UserInfo }) => {
   const [deletionModalOpen, setDeletionModalOpen] = useState(false)
   const fullName = user.name + ' ' + user.lastName
 
+  console.log({ user })
+
   return (
     <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 sm:max-w-[450px]">
       <div className="flex w-full items-center justify-between">
@@ -153,7 +155,7 @@ const UserItemCard = ({ user }: { user: UserInfo }) => {
       </div>
       <div className="flex w-full items-center justify-between">
         <span>شماره موبایل:</span>
-        <span className="font-fa-num">{user.phone ? Number(user.phone) : '-'}</span>
+        <span className="font-fa-num">{user.phone || '-'}</span>
       </div>
       <p className="font-fa-num w-full max-w-[70%] truncate text-[16px] leading-[22px] text-[#9D9D9D]">{`${user.state ?? ''}، ${user.city ?? ''}، ${user.district ?? ''}`}</p>
       <div className="h-[0.5px] w-full bg-[#b6b6b6]" />
