@@ -136,7 +136,7 @@ const Page = () => {
       </div>
       <div className="no-scrollbar mt-5 grid h-[65vh] grid-cols-1 gap-6 overflow-y-auto px-0.5 md:grid-cols-2 lg:grid-cols-3 ">
         {!isLoadingSearch && (data?.data?.length > 0 || results?.length) ? (
-          (results || data?.data).map((shop) => (
+          (results.length ? results : data?.data).map((shop) => (
             <ShopItemCard
               key={`${shop.shopId as number}-${shop.name as string}`}
               address={shop.address?.description as string}
