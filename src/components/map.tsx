@@ -33,7 +33,7 @@ const Map = () => {
 
   return (
     <div className="size-full">
-      <MapContainer className="size-full" center={position} zoom={13} scrollWheelZoom={true}>
+      <MapContainer className="z-10 size-full" center={position} zoom={13} scrollWheelZoom={true}>
         <TileLayer
           attribution='&copy; <a href="https://carto.com/">CARTO</a>'
           url="https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=fZ0yuQbBs2ZcnSEyK7mbVIjxmGiCHJcG2Q1ojLiAaPS71jHlE5IUhflmr0ytvj43"

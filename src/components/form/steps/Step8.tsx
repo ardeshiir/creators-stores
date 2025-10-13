@@ -301,7 +301,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
           )}
         </div>
       ))}
-      {hasShowCase && (
+      {hasShowCase === 'true' && (
         <div className="col-span-2 flex justify-start">
           <Button
             type="button"

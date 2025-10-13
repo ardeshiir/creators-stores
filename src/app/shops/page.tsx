@@ -148,8 +148,8 @@ const Page = () => {
             />
           ))
         ) : (
-          <div className="flex size-full max-w-[280px] items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:max-w-full">
-            در حال حاضر اطلاعاتی برای نمایش وجود ندارد.
+          <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
+            <div className="max-w-[280px]">در حال حاضر اطلاعاتی برای نمایش وجود ندارد.</div>
           </div>
         )}
       </div>
@@ -703,9 +703,9 @@ const ShopDeletionModal = ({
       setIsSubmitting(true)
       await deleteShop(shopid)
       queryClient.invalidateQueries({ queryKey: queryKeys })
-      toast('حذف فروشنده با موفقیت انجام شد.')
       setIsSubmitting(false)
       setIsOpen(false)
+      toast('حذف فروشنده با موفقیت انجام شد.')
     } catch (error: any) {
       toast.success(error?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
       console.log({ error })

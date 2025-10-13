@@ -33,8 +33,8 @@ export const schema6 = z.object({
         type: z.enum(['banner', 'composite', 'other', 'none']),
         dimensions: z
           .object({
-            width: z.number().optional().nullable(),
-            height: z.number().optional().nullable(),
+            width: z.number().nullable(),
+            height: z.number().nullable(),
           })
           .optional(),
         attachments: z.string().optional().nullable(),

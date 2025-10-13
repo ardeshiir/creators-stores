@@ -211,7 +211,7 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
       >
         + اضافه کردن شماره جدید
       </Button>
-      <div className="mt-4 h-[124px] w-full rounded-[20px]">
+      <div className="z-10 mt-4 h-[124px] w-full rounded-[20px]">
         <Map />
       </div>
     </div>

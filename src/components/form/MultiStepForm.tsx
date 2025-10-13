@@ -95,7 +95,7 @@ export default function MultiStepForm() {
     if (step > 0) {
       setStep(Math.max(step - 1, 0))
     } else {
-      router.push('/')
+      router.back()
     }
   }
   const handleNext = async (values: any) => {
@@ -170,7 +170,13 @@ export default function MultiStepForm() {
     return <VerifyOTP shopID={preSubmittedShopId} setSubmitted={setSubmitted} />
   }
 
-  console.log({ formState: form.formState })
+  console.log({
+    formState: form.watch('signBoard'),
+    condition: ['banner', 'composite', 'other'].includes(form.watch('signBoard')?.[0]?.type)
+      ? !form.watch('signBoard')?.[0]?.dimensions.width ||
+        !form.watch('signBoard')?.[0]?.dimensions.height > 0
+      : false,
+  })
 
   return (
     <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden md:max-h-full">
@@ -203,7 +209,12 @@ export default function MultiStepForm() {
               isSubmitting ||
               (!form.formState.isValid && !isEditMode && step !== 6) ||
               (step === 6 &&
-                !['reglam', 'ontable', 'none'].includes(form.watch('displayStand')?.type))
+                !['reglam', 'ontable', 'none'].includes(form.watch('displayStand')?.type)) ||
+              (step === 5 &&
+              ['banner', 'composite', 'other'].includes(form.watch('signBoard')?.[0]?.type)
+                ? !form.watch('signBoard')?.[0]?.dimensions.width ||
+                  !form.watch('signBoard')?.[0]?.dimensions.height > 0
+                : false)
             }
             className={cn(
               'order-1 md:h-[56px] h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
