@@ -41,7 +41,12 @@ const Page = () => {
   const [filters, setFilters] = useState<UserFilterParams>({})
   const [filtersOpen, setFiltersOpen] = useState(false)
 
-  const { data, isLoading, error } = useQuery({
+  const {
+    data,
+    isLoading,
+    error,
+    refetch: updateData,
+  } = useQuery({
     queryKey: ['users', filters],
     queryFn: () => (Object.keys(filters).length ? getFilteredUsers(filters) : getAllUsers()),
   })
@@ -110,13 +115,17 @@ const Page = () => {
         {!isLoadingSearch &&
           (results?.length ? results : (data?.data as UserInfo[])).map((user, key) => (
             <div key={key} className="col-span-3 h-fit md:col-span-2 lg:col-span-1">
-              <UserItemCard user={user} key={`${user._id as string}-${user.name as string}`} />
+              <UserItemCard
+                updateData={updateData}
+                user={user}
+                key={`${user._id as string}-${user.name as string}`}
+              />
             </div>
           ))}
       </div>
-      <div className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 py-[35px] md:static md:pb-[75px] md:pt-[24px]">
+      <div className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 pb-[40px] pt-[35px] md:static md:pb-[75px] md:pt-[24px]">
         <Button
-          className="h-[56px] w-full text-[20px] font-bold md:w-[255px]"
+          className="h-[67px] w-full text-[20px] font-medium md:h-[56px] md:w-[255px]"
           variant="brand"
           onClick={() => {
             router.push('/users/new')
@@ -134,12 +143,10 @@ const Page = () => {
   )
 }
 
-const UserItemCard = ({ user }: { user: UserInfo }) => {
+const UserItemCard = ({ user, updateData }: { user: UserInfo; updateData: () => void }) => {
   const router = useRouter()
   const [deletionModalOpen, setDeletionModalOpen] = useState(false)
   const fullName = user.name + ' ' + user.lastName
-
-  console.log({ user })
 
   return (
     <div className=" flex w-full flex-col gap-4 rounded-[16px] border border-[#e4e4e4] px-6 py-4 sm:max-w-[450px]">
@@ -179,6 +186,7 @@ const UserItemCard = ({ user }: { user: UserInfo }) => {
       </div>
       <UserDeactivationModal
         userId={user._id}
+        updateData={updateData}
         isOpen={deletionModalOpen}
         setIsOpen={setDeletionModalOpen}
       />
@@ -190,10 +198,12 @@ const UserDeactivationModal = ({
   isOpen,
   setIsOpen,
   userId,
+  updateData,
 }: {
   isOpen: boolean
   setIsOpen: (val: boolean) => void
   userId: string
+  updateData: () => void
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const deactivateUser = async () => {
@@ -202,6 +212,8 @@ const UserDeactivationModal = ({
       await deactivateUserByID(userId)
       toast('لغو دسترسی با موفقیت انجام شد.')
       setIsSubmitting(false)
+      updateData()
+      setIsOpen(false)
     } catch (error: any) {
       toast.success(error?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
       console.log({ error })
