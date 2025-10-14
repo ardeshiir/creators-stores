@@ -229,7 +229,13 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                                   return
                                 }
 
-                                field.onChange(Number(normalized))
+                                if (normalized.endsWith('.')) {
+                                  field.onChange(normalized)
+                                } else {
+                                  const num = Number(normalized)
+
+                                  field.onChange(isNaN(num) ? normalized : num)
+                                }
                               }}
                             />
                           </FormControl>
