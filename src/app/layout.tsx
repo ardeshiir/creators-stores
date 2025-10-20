@@ -37,8 +37,8 @@ export default function RootLayout({
             <div className="fixed inset-x-0 top-0 px-9 pt-9">
               <Header />
             </div>
-            <div className="relative mt-[124px] h-screen max-h-screen overflow-y-hidden pt-[64px] md:mt-[98px]">
-              <div className="max-h-full overflow-y-scroll">{children}</div>
+            <div className="relative h-screen max-h-screen overflow-y-hidden pt-[124px] md:pt-[98px]">
+              <div className=" h-full max-h-full overflow-y-scroll pt-[64px] ">{children}</div>
             </div>
           </div>
           <Toaster />

@@ -30,7 +30,7 @@ import {
   shopFinalSubmission,
   updateShop,
 } from '@/lib/services/shop'
-import { cn, formatTimer } from '@/lib/utils'
+import { cn, formatTimer, normalizeNumericInput } from '@/lib/utils'
 import { useFormStore } from '@/stores/useFormStore'
 
 import { StepManager } from './StepManager'
@@ -167,7 +167,13 @@ export default function MultiStepForm() {
   }
 
   if (preSubmittedShopId) {
-    return <VerifyOTP shopID={preSubmittedShopId} setSubmitted={setSubmitted} />
+    return (
+      <VerifyOTP
+        shopID={preSubmittedShopId}
+        setPreSubmittedShopId={setPreSubmittedShopId}
+        setSubmitted={setSubmitted}
+      />
+    )
   }
 
   console.log({
@@ -179,7 +185,7 @@ export default function MultiStepForm() {
   })
 
   return (
-    <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden md:max-h-full">
+    <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden py-[2px] md:max-h-full">
       {/* 👇 Animation wrapper */}
       <div
         key={step}
@@ -254,9 +260,11 @@ export default function MultiStepForm() {
 const VerifyOTP = ({
   shopID,
   setSubmitted,
+  setPreSubmittedShopId,
 }: {
   shopID: string | number
   setSubmitted: (val: boolean) => void
+  setPreSubmittedShopId: (val: boolean | null) => void
 }) => {
   const [timer, setTimer] = useState(120)
 
@@ -295,6 +303,7 @@ const VerifyOTP = ({
       })
 
       setSubmitted(true)
+      setPreSubmittedShopId(null)
     } catch (error: any) {
       console.log({ error })
 
@@ -317,7 +326,7 @@ const VerifyOTP = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(submitOTP)}
-        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[16px] py-[72px] md:w-auto md:gap-[24px] md:border md:px-[96px]"
+        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[16px] py-[72px] md:w-fit md:gap-[24px] md:border md:px-[96px]"
       >
         <div className="flex w-full flex-col items-start gap-6 md:items-center">
           <span className="text-[18px] font-medium text-black">
@@ -335,7 +344,15 @@ const VerifyOTP = ({
                       maxLength={5}
                       {...field}
                       onChange={(val) => {
-                        field.onChange(val)
+                        const normalized = normalizeNumericInput(val)
+
+                        if (normalized === '') {
+                          field.onChange(null)
+
+                          return
+                        }
+
+                        field.onChange(normalized)
 
                         if (val.length === 5) {
                           form.handleSubmit(submitOTP)()

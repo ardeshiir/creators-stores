@@ -18,7 +18,7 @@ import {
   requestOTP,
   verifyOtp,
 } from '@/lib/services/authentication'
-import { cn, formatTimer, numberToEnglish } from '@/lib/utils'
+import { cn, formatTimer, normalizeNumericInput, numberToEnglish } from '@/lib/utils'
 
 const Login = ({ onLoginSuccessful }: { onLoginSuccessful: () => void }) => {
   const [loginStep, setLoginStep] = useState(1)
@@ -146,7 +146,15 @@ const LoginSecondStep = ({
                       maxLength={5}
                       {...field}
                       onChange={(val) => {
-                        field.onChange(val) // update form state
+                        const normalized = normalizeNumericInput(val)
+
+                        if (normalized === '') {
+                          field.onChange(null)
+
+                          return
+                        }
+
+                        field.onChange(normalized)
 
                         if (val.length === 5) {
                           form.handleSubmit(submitOTP)() // auto-submit when full

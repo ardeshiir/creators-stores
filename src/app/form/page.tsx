@@ -3,7 +3,6 @@ import { Suspense, useEffect } from 'react'
 
 import { useRouter } from 'next/navigation'
 
-import DesktopFooter from '@/components/desktop-footer'
 import MultiStepForm from '@/components/form/MultiStepForm'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { useAuthStore } from '@/hooks/useAuthentication'
@@ -26,11 +25,6 @@ export default function FormPage() {
           <MultiStepForm />
         </Suspense>
       </div>
-      {isDesktop && (
-        <div className="mt-[122px] w-full">
-          <DesktopFooter />
-        </div>
-      )}
     </>
   )
 }
