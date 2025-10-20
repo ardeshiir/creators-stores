@@ -1,6 +1,6 @@
 'use client'
 import 'leaflet/dist/leaflet.css'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import L from 'leaflet'
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet'
@@ -31,6 +31,24 @@ const Map = () => {
     setPosition([latlng.lat, latlng.lng])
   }, [])
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setPosition([pos.coords.latitude, pos.coords.longitude])
+        },
+        (err) => {
+          console.warn('📍 Geolocation not available or permission denied:', err)
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        },
+      )
+    }
+  }, [])
+
   return (
     <div className="size-full">
       <MapContainer className="z-10 size-full" center={position} zoom={13} scrollWheelZoom={true}>
@@ -39,22 +57,9 @@ const Map = () => {
           url="https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=fZ0yuQbBs2ZcnSEyK7mbVIjxmGiCHJcG2Q1ojLiAaPS71jHlE5IUhflmr0ytvj43"
         />
 
-        {/* 👇 This invisible component listens for map clicks */}
         <MapClickHandler setPosition={setPosition} />
 
-        <Marker
-          position={position}
-          draggable={true}
-          eventHandlers={{
-            dragend: handleDragEnd,
-          }}
-        >
-          {/*<Popup>
-            📍 Marker at:
-            <br />
-            <strong>{position[0].toFixed(5)}</strong>, <strong>{position[1].toFixed(5)}</strong>
-          </Popup>*/}
-        </Marker>
+        <Marker position={position} draggable={true} eventHandlers={{ dragend: handleDragEnd }} />
       </MapContainer>
     </div>
   )
