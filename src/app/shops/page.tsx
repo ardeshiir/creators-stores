@@ -92,7 +92,7 @@ const Page = () => {
   }
 
   return (
-    <div className="container relative mx-auto flex h-[calc(100vh-163px)] flex-col px-[24px] md:h-auto md:px-[56px] lg:px-[80px]">
+    <div className="container relative mx-auto flex !h-full flex-col px-[24px] md:h-auto md:px-[56px] lg:px-[80px]">
       <div className="flex flex-col px-0.5">
         <h1 className="text-[22px] font-bold text-black">لیست فروشندگان ثبت شده</h1>
         <div className="mt-6 flex w-auto justify-center gap-2 sm:w-full">

@@ -86,44 +86,46 @@ const Page = () => {
   }
 
   return (
-    <div className="container mx-auto flex flex-col px-[24px] md:px-[56px] lg:px-[80px]">
-      <div className="flex items-center justify-between">
-        <h1 className="text-[22px] font-bold text-black">لیست کارشناسان فروش</h1>
-      </div>
-      <div className="mt-6 flex w-auto justify-center gap-2">
-        <Input
-          startIcon={<SearchIcon />}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          containerClassName="flex-1 w-auto"
-          className="h-[62px] grow placeholder:text-[#BABCBE] md:h-[62px]"
-          placeholder="جستجو"
-        />
-        <button
-          onClick={() => setFiltersOpen(true)}
-          className="flex size-[62px] items-center justify-center rounded-[10px] border border-[#BABCBE] "
-        >
-          <FilterIconSecondary />
-        </button>
-      </div>
-      <div className="no-scrollbar mt-5 grid max-h-[70vh] grid-cols-3 gap-6 overflow-y-auto pb-[120px] md:pb-0">
-        {isLoadingSearch && (
-          <div className="flex size-full items-center justify-center">
-            <LoadingSpinner />
-          </div>
-        )}
-        {!isLoadingSearch &&
-          (results?.length ? results : (data?.data as UserInfo[])).map((user, key) => (
-            <div key={key} className="col-span-3 h-fit md:col-span-2 lg:col-span-1">
-              <UserItemCard
-                updateData={updateData}
-                user={user}
-                key={`${user._id as string}-${user.name as string}`}
-              />
+    <div className="container mx-auto flex !h-full flex-col px-[24px] md:px-[56px] lg:px-[80px]">
+      <div>
+        <div className="flex items-center justify-between">
+          <h1 className="text-[22px] font-bold text-black">لیست کارشناسان فروش</h1>
+        </div>
+        <div className="mt-6 flex w-auto justify-center gap-2">
+          <Input
+            startIcon={<SearchIcon />}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            containerClassName="flex-1 w-auto"
+            className="h-[62px] grow placeholder:text-[#BABCBE] md:h-[62px]"
+            placeholder="جستجو"
+          />
+          <button
+            onClick={() => setFiltersOpen(true)}
+            className="flex size-[62px] items-center justify-center rounded-[10px] border border-[#BABCBE] "
+          >
+            <FilterIconSecondary />
+          </button>
+        </div>
+        <div className="no-scrollbar mt-5 grid max-h-[70vh] grid-cols-3 gap-6 overflow-y-auto pb-[120px] md:pb-0">
+          {isLoadingSearch && (
+            <div className="flex size-full items-center justify-center">
+              <LoadingSpinner />
             </div>
-          ))}
+          )}
+          {!isLoadingSearch &&
+            (results?.length ? results : (data?.data as UserInfo[])).map((user, key) => (
+              <div key={key} className="col-span-3 h-fit md:col-span-2 lg:col-span-1">
+                <UserItemCard
+                  updateData={updateData}
+                  user={user}
+                  key={`${user._id as string}-${user.name as string}`}
+                />
+              </div>
+            ))}
+        </div>
       </div>
-      <div className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 pb-[40px] pt-[35px] md:static md:pb-[75px] md:pt-[24px]">
+      <div className="!fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 pb-[40px] pt-[35px] md:static md:pb-[75px] md:pt-[24px]">
         <Button
           className="h-[67px] w-full text-[20px] font-medium md:h-[56px] md:w-[255px]"
           variant="brand"

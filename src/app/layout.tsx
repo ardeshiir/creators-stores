@@ -33,11 +33,11 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} h-screen w-screen overflow-x-hidden antialiased`}
         >
-          <div className="mx-auto flex h-full min-h-screen flex-col overflow-x-hidden  bg-background pt-9">
-            <div className="px-9">
+          <div className="mx-auto flex h-full max-h-screen min-h-screen flex-col overflow-x-hidden  bg-background">
+            <div className="fixed inset-x-0 top-0 px-9 pt-9">
               <Header />
             </div>
-            <div className="relative h-full max-h-[calc(100vh-124px)] pt-[64px] md:max-h-[calc(100vh-98px)]">
+            <div className="relative mt-[124px] h-screen max-h-screen overflow-y-hidden pt-[64px] md:mt-[98px]">
               {children}
             </div>
           </div>
