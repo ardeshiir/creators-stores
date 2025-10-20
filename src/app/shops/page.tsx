@@ -48,6 +48,8 @@ const Page = () => {
     queryKey: ['shops', filters],
     queryFn: async () => (Object.keys(filters).length ? getFilteredShops(filters) : getAllShops()),
   })
+  const shouldShowResults = query.trim().length > 0 || Object.keys(filters).length > 0
+
   const router = useRouter()
   const { reset } = useFormStore()
   // const { isAuthenticated, isGettingAuthState } = useAuthStore()
@@ -135,21 +137,29 @@ const Page = () => {
         />
       </div>
       <div className="no-scrollbar mt-5 grid flex-1 grow grid-cols-1 gap-6 overflow-y-auto px-0.5 md:grid-cols-2 lg:grid-cols-3 ">
-        {!isLoadingSearch && (data?.data?.length > 0 || results?.length) ? (
-          (results.length ? results : data?.data).map((shop) => (
-            <ShopItemCard
-              key={`${shop.shopId as number}-${shop.name as string}`}
-              address={shop.address?.description as string}
-              dbid={shop._id}
-              id={shop.shopId || 0}
-              name={shop.name as string}
-              storeName={shop.storeName as string}
-              queryKeys={['shops', filters]}
-            />
-          ))
+        {shouldShowResults ? (
+          !isLoadingSearch && (data?.data?.length > 0 || results?.length) ? (
+            (results.length ? results : data?.data).map((shop) => (
+              <ShopItemCard
+                key={`${shop.shopId as number}-${shop.name as string}`}
+                address={shop.address?.description as string}
+                dbid={shop._id}
+                id={shop.shopId || 0}
+                name={shop.name as string}
+                storeName={shop.storeName as string}
+                queryKeys={['shops', filters]}
+              />
+            ))
+          ) : (
+            <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
+              <div className="max-w-[280px]">نتیجه‌ای برای نمایش وجود ندارد.</div>
+            </div>
+          )
         ) : (
           <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
-            <div className="max-w-[280px]">در حال حاضر اطلاعاتی برای نمایش وجود ندارد.</div>
+            <div className="max-w-[280px]">
+              برای مشاهده لیست فروشندگان ابتدا جستجو کنید یا فیلترها را اعمال نمایید.
+            </div>
           </div>
         )}
       </div>
