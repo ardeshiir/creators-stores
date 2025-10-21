@@ -1,26 +1,28 @@
-import type { NextConfig } from 'next'
+// next.config.js
+const withPWA = require('next-pwa')({
+  dest: 'public', // 👈 where the service worker & manifest will be generated
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development', // disable PWA in dev mode
+})
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // TODO: change this later for now using ** to accept the mock data that is set in the backend
   images: {
     remotePatterns: [
       {
-        protocol: 'https', // You can specify the protocol if needed
-        hostname: '**', // This allows any hostname
+        protocol: 'https',
+        hostname: '**', // accept all image hosts
       },
     ],
   },
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
     ignoreBuildErrors: true,
   },
   output: 'standalone',
 }
 
-export default nextConfig
+module.exports = withPWA(nextConfig)
