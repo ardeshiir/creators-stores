@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 import './globals.css'
+import LayoutWrapper from '@/components/LayoutWrapper'
 import Header from '@/components/navigation/header'
 import Providers from '@/components/Providers'
 import { Toaster } from '@/components/ui/sonner'
@@ -40,9 +41,7 @@ export default function RootLayout({
             <div className="fixed inset-x-0 top-0 z-20 px-9 pt-9">
               <Header />
             </div>
-            <div className="relative h-dvh max-h-dvh overflow-y-hidden pt-[124px] md:pt-[98px]">
-              <div className="h-full max-h-full overflow-y-scroll pt-[64px] ">{children}</div>
-            </div>
+            <LayoutWrapper>{children}</LayoutWrapper>
           </div>
           <Toaster />
         </body>
