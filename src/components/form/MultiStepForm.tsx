@@ -185,7 +185,7 @@ export default function MultiStepForm() {
   })
 
   return (
-    <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden py-[2px] md:max-h-full">
+    <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden px-9 py-[2px] md:max-h-full">
       {/* 👇 Animation wrapper */}
       <div
         key={step}
