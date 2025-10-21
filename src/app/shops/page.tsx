@@ -10,12 +10,7 @@ import { toast } from 'sonner'
 import FilterIconSecondary from '@/components/icons/FilterIconSecondary'
 import SearchIcon from '@/components/icons/SearchIcon'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -27,13 +22,7 @@ import {
 import Input from '@/components/ui/input'
 import { ResponsiveDialog, ResponsiveDialogContent } from '@/components/ui/responsive-dialog'
 import { useAuthStore } from '@/hooks/useAuthentication'
-import {
-  deleteShop,
-  getAllShops,
-  getFilteredShops,
-  searchShops,
-  ShopFilterParams,
-} from '@/lib/services/shop'
+import { deleteShop, getAllShops, getFilteredShops, searchShops, ShopFilterParams } from '@/lib/services/shop'
 import { getAllStates } from '@/lib/services/state'
 import { cn } from '@/lib/utils'
 import { FormState, useFormStore } from '@/stores/useFormStore'
@@ -136,7 +125,8 @@ const Page = () => {
           onAccept={setFilters}
         />
       </div>
-      <div className="no-scrollbar mt-5 grid flex-1 grow grid-cols-1 gap-6 overflow-y-auto px-0.5 pb-12 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        className="no-scrollbar mt-5 grid flex-1 grow grid-cols-1 gap-6 overflow-y-auto px-0.5 pb-[140px] md:grid-cols-2 lg:grid-cols-3">
         {shouldShowResults ? (
           !isLoadingSearch && (data?.data?.length > 0 || results?.length) ? (
             (results.length ? results : data?.data).map((shop) => (
@@ -151,12 +141,14 @@ const Page = () => {
               />
             ))
           ) : (
-            <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
+            <div
+              className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
               <div className="max-w-[280px]">نتیجه‌ای برای نمایش وجود ندارد.</div>
             </div>
           )
         ) : (
-          <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
+          <div
+            className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
             <div className="max-w-[280px]">
               برای مشاهده لیست فروشندگان ابتدا جستجو کنید یا فیلترها را اعمال نمایید.
             </div>
@@ -165,7 +157,8 @@ const Page = () => {
       </div>
       {!filtersModalOpen && (
         <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4 md:my-0">
-          <div className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 py-[35px] md:static md:pb-[75px] md:pt-[24px]">
+          <div
+            className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 py-[35px] md:static md:pb-[75px] md:pt-[24px]">
             <Button
               onClick={() => router.push('/')}
               className="hidden h-[56px] w-full bg-[#E4E4E4] text-[20px] font-bold text-black hover:bg-[#E4E4E4]/10 md:flex md:w-[255px]"
@@ -191,10 +184,10 @@ const Page = () => {
 }
 
 const FiltersMenu = ({
-  onAccept,
-  isOpen,
-  setIsOpen,
-}: {
+                       onAccept,
+                       isOpen,
+                       setIsOpen,
+                     }: {
   onAccept: (val: ShopFilterParams) => void
   isOpen: boolean
   setIsOpen: (val: boolean) => void
@@ -636,13 +629,13 @@ const FiltersMenu = ({
 }
 
 const ShopItemCard = ({
-  name,
-  storeName,
-  address,
-  id,
-  dbid,
-  queryKeys,
-}: {
+                        name,
+                        storeName,
+                        address,
+                        id,
+                        dbid,
+                        queryKeys,
+                      }: {
   name: string
   storeName: string
   address: string
@@ -660,7 +653,8 @@ const ShopItemCard = ({
           <span className="text-[18px] font-bold">{storeName}</span>
           <span className="text-[16px] leading-[22px]">{name}</span>
         </div>
-        <span className="font-fa-num rounded-[10px] border border-[#164ef3] px-2 py-1 text-[18px] font-medium text-[#164ef3]">
+        <span
+          className="font-fa-num rounded-[10px] border border-[#164ef3] px-2 py-1 text-[18px] font-medium text-[#164ef3]">
           {id}
         </span>
       </div>
@@ -695,11 +689,11 @@ const ShopItemCard = ({
 }
 
 const ShopDeletionModal = ({
-  isOpen,
-  setIsOpen,
-  shopid,
-  queryKeys,
-}: {
+                             isOpen,
+                             setIsOpen,
+                             shopid,
+                             queryKeys,
+                           }: {
   isOpen: boolean
   setIsOpen: (val: boolean) => void
   shopid: string
