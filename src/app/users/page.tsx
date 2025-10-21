@@ -11,14 +11,25 @@ import { toast } from 'sonner'
 import FilterIconSecondary from '@/components/icons/FilterIconSecondary'
 import SearchIcon from '@/components/icons/SearchIcon'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import Input from '@/components/ui/input'
 import { ResponsiveDialog, ResponsiveDialogContent } from '@/components/ui/responsive-dialog'
 import { UserInfo } from '@/lib/services/authentication'
 import { getAllStates, StateDTO } from '@/lib/services/state'
-import { deactivateUserByID, getAllUsers, getFilteredUsers, searchUsers, UserFilterParams } from '@/lib/services/users'
+import {
+  deactivateUserByID,
+  getAllUsers,
+  getFilteredUsers,
+  searchUsers,
+  UserFilterParams,
+} from '@/lib/services/users'
 import { cn } from '@/lib/utils'
 
 const Page = () => {
@@ -76,71 +87,68 @@ const Page = () => {
   }
 
   return (
-    <div className="container mx-auto flex !h-full flex-col px-[24px] md:px-[56px] lg:px-[80px]">
-      <div>
-        <div className="flex items-center justify-between">
-          <h1 className="text-[22px] font-bold text-black">لیست کارشناسان فروش</h1>
-        </div>
-        <div className="mt-6 flex w-auto justify-center gap-2">
-          <Input
-            startIcon={<SearchIcon />}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            containerClassName="flex-1 w-auto"
-            className="h-[62px] grow placeholder:text-[#BABCBE] md:h-[62px]"
-            placeholder="جستجو"
-          />
-          <button
-            onClick={() => setFiltersOpen(true)}
-            className="flex size-[62px] items-center justify-center rounded-[10px] border border-[#BABCBE] "
-          >
-            <FilterIconSecondary />
-          </button>
-        </div>
-        <div className="no-scrollbar mt-5 grid max-h-[70vh] grid-cols-3 gap-6 overflow-y-auto pb-[120px] md:pb-0">
-          {shouldShowResults ? (
-            isLoadingSearch ? (
-              <div className="flex size-full items-center justify-center">
-                <LoadingSpinner />
-              </div>
-            ) : (results?.length || (data?.data?.length ?? 0) > 0) ? (
-              (results.length ? results : (data?.data as UserInfo[])).map((user, key) => (
-                <div key={key} className="col-span-3 h-fit md:col-span-2 lg:col-span-1">
-                  <UserItemCard
-                    updateData={updateData}
-                    user={user}
-                    key={`${user._id as string}-${user.name as string}`}
-                  />
-                </div>
-              ))
-            ) : (
-              <div
-                className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
-                <div className="max-w-[280px]">هیچ کاربری یافت نشد.</div>
-              </div>
-            )
-          ) : (
-            <div
-              className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
-              <div className="max-w-[280px]">
-                برای مشاهده لیست کارشناسان، ابتدا جستجو کنید یا فیلترها را اعمال نمایید.
-              </div>
-            </div>
-          )}
-        </div>
-
+    <div className="container relative mx-auto flex !h-full flex-col px-[24px] md:h-auto md:px-[56px] lg:px-[80px]">
+      <div className="flex items-center justify-between">
+        <h1 className="text-[22px] font-bold text-black">لیست کارشناسان فروش</h1>
       </div>
-      <div
-        className="!fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 pb-[40px] pt-[35px] md:static md:pb-[75px] md:pt-[24px]">
-        <Button
-          className="h-[67px] w-full text-[20px] font-medium md:h-[56px] md:w-[255px]"
-          variant="brand"
-          onClick={() => {
-            router.push('/users/new')
-          }}
+      <div className="mt-6 flex w-auto justify-center gap-2">
+        <Input
+          startIcon={<SearchIcon />}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          containerClassName="flex-1 w-auto"
+          className="h-[62px] grow placeholder:text-[#BABCBE] md:h-[62px]"
+          placeholder="جستجو"
+        />
+        <button
+          onClick={() => setFiltersOpen(true)}
+          className="flex size-[62px] items-center justify-center rounded-[10px] border border-[#BABCBE] "
         >
-          ثبت کارشناس جدید <PlusIcon />
-        </Button>
+          <FilterIconSecondary />
+        </button>
+      </div>
+      <div className="no-scrollbar mt-5 grid flex-1 grow grid-cols-1 gap-6 overflow-y-auto px-0.5 md:grid-cols-2 lg:grid-cols-3 ">
+        {shouldShowResults ? (
+          isLoadingSearch ? (
+            <div className="flex size-full items-center justify-center">
+              <LoadingSpinner />
+            </div>
+          ) : results?.length || (data?.data?.length ?? 0) > 0 ? (
+            (results.length ? results : (data?.data as UserInfo[])).map((user, key) => (
+              <div key={key} className="col-span-3 h-fit md:col-span-2 lg:col-span-1">
+                <UserItemCard
+                  updateData={updateData}
+                  user={user}
+                  key={`${user._id as string}-${user.name as string}`}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
+              <div className="max-w-[280px]">هیچ کاربری یافت نشد.</div>
+            </div>
+          )
+        ) : (
+          <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
+            <div className="max-w-[280px]">
+              برای مشاهده لیست کارشناسان، ابتدا جستجو کنید یا فیلترها را اعمال نمایید.
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4 md:my-0">
+        <div className="!fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 pb-[40px] pt-[35px] md:static md:pb-[75px] md:pt-[24px]">
+          <Button
+            className="h-[67px] w-full text-[20px] font-medium md:h-[56px] md:w-[255px]"
+            variant="brand"
+            onClick={() => {
+              router.push('/users/new')
+            }}
+          >
+            ثبت کارشناس جدید <PlusIcon />
+          </Button>
+        </div>
       </div>
       <FiltersMenu
         isOpen={filtersOpen}
@@ -172,8 +180,7 @@ const UserItemCard = ({ user, updateData }: { user: UserInfo; updateData: () => 
         <span>شماره موبایل:</span>
         <span className="font-fa-num">{user.phone || '-'}</span>
       </div>
-      <p
-        className="font-fa-num w-full max-w-[70%] truncate text-[16px] leading-[22px] text-[#9D9D9D]">{`${user.state ?? ''}، ${user.city ?? ''}، ${user.district ?? ''}`}</p>
+      <p className="font-fa-num w-full max-w-[70%] truncate text-[16px] leading-[22px] text-[#9D9D9D]">{`${user.state ?? ''}، ${user.city ?? ''}، ${user.district ?? ''}`}</p>
       <div className="h-[0.5px] w-full bg-[#b6b6b6]" />
       <div className="grid w-full grid-cols-2 gap-6">
         <Button
@@ -204,11 +211,11 @@ const UserItemCard = ({ user, updateData }: { user: UserInfo; updateData: () => 
 }
 
 const UserDeactivationModal = ({
-                                 isOpen,
-                                 setIsOpen,
-                                 userId,
-                                 updateData,
-                               }: {
+  isOpen,
+  setIsOpen,
+  userId,
+  updateData,
+}: {
   isOpen: boolean
   setIsOpen: (val: boolean) => void
   userId: string
@@ -259,10 +266,10 @@ const UserDeactivationModal = ({
 }
 
 const FiltersMenu = ({
-                       onAccept,
-                       isOpen,
-                       setIsOpen,
-                     }: {
+  onAccept,
+  isOpen,
+  setIsOpen,
+}: {
   onAccept: (val: UserFilterParams) => void
   isOpen: boolean
   setIsOpen: (val: boolean) => void

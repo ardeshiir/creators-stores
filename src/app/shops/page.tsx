@@ -165,16 +165,16 @@ const Page = () => {
       </div>
       {!filtersModalOpen && (
         <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4 md:my-0">
-          <div className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 py-[35px] md:static md:py-[75px]">
+          <div className="fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 py-[35px] md:static md:pb-[75px] md:pt-[24px]">
             <Button
               onClick={() => router.push('/')}
-              className="hidden h-[56px] w-full bg-[#E4E4E4] font-bold text-black hover:bg-[#E4E4E4]/10 md:flex md:w-[255px]"
+              className="hidden h-[56px] w-full bg-[#E4E4E4] text-[20px] font-bold text-black hover:bg-[#E4E4E4]/10 md:flex md:w-[255px]"
             >
               بازگشت
             </Button>
 
             <Button
-              className="h-[67px] w-full font-bold md:h-[56px] md:w-[255px]"
+              className="h-[67px] w-full text-[20px] font-bold md:h-[56px] md:w-[255px]"
               variant="brand"
               onClick={() => {
                 reset()
