@@ -20,7 +20,7 @@ export default function FormPage() {
 
   return (
     <>
-      <div className="h-full px-9 md:h-auto">
+      <div className="h-full md:h-auto">
         <Suspense>
           <MultiStepForm />
         </Suspense>
