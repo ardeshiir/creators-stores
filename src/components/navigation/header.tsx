@@ -1,6 +1,4 @@
 'use client'
-import { useEffect } from 'react'
-
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -34,14 +32,10 @@ const Header = () => {
 export default Header
 
 const MenuDropDown = () => {
-  const { userInfo, isAuthenticated, getLoginState, logout } = useAuthStore()
+  const { userInfo, isAuthenticated, logout } = useAuthStore()
   const isSuperAdmin = userInfo?.role === 'global_manager'
   const router = useRouter()
   const { reset } = useFormStore()
-
-  useEffect(() => {
-    getLoginState()
-  }, [])
 
   if (!isAuthenticated) {
     return <span />
