@@ -24,7 +24,7 @@ const Header = () => {
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   return (
-    <div className="flex items-start justify-between">
+    <div className="z-10 flex items-start justify-between">
       <MenuDropDown />
       <Link href="/">{isDesktop ? <LogWithTypographyHorizontal /> : <LogWithTypography />}</Link>
     </div>
