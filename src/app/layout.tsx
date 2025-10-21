@@ -33,12 +33,12 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden antialiased`}
         >
-          <div className="mx-auto flex h-full max-h-screen min-h-screen flex-col overflow-x-hidden bg-background">
+          <div className="mx-auto flex h-full flex-col overflow-x-hidden bg-background">
             <div className="fixed inset-x-0 top-0 z-20 px-9 pt-9">
               <Header />
             </div>
-            <div className="relative h-screen max-h-screen overflow-y-hidden pt-[124px] md:pt-[98px]">
-              <div className=" h-full max-h-full overflow-y-scroll pt-[64px] ">{children}</div>
+            <div className="relative h-dvh max-h-dvh overflow-y-hidden pt-[124px] md:pt-[98px]">
+              <div className="h-full max-h-full overflow-y-scroll pt-[64px] ">{children}</div>
             </div>
           </div>
           <Toaster />
