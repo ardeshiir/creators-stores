@@ -34,7 +34,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden antialiased`}
         >
           <div className="mx-auto flex h-full max-h-screen min-h-screen flex-col overflow-x-hidden bg-background">
-            <div className="fixed inset-x-0 top-0 px-9 pt-9">
+            <div className="fixed inset-x-0 top-0 z-20 px-9 pt-9">
               <Header />
             </div>
             <div className="relative h-screen max-h-screen overflow-y-hidden pt-[124px] md:pt-[98px]">
