@@ -35,11 +35,14 @@ export const numberToPersian = (number: number) => {
 }
 
 export function normalizeNumericInput(str: string): string {
-  // Convert Persian/Arabic digits → English
+  // 1️⃣ Convert Persian/Arabic digits → English
   const english = str.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
 
-  // Allow digits and a single decimal point
-  return english
+  // 2️⃣ Replace Persian decimal separator (٫) with a dot (.)
+  const normalizedDecimal = english.replace(/٫/g, '.')
+
+  // 3️⃣ Allow digits and a single decimal point
+  return normalizedDecimal
     .replace(/[^0-9.]/g, '') // keep 0-9 and .
-    .replace(/(\..*?)\./g, '$1') // remove any extra dots beyond the first
+    .replace(/(\..*?)\./g, '$1') // remove extra dots beyond the first
 }
