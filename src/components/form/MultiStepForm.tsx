@@ -212,7 +212,9 @@ export default function MultiStepForm() {
               ['banner', 'composite', 'other'].includes(form.watch('signBoard')?.[0]?.type)
                 ? !form.watch('signBoard')?.[0]?.dimensions.width ||
                   !form.watch('signBoard')?.[0]?.dimensions.height > 0
-                : false)
+                : false) ||
+              (step === stepsCount - 1 &&
+                (!form.watch('specialistName') || !form.watch('specialistPhoneNumber')))
             }
             className={cn(
               'order-1 md:h-[56px] h-[67px] font-bold shadow md:order-2 md:col-span-6 col-span-8',
