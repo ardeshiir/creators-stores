@@ -107,7 +107,7 @@ const Page = () => {
           <FilterIconSecondary />
         </button>
       </div>
-      <div className="no-scrollbar mt-5 grid flex-1 grow grid-cols-1 gap-6 overflow-y-auto px-0.5 md:grid-cols-2 lg:grid-cols-3 ">
+      <div className="no-scrollbar mt-5 grid flex-1 grow grid-cols-1 gap-6 overflow-y-auto px-0.5 pb-12 md:grid-cols-2 lg:grid-cols-3">
         {shouldShowResults ? (
           isLoadingSearch ? (
             <div className="flex size-full items-center justify-center">
@@ -137,18 +137,16 @@ const Page = () => {
         )}
       </div>
 
-      <div className="my-[75px] flex w-full flex-wrap-reverse items-center justify-center gap-4 md:my-0">
-        <div className="!fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 pb-[40px] pt-[35px] md:static md:pb-[75px] md:pt-[24px]">
-          <Button
-            className="h-[67px] w-full text-[20px] font-medium md:h-[56px] md:w-[255px]"
-            variant="brand"
-            onClick={() => {
-              router.push('/users/new')
-            }}
-          >
-            ثبت کارشناس جدید <PlusIcon />
-          </Button>
-        </div>
+      <div className="!fixed inset-x-0 bottom-0 flex w-full flex-wrap-reverse items-center justify-center gap-4 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_25%)] px-6 pb-[40px] pt-[35px] md:static md:pb-[75px] md:pt-[24px]">
+        <Button
+          className="h-[67px] w-full text-[20px] font-medium md:h-[56px] md:w-[255px]"
+          variant="brand"
+          onClick={() => {
+            router.push('/users/new')
+          }}
+        >
+          ثبت کارشناس جدید <PlusIcon />
+        </Button>
       </div>
       <FiltersMenu
         isOpen={filtersOpen}

@@ -176,14 +176,6 @@ export default function MultiStepForm() {
     )
   }
 
-  console.log({
-    formState: form.watch('signBoard'),
-    condition: ['banner', 'composite', 'other'].includes(form.watch('signBoard')?.[0]?.type)
-      ? !form.watch('signBoard')?.[0]?.dimensions.width ||
-        !form.watch('signBoard')?.[0]?.dimensions.height > 0
-      : false,
-  })
-
   return (
     <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden px-9 py-[2px] md:max-h-full">
       {/* 👇 Animation wrapper */}
