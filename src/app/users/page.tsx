@@ -114,7 +114,12 @@ const Page = () => {
               <LoadingSpinner />
             </div>
           ) : results?.length || (data?.data?.length ?? 0) > 0 ? (
-            (results.length ? results : (data?.data as UserInfo[])).map((user, key) => {
+            (results.length
+              ? results
+              : Object.keys(filters).length > 0
+                ? (data?.data as UserInfo[])
+                : []
+            ).map((user, key) => {
               if (!user.isActive) {
                 return null
               }
