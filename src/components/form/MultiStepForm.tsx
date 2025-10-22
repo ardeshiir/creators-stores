@@ -320,7 +320,7 @@ const VerifyOTP = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(submitOTP)}
-        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[16px] py-[72px] md:w-fit md:gap-[24px] md:border md:px-[96px]"
+        className="mx-auto flex w-full flex-col items-center gap-[91px] rounded-[16px] px-9 py-[72px] md:w-fit md:gap-[24px] md:border md:px-[96px]"
       >
         <div className="flex w-full flex-col items-start gap-6 md:items-center">
           <span className="text-[18px] font-medium text-black">
@@ -410,7 +410,7 @@ const FormSubmittedSuccessfully = ({
   const { reset } = useFormStore()
 
   return (
-    <div className="flex h-full min-h-[80vh] flex-col items-center justify-between py-6 md:mx-auto md:max-w-[363px] md:justify-center md:gap-12">
+    <div className="flex h-full min-h-[80vh] flex-col items-center justify-between px-9 py-6 md:mx-auto md:max-w-[363px] md:justify-center md:gap-12">
       <div className="flex grow flex-col items-center justify-center gap-6 md:grow-0">
         <CheckCircle />
         <h2 className="text-[20px] font-bold">اطلاعات با موفقیت ثبت گردید.</h2>
@@ -418,7 +418,7 @@ const FormSubmittedSuccessfully = ({
       <div className="flex w-full flex-col items-center gap-4">
         <Button
           variant="brand"
-          className="h-12 w-full"
+          className="h-[67px] w-full text-[20px] md:h-12 md:text-base"
           onClick={() => {
             reset()
             setSubmitted(false)
@@ -427,7 +427,10 @@ const FormSubmittedSuccessfully = ({
         >
           ثبت فروشنده جدید
         </Button>
-        <Button onClick={() => router.push('/shops')} className="h-12 w-full bg-black text-white">
+        <Button
+          onClick={() => router.push('/shops')}
+          className="h-[67px] w-full bg-black text-[20px] text-white md:h-12 md:text-base"
+        >
           فروشندگان ثبت شده
         </Button>
       </div>

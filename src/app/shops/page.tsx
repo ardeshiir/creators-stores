@@ -145,7 +145,7 @@ const Page = () => {
                 address={shop.address?.description as string}
                 dbid={shop._id}
                 id={shop.shopId || 0}
-                name={shop.name as string}
+                name={(shop.name as string) + ' ' + shop.lastName}
                 storeName={shop.storeName as string}
                 queryKeys={['shops', filters]}
               />

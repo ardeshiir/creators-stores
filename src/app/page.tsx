@@ -31,7 +31,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-full flex-col items-center justify-between pt-6">
+    <div className="flex h-full flex-col items-center justify-between">
       {isAuthenticated ? (
         <StoreManagementMenu />
       ) : (
@@ -46,7 +46,7 @@ export default function Home() {
           <DesktopFooter />
         </div>
       ) : (
-        <footer className="flex h-[140px] w-full items-start justify-center bg-black pt-7 md:hidden">
+        <footer className="flex h-[140px] min-h-[140px] w-full items-start justify-center bg-black pt-7 md:hidden">
           <BonyanIcon />
         </footer>
       )}

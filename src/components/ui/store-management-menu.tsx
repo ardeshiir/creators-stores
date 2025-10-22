@@ -15,7 +15,7 @@ const StoreManagementMenu = () => {
   const router = useRouter()
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-1 flex-col justify-between gap-10 pb-[43px]">
       <div className="desktop-card flex w-[315px] flex-col gap-[35px] md:w-auto">
         <LoginTitle title="باشگاه فروشندگان" />
         <div className="flex flex-col items-center  gap-6 md:gap-4">

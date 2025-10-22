@@ -132,7 +132,7 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="h-70vh flex flex-col justify-between space-y-8"
+          className="h-70vh flex flex-col justify-between space-y-8 pb-28 md:pb-0"
         >
           <div className="grid grid-cols-6 gap-4">
             <FormField
@@ -269,7 +269,7 @@ const UserForm = ({ defaultUserValues }: { defaultUserValues?: Partial<UserInfo>
               )}
             />
           </div>
-          <div className="col-span-2 flex w-full items-center gap-[16px]">
+          <div className="md: fixed inset-x-0 bottom-0 col-span-2 flex w-full items-center gap-[16px] p-6 md:static md:p-0">
             <Button
               className="radius-[20px] h-[67px] flex-1 !py-[18px] text-[20px] font-semibold shadow-none"
               type="submit"
