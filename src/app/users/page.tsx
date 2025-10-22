@@ -114,15 +114,21 @@ const Page = () => {
               <LoadingSpinner />
             </div>
           ) : results?.length || (data?.data?.length ?? 0) > 0 ? (
-            (results.length ? results : (data?.data as UserInfo[])).map((user, key) => (
-              <div key={key} className="col-span-3 h-fit md:col-span-2 lg:col-span-1">
-                <UserItemCard
-                  updateData={updateData}
-                  user={user}
-                  key={`${user._id as string}-${user.name as string}`}
-                />
-              </div>
-            ))
+            (results.length ? results : (data?.data as UserInfo[])).map((user, key) => {
+              if (!user.isActive) {
+                return null
+              }
+
+              return (
+                <div key={key} className="col-span-3 h-fit md:col-span-2 lg:col-span-1">
+                  <UserItemCard
+                    updateData={updateData}
+                    user={user}
+                    key={`${user._id as string}-${user.name as string}`}
+                  />
+                </div>
+              )
+            })
           ) : (
             <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
               <div className="max-w-[280px]">هیچ کاربری یافت نشد.</div>
