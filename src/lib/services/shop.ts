@@ -72,3 +72,33 @@ export const getFilteredShops = async (params: ShopFilterParams) => {
 export const searchShops = async (searchQuery: string) => {
   return await baseApi.get(`/shop/search?q=${searchQuery}`)
 }
+
+export const exportShopsExcel = async (params: ShopFilterParams) => {
+  const query = new URLSearchParams()
+
+  if (params.state?.length) params.state.forEach((s) => query.append('state', s))
+
+  if (params.city?.length) params.city.forEach((c) => query.append('city', c))
+
+  if (params.sellerType) query.append('sellerType', params.sellerType)
+
+  if (params.purchaseMethod) query.append('purchaseMethod', params.purchaseMethod)
+
+  const response = await baseApi.get(`/shop/export?${query.toString()}`, {
+    responseType: 'blob', // important
+  })
+
+  // Trigger file download
+  const blob = new Blob([response.data], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  })
+  const url = window.URL.createObjectURL(blob)
+  const a = document.createElement('a')
+
+  a.href = url
+  a.download = 'shops-export.xlsx'
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  window.URL.revokeObjectURL(url)
+}

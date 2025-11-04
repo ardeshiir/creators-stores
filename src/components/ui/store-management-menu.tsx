@@ -61,6 +61,19 @@ const StoreManagementMenu = () => {
               </Link>
             </Button>
           )}
+          {isSuperAdmin && (
+            <Button
+              asChild
+              className="flex h-[67px] w-full items-center justify-center border bg-white text-black hover:bg-black hover:text-white md:w-[363px]"
+            >
+              <Link
+                className="flex size-full items-center justify-center"
+                href="/shops?export-mode=true"
+              >
+                دانلود فایل اطلاعات
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
       <button className="flex h-[47px] items-center justify-between rounded-[16px] border border-[#BABCBE] px-5 font-bold">
