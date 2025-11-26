@@ -66,10 +66,7 @@ const StoreManagementMenu = () => {
               asChild
               className="flex h-[67px] w-full items-center justify-center border bg-white text-black hover:bg-black hover:text-white md:w-[363px]"
             >
-              <Link
-                className="flex size-full items-center justify-center"
-                href="/shops?export-mode=true"
-              >
+              <Link className="flex size-full items-center justify-center" href="/export">
                 دانلود فایل اطلاعات
               </Link>
             </Button>
