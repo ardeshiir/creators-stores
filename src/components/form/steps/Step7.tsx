@@ -1,6 +1,8 @@
 // components/form/steps/Step7.tsx
 'use client'
 
+import { useState } from 'react'
+
 import Image from 'next/image'
 import { UseFormReturn } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -8,6 +10,7 @@ import { z } from 'zod'
 
 import { displayStandDict } from '@/components/form/steps/FormFinalPreview'
 import CameraIcon from '@/components/icons/CameraIcon'
+import LoadingSpinner from '@/components/LoadingSpinner'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { InputSecondary } from '@/components/ui/input'
 import {
@@ -31,6 +34,7 @@ export const schema7 = z.object({
 export type Step7Values = z.infer<typeof schema7>
 
 export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
+  const [isUploading, setIsUploading] = useState(false)
   const handleUpload = async (files: FileList) => {
     const selectedFile = files[0]
 
@@ -40,6 +44,8 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
       formData.append('file', selectedFile)
 
       try {
+        setIsUploading(true)
+
         const uploadResponse = await uploadFile(formData)
 
         if (uploadResponse?.data?.url) {
@@ -48,12 +54,12 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
       } catch (e: any) {
         toast.success(e?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
         console.log({ uploadError: e })
+      } finally {
+        setIsUploading(false)
       }
     }
   }
   const displayStand = form.watch('displayStand')
-
-  console.log({ displayStand })
 
   return (
     <div className="mx-auto w-full">
@@ -94,7 +100,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
           />
         }
         <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
-          {['reglam', 'ontable', 'none'].includes(displayStand?.type) && (
+          {['reglam', 'ontable'].includes(displayStand?.type) && (
             <FormField
               control={form.control}
               name="displayStand.brand"
@@ -114,7 +120,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
             />
           )}
 
-          {['reglam', 'ontable', 'none'].includes(displayStand?.type) && (
+          {['reglam', 'ontable'].includes(displayStand?.type) && (
             <FormItem className="md:mr-0 md:w-fit">
               <FormLabel
                 htmlFor="displayStand-attachment"
@@ -141,6 +147,11 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
                 ) : (
                   <>
                     <CameraIcon color={displayStand.type === 'none' && '#B6B6B6'} /> تصویر ضمیمه
+                    {isUploading && (
+                      <div className="mx-1 flex items-center">
+                        <LoadingSpinner />
+                      </div>
+                    )}
                   </>
                 )}
 

@@ -94,6 +94,7 @@ export default function MultiStepForm() {
   const handleBack = () => {
     if (step > 0) {
       setStep(Math.max(step - 1, 0))
+      setTimeout(() => form.trigger(), 0)
     } else {
       router.back()
     }

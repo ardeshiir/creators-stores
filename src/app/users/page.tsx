@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { isEqual } from 'lodash'
 import { PlusIcon } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 
 import FilterIconSecondary from '@/components/icons/FilterIconSecondary'
@@ -25,6 +25,7 @@ import { UserInfo } from '@/lib/services/authentication'
 import { getAllStates, StateDTO } from '@/lib/services/state'
 import {
   deactivateUserByID,
+  exportUsersExcel,
   getAllUsers,
   getFilteredUsers,
   searchUsers,
@@ -40,6 +41,8 @@ const Page = () => {
 
   const [filters, setFilters] = useState<UserFilterParams>({})
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const searchParams = useSearchParams()
+  const isExportMode = searchParams.get('export-mode') === 'true'
 
   const {
     data,
@@ -50,7 +53,7 @@ const Page = () => {
     queryKey: ['users', filters],
     queryFn: () => (Object.keys(filters).length ? getFilteredUsers(filters) : getAllUsers()),
   })
-  const shouldShowResults = query.trim().length > 0 || Object.keys(filters).length > 0
+  // const shouldShowResults = query.trim().length > 0 || Object.keys(filters).length > 0
 
   // Debounced search (overrides the list if query is non-empty)
   useEffect(() => {
@@ -108,42 +111,31 @@ const Page = () => {
         </button>
       </div>
       <div className="no-scrollbar mt-5 grid flex-1 grow grid-cols-1 gap-6 overflow-y-auto px-0.5 pb-[140px] md:grid-cols-2 lg:grid-cols-3">
-        {shouldShowResults ? (
-          isLoadingSearch ? (
-            <div className="flex size-full items-center justify-center">
-              <LoadingSpinner />
-            </div>
-          ) : results?.length || (data?.data?.length ?? 0) > 0 ? (
-            (results.length
-              ? results
-              : Object.keys(filters).length > 0
-                ? (data?.data as UserInfo[])
-                : []
-            ).map((user, key) => {
-              if (!user.isActive) {
-                return null
-              }
+        {isLoadingSearch ? (
+          <div className="flex size-full items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        ) : results?.length || data?.data?.length ? (
+          (results.length ? results : data?.data).map((user, key) => {
+            console.log({ user })
 
-              return (
-                <div key={key} className="col-span-3 h-fit md:col-span-2 lg:col-span-1">
-                  <UserItemCard
-                    updateData={updateData}
-                    user={user}
-                    key={`${user._id as string}-${user.name as string}`}
-                  />
-                </div>
-              )
-            })
-          ) : (
-            <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
-              <div className="max-w-[280px]">هیچ کاربری یافت نشد.</div>
-            </div>
-          )
+            if (!user.isActive) {
+              return null
+            }
+
+            return (
+              <div key={key} className="col-span-3 h-fit md:col-span-2 lg:col-span-1">
+                <UserItemCard
+                  updateData={updateData}
+                  user={user}
+                  key={`${user._id as string}-${user.name as string}`}
+                />
+              </div>
+            )
+          })
         ) : (
           <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
-            <div className="max-w-[280px]">
-              برای مشاهده لیست کارشناسان، ابتدا جستجو کنید یا فیلترها را اعمال نمایید.
-            </div>
+            <div className="max-w-[280px]">هیچ کاربری یافت نشد.</div>
           </div>
         )}
       </div>
@@ -153,10 +145,22 @@ const Page = () => {
           className="h-[67px] w-full text-[20px] font-medium md:h-[56px] md:w-[255px]"
           variant="brand"
           onClick={() => {
+            if (isExportMode) {
+              exportUsersExcel(filters)
+
+              return
+            }
+
             router.push('/users/new')
           }}
         >
-          ثبت کارشناس جدید <PlusIcon />
+          {isExportMode ? (
+            'دانلود فایل اطلاعات'
+          ) : (
+            <>
+              ثبت کارشناس جدید <PlusIcon />
+            </>
+          )}
         </Button>
       </div>
       <FiltersMenu
@@ -168,7 +172,13 @@ const Page = () => {
   )
 }
 
-const UserItemCard = ({ user, updateData }: { user: UserInfo; updateData: () => void }) => {
+const UserItemCard = ({
+  user,
+  updateData,
+}: {
+  user: Partial<UserInfo>
+  updateData: () => void
+}) => {
   const router = useRouter()
   const [deletionModalOpen, setDeletionModalOpen] = useState(false)
   const fullName = user.name + ' ' + user.lastName
@@ -210,7 +220,7 @@ const UserItemCard = ({ user, updateData }: { user: UserInfo; updateData: () => 
         </Button>
       </div>
       <UserDeactivationModal
-        userId={user._id}
+        userId={user._id as string}
         updateData={updateData}
         isOpen={deletionModalOpen}
         setIsOpen={setDeletionModalOpen}
@@ -234,7 +244,7 @@ const UserDeactivationModal = ({
   const deactivateUser = async () => {
     try {
       setIsSubmitting(true)
-      await deactivateUserByID(userId)
+      await deactivateUserByID(userId as string)
       toast('لغو دسترسی با موفقیت انجام شد.')
       setIsSubmitting(false)
       updateData()

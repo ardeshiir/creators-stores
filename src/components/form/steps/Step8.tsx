@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import CameraIcon from '@/components/icons/CameraIcon'
+import LoadingSpinner from '@/components/LoadingSpinner'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input, { InputSecondary } from '@/components/ui/input'
@@ -43,6 +44,7 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
 
   const showCase = form.watch('showCase')
   const [hasShowCase, setHasShowCase] = useState<string>('true')
+  const [isUploading, setIsUploading] = useState(false)
   const handleUpload = async (files: FileList, index: number) => {
     const selectedFile = files[0]
 
@@ -52,6 +54,8 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
       formData.append('file', selectedFile)
 
       try {
+        setIsUploading(true)
+
         const uploadResponse = await uploadFile(formData)
 
         if (uploadResponse?.data?.url) {
@@ -60,6 +64,8 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
       } catch (e: any) {
         toast.success(e?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
         console.log({ uploadError: e })
+      } finally {
+        setIsUploading(false)
       }
     }
   }
@@ -285,6 +291,11 @@ export function Step8({ form }: { form: UseFormReturn<Step8Values> }) {
                     <>
                       <CameraIcon />
                       تصویر ضمیمه
+                      {isUploading && (
+                        <div className="mx-1 flex items-center">
+                          <LoadingSpinner />
+                        </div>
+                      )}
                     </>
                   )}
                   <InputSecondary

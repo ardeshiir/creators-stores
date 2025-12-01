@@ -1,6 +1,8 @@
 // components/form/steps/Step6.tsx
 'use client'
 
+import { useState } from 'react'
+
 import { X } from 'lucide-react'
 import Image from 'next/image'
 import { useFieldArray, UseFormReturn } from 'react-hook-form'
@@ -8,6 +10,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import CameraIcon from '@/components/icons/CameraIcon'
+import LoadingSpinner from '@/components/LoadingSpinner'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import Input, { InputSecondary } from '@/components/ui/input'
@@ -50,6 +53,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
     control: form.control,
     name: 'signBoard',
   })
+  const [isUploading, setIsUploading] = useState<boolean>(false)
 
   const handleUpload = async (files: FileList, index: number) => {
     const selectedFile = files[0]
@@ -60,6 +64,8 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
       formData.append('file', selectedFile)
 
       try {
+        setIsUploading(true)
+
         const uploadResponse = await uploadFile(formData)
 
         if (uploadResponse?.data?.url) {
@@ -68,6 +74,8 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
       } catch (e: any) {
         toast.success(e?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
         console.log({ uploadError: e })
+      } finally {
+        setIsUploading(false)
       }
     }
   }
@@ -314,6 +322,11 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
                       ) : (
                         <>
                           <CameraIcon /> تصویر ضمیمه
+                          {isUploading && (
+                            <div className="mx-1 flex items-center">
+                              <LoadingSpinner />
+                            </div>
+                          )}
                         </>
                       )}
                       <InputSecondary

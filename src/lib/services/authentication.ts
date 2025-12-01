@@ -22,6 +22,7 @@ export interface UserInfo {
   district?: number
   _id?: string
   identifierCode: string
+  isActive?: boolean
 }
 
 export const verifyOtp = async ({ phone, code }: { phone: string; code: string }) => {

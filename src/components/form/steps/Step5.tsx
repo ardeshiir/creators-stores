@@ -21,7 +21,7 @@ export const schema5 = z.object({
     description: z.string({ required_error: 'این فیلد الزامیست' }),
     postalcode: z.string({ required_error: 'این فیلد الزامیست' }),
     district: z.string({ required_error: 'این فیلد الزامیست' }),
-    phoneNumber: z.array(z.string().min(1, { message: 'شماره همراه الزامی است' })).min(1),
+    phoneNumber: z.array(z.string().trim().min(1, { message: 'شماره همراه الزامی است' })).min(1),
     landLine: z.string().min(1, { message: 'شماره تلفن ثابت الزامی است' }),
     // location: skipped for now
   }),
@@ -34,13 +34,17 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
     const current = safeArray(form.getValues('address.phoneNumber'))
 
     form.setValue('address.phoneNumber', [...current, ''])
+    form.trigger('address.phoneNumber')
   }
 
   const removePhone = (index: number) => {
     const updated = safeArray(form.getValues('address.phoneNumber')).filter((_, i) => i !== index)
 
     form.setValue('address.phoneNumber', updated)
+    form.trigger('address.phoneNumber')
   }
+
+  console.log({ phone: form.watch('address.phoneNumber') })
 
   return (
     <div className="mx-auto w-full pb-[220px] md:pb-0">
@@ -175,7 +179,9 @@ export default function Step5({ form }: { form: UseFormReturn<Step5Values> }) {
                               type="button"
                               variant="ghost"
                               size="icon"
-                              onClick={() => removePhone(index)}
+                              onClick={() => {
+                                removePhone(index)
+                              }}
                             >
                               <X size={16} color="#0038DB" />
                             </Button>

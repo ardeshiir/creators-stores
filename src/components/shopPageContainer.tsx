@@ -49,11 +49,9 @@ const ShopPageContainer = () => {
     queryKey: ['shops', filters],
     queryFn: async () => (Object.keys(filters).length ? getFilteredShops(filters) : getAllShops()),
   })
-  const shouldShowResults = query.trim().length > 0 || Object.keys(filters).length > 0
+  // const shouldShowResults = query.trim().length > 0 || Object.keys(filters).length > 0
   const searchParams = useSearchParams()
   const isExportMode = searchParams.get('export-mode') === 'true'
-
-  console.log({ searchParams })
 
   const router = useRouter()
   const { reset } = useFormStore()
@@ -118,7 +116,7 @@ const ShopPageContainer = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               sideOffset={20}
-              className="translate-x-[2px] translate-x-[32px] bg-white md:translate-x-[46px]"
+              className="translate-x-[32px] bg-white md:translate-x-[46px]"
             >
               <DropdownMenuItem className="bg-[#F9F9F9]">جدیدترین</DropdownMenuItem>
               <DropdownMenuItem>قدیمی ترین</DropdownMenuItem>
@@ -142,31 +140,21 @@ const ShopPageContainer = () => {
         />
       </div>
       <div className="no-scrollbar mt-5 grid flex-1 grow grid-cols-1 gap-6 overflow-y-auto px-0.5 pb-[140px] md:grid-cols-2 lg:grid-cols-3">
-        {shouldShowResults ? (
-          !isLoadingSearch && (data?.data?.length > 0 || results?.length) ? (
-            (results.length ? results : data?.data).map((shop) => (
-              <ShopItemCard
-                key={`${shop.shopId as number}-${shop.name as string}`}
-                address={shop.address?.description as string}
-                dbid={shop._id}
-                id={shop.shopId || 0}
-                name={(shop.name as string) + ' ' + shop.lastName}
-                storeName={shop.storeName as string}
-                queryKeys={['shops', filters]}
-              />
-            ))
-          ) : (
-            <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
-              <div className="max-w-[280px]">نتیجه‌ای برای نمایش وجود ندارد.</div>
-            </div>
-          )
+        {!isLoadingSearch && (data?.data?.length || results?.length) ? (
+          (results.length ? results : data?.data || []).map((shop) => (
+            <ShopItemCard
+              key={`${shop.shopId as number}-${shop.name as string}`}
+              address={shop.address?.description as string}
+              dbid={shop._id as string}
+              id={shop.shopId || 0}
+              name={(shop.name as string) + ' ' + shop.lastName}
+              storeName={shop.storeName as string}
+              queryKeys={['shops', filters]}
+            />
+          ))
         ) : (
           <div className="mx-auto flex size-full items-center justify-center text-center text-[20px] font-medium text-[#babcbe] md:col-span-2 md:max-w-full lg:col-span-3">
-            <div className="max-w-[280px]">
-              {isExportMode
-                ? 'چنانچه نیاز به اطلاعات فیلتر شده دارید؛ ابتدا جستجو کرده و یا فیلترها را اعمال کنید، سپس دانلود نمایید.'
-                : 'برای مشاهده لیست فروشندگان ابتدا جستجو کنید یا فیلترها را اعمال نمایید.'}
-            </div>
+            <div className="max-w-[280px]">نتیجه‌ای برای نمایش وجود ندارد.</div>
           </div>
         )}
       </div>

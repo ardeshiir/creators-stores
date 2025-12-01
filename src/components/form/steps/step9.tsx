@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+
 import { X } from 'lucide-react'
 import Image from 'next/image'
 import { UseFormReturn } from 'react-hook-form'
@@ -7,13 +9,13 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import CameraIcon from '@/components/icons/CameraIcon'
+import LoadingSpinner from '@/components/LoadingSpinner'
 import { Button } from '@/components/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { InputSecondary } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { uploadFile } from '@/lib/services/upload'
 import { cn, numberToPersian } from '@/lib/utils'
-import { useFormStore } from '@/stores/useFormStore'
 
 export const schema9 = z.object({
   externalImages: z.array(z.string().optional().nullable()).optional(),
@@ -24,8 +26,7 @@ export const schema9 = z.object({
 export type Step9Values = z.infer<typeof schema9>
 
 export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
-  const { data } = useFormStore()
-
+  const [isUploading, setIsUploading] = useState(false)
   const internalImages = form.watch('internalImages')
 
   const externalImages = form.watch('externalImages')
@@ -44,6 +45,8 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
     formData.append('file', selectedFile)
 
     try {
+      setIsUploading(true)
+
       const uploadResponse = await uploadFile(formData)
 
       if (uploadResponse?.data?.url) {
@@ -70,6 +73,8 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
     } catch (e: any) {
       toast.success(e?.response?.data.message || 'خطایی رخ داده است لطفا مجددا تلاش کنید')
       console.log({ uploadError: e })
+    } finally {
+      setIsUploading(false)
     }
   }
 
@@ -140,6 +145,11 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
                     <div className="flex items-center gap-[15px] text-nowrap px-3">
                       <CameraIcon />
                       تصویر ضمیمه {numberToPersian(index + 1)}
+                      {isUploading && (
+                        <div className="mx-1 flex items-center">
+                          <LoadingSpinner />
+                        </div>
+                      )}
                     </div>
                   )}
                   <InputSecondary
