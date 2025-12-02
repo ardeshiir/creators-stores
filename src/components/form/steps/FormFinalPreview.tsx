@@ -2,6 +2,7 @@ import { ReactNode, useState } from 'react'
 
 import { Camera } from 'lucide-react'
 
+import DownloadIcon from '@/components/icons/DownloadIcon'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { cn } from '@/lib/utils'
 import { FormState } from '@/stores/useFormStore'
@@ -20,24 +21,33 @@ const ImageItem = ({ url }: { url: string }) => {
   }
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild>
-        <button
-          onClick={() => setPreviewImg(url)}
-          className="border-brand flex w-[138px] items-center justify-between rounded-[8px] border border-brand-primary bg-white px-2 py-1 text-lg leading-[24px] text-brand-primary"
-        >
-          <Camera fill="var(--brand-primary)" stroke="white" className="text-primary" size={16} />
-          IMG
-        </button>
-      </DrawerTrigger>
-      <DrawerContent className="p-4">
-        <img
-          src={previewImg ?? ''}
-          alt="Preview"
-          className="mx-auto max-h-[80vh] rounded-lg shadow"
-        />
-      </DrawerContent>
-    </Drawer>
+    <div className="flex items-center gap-3">
+      <button
+        onClick={() => {
+          window.open(url)
+        }}
+      >
+        <DownloadIcon />
+      </button>
+      <Drawer>
+        <DrawerTrigger asChild>
+          <button
+            onClick={() => setPreviewImg(url)}
+            className="border-brand flex w-[138px] items-center justify-between rounded-[8px] border border-brand-primary bg-white px-2 py-1 text-lg leading-[24px] text-brand-primary"
+          >
+            <Camera fill="var(--brand-primary)" stroke="white" className="text-primary" size={16} />
+            IMG
+          </button>
+        </DrawerTrigger>
+        <DrawerContent className="p-4">
+          <img
+            src={previewImg ?? ''}
+            alt="Preview"
+            className="mx-auto max-h-[80vh] rounded-lg shadow"
+          />
+        </DrawerContent>
+      </Drawer>
+    </div>
   )
 }
 
