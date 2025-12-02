@@ -55,6 +55,7 @@ export default function MultiStepForm() {
   const [submitted, setSubmitted] = useState(false)
   const [preSubmittedShopId, setPreSubmittedShopId] = useState<null | string>(null)
   const { schema } = steps[step]
+  const scrollRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
   const isEditMode = searchParams.get('edit') === 'true'
@@ -161,6 +162,14 @@ export default function MultiStepForm() {
         ease: 'power2.out',
       },
     )
+
+    if (scrollRef.current) {
+      setTimeout(() => {
+        scrollRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 3)
+    }
+
+    // window.scrollTo({ top: 0 })
   }, [step])
 
   if (submitted) {
@@ -178,7 +187,10 @@ export default function MultiStepForm() {
   }
 
   return (
-    <div className="no-scrollbar relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden px-9 py-[2px] md:max-h-full">
+    <div
+      ref={scrollRef}
+      className=" relative flex h-full max-h-[85vh] grow flex-col justify-between overflow-y-auto overflow-x-hidden px-9 py-[2px] md:max-h-full"
+    >
       {/* 👇 Animation wrapper */}
       <div
         key={step}
