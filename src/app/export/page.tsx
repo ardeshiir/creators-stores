@@ -21,12 +21,12 @@ const Page = () => {
             <Button
               asChild
               variant="brand"
-              className="flex min-h-[67px] w-full flex-1 text-[20px] font-medium md:h-[56px] md:min-h-[56px] md:w-[255px]"
+              className="flex min-h-[67px] w-full text-[20px] font-medium md:h-[56px] md:min-h-[56px] md:w-[255px]"
             >
               <Link href="/shops?export-mode=true">فروشگاه‌ها</Link>
             </Button>
             <Button
-              className="min-h-[67px] w-full flex-1 text-[20px] font-medium md:h-[56px] md:min-h-[56px] md:w-[255px]"
+              className="min-h-[67px] w-full text-[20px] font-medium md:h-[56px] md:min-h-[56px] md:w-[255px]"
               asChild
               variant="default"
             >
