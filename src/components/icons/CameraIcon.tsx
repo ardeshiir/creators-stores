@@ -1,19 +1,7 @@
+import Image from 'next/image'
+
 const CameraIcon = ({ color }: { color?: string }) => {
-  return (
-    <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clipPath="url(#clip0_5850_3041)">
-        <path
-          d="M5.65854 0L4.68293 2.05882H1.36585C0.60878 2.05882 0 2.70118 0 3.5V12.5588C0 13.3576 0.60878 14 1.36585 14H14.6341C15.3912 14 16 13.3576 16 12.5588V3.5C16 2.70118 15.3912 2.05882 14.6341 2.05882H11.3171L10.3415 0H5.65854ZM8 3.70588C10.2556 3.70588 12.0976 5.64941 12.0976 8.02941C12.0976 10.4094 10.2556 12.3529 8 12.3529C5.74439 12.3529 3.90244 10.4094 3.90244 8.02941C3.90244 5.64941 5.74439 3.70588 8 3.70588ZM8 4.94118C6.37659 4.94118 5.07317 6.31647 5.07317 8.02941C5.07317 9.74235 6.37659 11.1176 8 11.1176C9.62341 11.1176 10.9268 9.74235 10.9268 8.02941C10.9268 6.31647 9.62341 4.94118 8 4.94118Z"
-          fill={color || 'black'}
-        />
-      </g>
-      <defs>
-        <clipPath id="clip0_5850_3041">
-          <rect width="16" height="14" fill="white" />
-        </clipPath>
-      </defs>
-    </svg>
-  )
+  return <Image src="/icons/camera-icon.png" alt="camera-icon" width={16} height={14} />
 }
 
 export default CameraIcon

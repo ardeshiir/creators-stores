@@ -146,7 +146,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
                   </div>
                 ) : (
                   <>
-                    <CameraIcon color={displayStand.type === 'none' && '#B6B6B6'} /> تصویر ضمیمه
+                    <CameraIcon /> تصویر ضمیمه
                     {isUploading && (
                       <div className="mx-1 flex items-center">
                         <LoadingSpinner />
