@@ -145,7 +145,7 @@ export default function Step4({ form }: { form: UseFormReturn<Step4Values> }) {
         <FormMessage />
       </FormItem>
 
-      <ul className="mt-4 grid grid-cols-2 gap-4 md:flex">
+      <ul className="mt-4 grid grid-cols-2 gap-4 pb-2 md:flex">
         {current.map((brand, i) => (
           <li
             key={i}

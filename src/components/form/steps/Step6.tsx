@@ -88,7 +88,7 @@ export function Step6({ form }: { form: UseFormReturn<Step6Values> }) {
     <div className="flex items-center justify-center overflow-x-hidden pb-[220px] md:pb-0">
       <div className="w-full">
         <FormLabel className="text-lg font-bold text-black">موقعیت مکانی فروشگاه</FormLabel>
-        <div className="mt-4 grid grid-cols-2 gap-6 overflow-x-hidden md:flex md:flex-col">
+        <div className="mt-4 grid grid-cols-2 gap-6 overflow-x-hidden px-[2px] md:flex md:flex-col">
           <div className="col-span-2 grid grid-cols-2 gap-4 overflow-x-hidden md:flex md:flex-wrap">
             <FormField
               control={form.control}

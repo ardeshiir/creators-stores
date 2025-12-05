@@ -39,7 +39,7 @@ const ImageItem = ({ url }: { url: string }) => {
             IMG
           </button>
         </DrawerTrigger>
-        <DrawerContent className="p-4">
+        <DrawerContent className="bg-white p-4">
           <img
             src={previewImg ?? ''}
             alt="Preview"
@@ -229,7 +229,7 @@ const FormFinalPreview = ({ data }: { data: FormState['data'] }) => {
         <Row
           label="تصاویر بیرونی فروشگاه:"
           value={
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 md:flex-row">
               {!data.externalImages?.filter(Boolean).length
                 ? 'ندارد'
                 : data.externalImages?.map((pair, i) => (

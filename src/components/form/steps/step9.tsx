@@ -130,7 +130,7 @@ export function Step9({ form }: { form: UseFormReturn<Step9Values> }) {
                   )}
                 >
                   {image ? (
-                    <div className="relative aspect-video h-32 overflow-hidden rounded-[20px]">
+                    <div className="relative aspect-video h-24 overflow-hidden rounded-[20px]">
                       <Image fill={true} src={image} alt="banner-attachment" />
                       <div className="absolute flex size-full items-center justify-center bg-white/10">
                         <div

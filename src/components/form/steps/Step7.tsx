@@ -125,7 +125,7 @@ export function Step7({ form }: { form: UseFormReturn<Step7Values> }) {
               <FormLabel
                 htmlFor="displayStand-attachment"
                 className={cn(
-                  'flex w-full mr-auto md:mr-0 cursor-pointer items-center justify-center gap-[18px] h-[56px] font-medium md:w-[163px] md:justify-between ',
+                  'flex w-full mr-auto md:mr-0 cursor-pointer items-center justify-center gap-[18px] font-medium md:w-[163px] md:justify-between ',
                   displayStand?.attachments
                     ? ''
                     : 'md:px-4 px-[19px] h-[51px] md:h-[56px] py-[14px] rounded-[16px] bg-[#EEEEEE]',
