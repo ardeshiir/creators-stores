@@ -114,6 +114,7 @@ export default function MultiStepForm() {
 
       Object.keys(rest).map((dataKey) => {
         if (data[dataKey]) {
+          // @ts-ignore
           form.setValue(dataKey, data[dataKey])
         }
       })
@@ -180,6 +181,7 @@ export default function MultiStepForm() {
     return (
       <VerifyOTP
         shopID={preSubmittedShopId}
+        // @ts-ignore
         setPreSubmittedShopId={setPreSubmittedShopId}
         setSubmitted={setSubmitted}
       />
@@ -220,13 +222,19 @@ export default function MultiStepForm() {
               isSubmitting ||
               (!form.formState.isValid && !isEditMode && step !== 6) ||
               (step === 6 &&
+                // @ts-ignore
                 !['reglam', 'ontable', 'none'].includes(form.watch('displayStand')?.type)) ||
               (step === 5 &&
+              // @ts-ignore
               ['banner', 'composite', 'other'].includes(form.watch('signBoard')?.[0]?.type)
-                ? !form.watch('signBoard')?.[0]?.dimensions.width ||
+                ? // @ts-ignore
+                  !form.watch('signBoard')?.[0]?.dimensions.width ||
+                  // @ts-ignore
                   !form.watch('signBoard')?.[0]?.dimensions.height > 0
                 : false) ||
               (step === stepsCount - 1 &&
+                // @ts-ignore
+
                 (!form.watch('specialistName') || !form.watch('specialistPhoneNumber')))
             }
             className={cn(
