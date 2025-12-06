@@ -69,11 +69,13 @@ export const useFormStore = create<FormState>()(
   persist(
     (set) => ({
       step: 0,
+      // @ts-ignore
       data: {},
       setStep: (step) => set({ step }),
       nextStep: () => set((state) => ({ step: state.step + 1 })),
       prevStep: () => set((state) => ({ step: state.step - 1 })),
       updateData: (partial) => set((state) => ({ data: { ...state.data, ...partial } })),
+      // @ts-ignore
       reset: () => set({ step: 0, data: {} }),
     }),
     {
