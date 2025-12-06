@@ -48,6 +48,7 @@ const MenuDropDown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" className="mr-6 mt-1 bg-white">
         <DropdownMenuLabel className="justify-end text-end">
+          {/*// @ts-ignore*/}
           {userInfo?.name ?? '' + ' ' + userInfo?.lastName ?? ''}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
