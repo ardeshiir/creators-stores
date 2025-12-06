@@ -95,6 +95,7 @@ const ResponsiveDialogContent = ({ className, children, ...props }: ResponsiveDi
   const ResponsiveDialogContent = isMobile ? DrawerContent : DialogContent
 
   return (
+    // @ts-ignore
     <ResponsiveDialogContent showCloseButton={false} className={className} {...props}>
       {children}
     </ResponsiveDialogContent>
