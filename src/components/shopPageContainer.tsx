@@ -145,6 +145,7 @@ const ShopPageContainer = () => {
             <ShopItemCard
               key={`${shop.shopId as number}-${shop.name as string}`}
               address={shop.address?.description as string}
+              // @ts-ignore
               dbid={shop._id as string}
               id={shop.shopId || 0}
               name={(shop.name as string) + ' ' + shop.lastName}
@@ -221,6 +222,7 @@ const FiltersMenu = ({
         <Accordion
           type="multiple"
           className="flex w-full flex-col gap-4 overflow-y-auto px-10"
+          // @ts-ignore
           collapsible
         >
           {/* استان */}
