@@ -8,6 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
+    "noErrorTruncation": true,
     "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
@@ -35,6 +36,11 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "node_modules/minimatch",
+    "node_modules/@types/minimatch"
+  ],
+  "typeRoots": [
+    "./node_modules/@types"
   ]
 }
