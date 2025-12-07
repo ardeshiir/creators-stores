@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "SKIP_TS_CHECK=true next build",
+    "build": "TSC_COMPILE_ON_ERROR=true npm run build:normal",
     "start": "next start -p 3000",
     "lint": "next lint"
   },
