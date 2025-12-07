@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "TSC_COMPILE_ON_ERROR=true npm run build",
+    "build": "SKIP_TS_CHECK=true next build",
     "start": "next start -p 3000",
     "lint": "next lint"
   },
@@ -46,10 +46,11 @@
     "@eslint/eslintrc": "^3",
     "@tanstack/eslint-plugin-query": "^5.83.1",
     "@types/leaflet": "^1.9.20",
+    "@types/minimatch": "^6.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "8",
     "eslint-config-next": "15.2.5",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-tailwindcss": "^3.17.5",
