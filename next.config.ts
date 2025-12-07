@@ -3,7 +3,7 @@ const withPWA = require('next-pwa')({
   dest: 'public', // 👈 where the service worker & manifest will be generated
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development', // disable PWA in dev mode
+  disable: true, // disable PWA in dev mode
 })
 
 /** @type {import('next').NextConfig} */
